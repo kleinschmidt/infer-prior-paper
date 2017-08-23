@@ -10,24 +10,24 @@
   (and nature) of constraints.  "additional exploratory thing...how much can we
   trust this"
   
-* TODO re-analyse results with incremental model
+** TODO re-analyse results with incremental model
 
-  I've run this model but I haven't looked at the results, buried in
-  ~beliefupdatr~ somewhere?  IN particular, want to know what the inferred prior
-  looks like.
+   I've run this model but I haven't looked at the results, buried in
+   ~beliefupdatr~ somewhere?  IN particular, want to know what the inferred prior
+   looks like.
 
-  ESTIMATE: 
+   ESTIMATE: 
 
-* TODO how much does assuming labels known hurt us?
+** TODO how much does assuming labels known hurt us?
 
-  run forward simulations based on inferred prior with unsupervised algorithm
-  (particles).  In lieu of actually doing the full unsupervised prior inferring,
-  see how far off we are.
+   run forward simulations based on inferred prior with unsupervised algorithm
+   (particles).  In lieu of actually doing the full unsupervised prior inferring,
+   see how far off we are.
 
-* TODO additional models
+** TODO additional models
 
-  control model: just change lapse rate (maybe)
+   control model: just change lapse rate (maybe)
 
-  use production means/variances and just fit confidence.  how well does it
-  explain adaptation?
+   use production means/variances and just fit confidence.  how well does it
+   explain adaptation?
 
