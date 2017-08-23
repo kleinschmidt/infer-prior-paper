@@ -1,0 +1,33 @@
+* TODO adapt dissertation chapter
+
+  Make the introduction a little less myopicly concerned with ideal adapter
+  stuff.
+
+  manage expectations in the intro: anticipate that the inferred prior migth be
+  a little weird. (if can't do that, then maybe need to revisit)
+
+  de-emphasize mind reading (and need for production data), emphasize presence
+  (and nature) of constraints.  "additional exploratory thing...how much can we
+  trust this"
+  
+* TODO re-analyse results with incremental model
+
+  I've run this model but I haven't looked at the results, buried in
+  ~beliefupdatr~ somewhere?  IN particular, want to know what the inferred prior
+  looks like.
+
+  ESTIMATE: 
+
+* TODO how much does assuming labels known hurt us?
+
+  run forward simulations based on inferred prior with unsupervised algorithm
+  (particles).  In lieu of actually doing the full unsupervised prior inferring,
+  see how far off we are.
+
+* TODO additional models
+
+  control model: just change lapse rate (maybe)
+
+  use production means/variances and just fit confidence.  how well does it
+  explain adaptation?
+
