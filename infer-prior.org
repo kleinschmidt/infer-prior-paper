@@ -31,3 +31,14 @@
    use production means/variances and just fit confidence.  how well does it
    explain adaptation?
 
+* Outline
+
+** Lots of flexibility in adult language
+
+   recal, dist learning, etc.
+
+** but not limitless.
+
+   e.g. learning L2 phonetic categories
+
+** what are the constraints?
