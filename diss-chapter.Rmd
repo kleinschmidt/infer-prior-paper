@@ -1,0 +1,2060 @@
+---
+Title: What do you expect from an unfamiliar talker?
+Author: Dave Kleinschmidt
+bibliography: /Users/dkleinschmidt/Documents/papers/library-clean.bib
+output:
+    html_document:
+        code_folding: hide
+        dev: png
+        keep_md: true
+        md_extensions: +implicit_figures
+        pandoc_args:
+        - --filter
+        - pandoc-fignos
+        - --filter
+        - pandoc-tablenos
+    pdf_document:
+        md_extensions: +implicit_figures
+        keep_tex: true
+        pandoc_args:
+        - --filter
+        - pandoc-fignos
+        - --filter
+        - pandoc-tablenos
+        includes:
+            in_header: header_tipa.tex
+---
+
+```{r preamble, warning=FALSE, message=FALSE, error=FALSE, echo=FALSE, results='hide'}
+
+library(assertthat)
+library(magrittr)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(stringr)
+library(lme4)
+library(ggplot2)
+
+## devtools::install_github('kleinschmidt/daver')
+library(daver)
+
+## devtools::install_github('kleinschmidt/phonetic-sup-unsup')
+library(supunsup)
+## devtools::install_github('kleinschmidt/beliefupdatr')
+library(beliefupdatr)
+
+library(knitr)
+opts_chunk$set(warning = FALSE,
+               message = FALSE,
+               error = FALSE,
+               cache=TRUE,
+               echo=opts_knit$get("rmarkdown.pandoc.to") != 'latex')
+
+options(digits=2)
+
+## Produce markdown-formatted figures so that pandoc knows what to do with
+## the captions. requires pandoc-fignos to parse the IDs. refer to figures
+## in text with {@fig:label} or just @fig:label
+## 
+## (see https://github.com/tomduck/pandoc-fignos)
+knit_hooks$set(plot = function(x, options) {
+  paste0('![', options$fig.cap, ']',
+         '(', opts_knit$get('base.url'), paste(x, collapse='.'), ')',
+         '{#fig:', options$label, '}')
+})
+## Produce markdown-formatted table captions with anchors for cross-refs.
+## Requires pandoc-tablenos to parse the IDs. Refer to tables
+## in text with {@tbl:label} or @tbl:label.
+## Based partly on http://stackoverflow.com/a/18672268
+##
+## (see https://github.com/tomduck/pandoc-tablenos)
+knit_hooks$set(tbl.cap = function(before, options, envir) {
+  if(!before){
+    paste0('\n\nTable: ', options$tbl.cap,
+           ' {#tbl:', options$label, '}', sep = '')
+  }
+})
+
+```
+
+# What do you expect from an unfamiliar talker? Inferring listeners' priors beliefs {#chap:infer-priors}
+
+A longstanding problem in speech perception is how listeners manage to
+cope with substantial differences in how individual talkers produce
+speech. Recent evidence suggests that one strategy listeners employ is
+to *rapidly adapt* to unfamiliar talkers [@Bertelson2003; @Clarke2004; @Kraljic2007 among others]. Such adaptation can be
+understood as a form of statistical inference. This insight is captured
+by a recent proposal, the *ideal adapter* framework [@Kleinschmidt2015].
+Each talker's particular accent (way of talking) can be formalized as
+the distribution of acoustic cues that they produce for each phonetic
+category (or other underlying linguistic unit). Listeners are taken to
+adapt to an unfamiliar talker via *distributional learning*, inferring
+the underlying talker-specific cue distributions from the talker's
+productions.
+
+Critically, this statistical inference process draws on implicit beliefs
+about *how* talkers tend to differ from each other. As a consequence,
+in this view adaptation to an unfamiliar talker depends on a listener's prior
+experience with other talkers, rather than only on the speech produced
+by the unfamiliar talker themselves. Specifically, a listener's
+experience with other talkers provides the starting point for the
+distributional learning required for adaptation, or, in Bayesian terms,
+a *prior belief* about the probability of different possible accents
+(cue distributions). More informative prior beliefs can substantially
+reduce the amount of direct evidence needed to converge on accurate
+beliefs about the current talker's cue distributions.
+
+The goals of the present work are two-fold. First, we test a critical
+prediction of the ideal adapter framework. To the extent that a
+listener's prior beliefs are informative, they must take some
+probability *away* from unlikely accents. Confronted by a talker whose
+accent falls well outside the range of what they expect based on their
+previous experience, the ideal adapter framework predicts that a
+listener will require more evidence to adapt, leading to slowed or
+incomplete adaptation. 
+
+There is already some evidence for this prediction.
+For instance, @Idemaru2011 tested how well listeners adapt to distributions of
+two cues that distinguish voicing (e.g., /b/ vs. /p/), voice onset time (VOT, the primary cue to voicing)
+and the pitch of the following vowel (f0, a secondary cue).  These two cues are typically
+positively correlated in English, with /p/ corresponding to high VOT and high
+f0, and /b/ to low values of both cues [@Kohler1982]. In one condition, listeners were exposed to a talker who produced
+a positively correlated distribution of these cues. During a post-test, these listeners used
+f0 to categorize stops with ambiguous VOTs. In another condition, listeners heard a talker
+who produced an *un*correlated distribution, where f0 is uninformative. In contrast to the listeners in the first condition, during the post test these listeners _ignored_ f0 even for ambiguous
+VOTs. This effect is consistent with the idea that listeners are rationally integrating multiple cues to voicing, weighing them based on how informative they are [@Ernst2004; @Clayards2008; @Bejjanki2011]. However, listeners in a third condition who were exposed to a talker who produced an *anti*correlated
+did _not_ follow the predictions of rational cue integration.  Despite the fact
+that f0 was just as informative for this accent as for the positively correlated
+accent, listeners _ignored_ f0 as a cue to voicing. This suggests that these listeners have ruled out the possibility of a
+reversed mapping between f0 and voicing (/b/ vs. /p/), possibly perhaps American
+English talkers typically do not typically produce it [e.g., @House1953].
+Likewise, @Sumner2011 found that listeners had trouble adapting to a talker who
+produced VOT distributions for /b/ and /p/ that had _substantially_ lower means (approximately -60ms and 0ms, respectively)
+than a typical talker [approximately 0--10ms and 60ms VOT; @Lisker1964].
+
+<!-- this might be too strong. both @Idemaru2011 and @Sumner2011 do in fact manipulate distributions parametrically -->
+
+These results are _consistent_ with the ideal adapter's prediction that
+listeners use gradient, structured knowledge about how talkers tend to vary to
+guide their adaptation to an unfamiliar talker. However, it is also possible
+that these results are simply due to the extremely unnatural input that
+listeners received.  Both studies involved gross, categorical mismatches between
+typical and experimental cue distributions: a reversal of the f0-to-voicing
+mapping in @Idemaru2011, and a remapping of /b/-like VOTs to /p/ in @Sumner2011.
+
+Our goal first goal in this paper is thus a stronger test of the ideal adapter
+hypothesis. In two experiments, we expose listeners to a range of different
+accents, which differ (only) in the distributions of voice onset time (VOT).  By
+parametrically manipulating these distributions, we create a range of accents
+that are more or less similar to what a typical talker of English produces.  We
+then assess the degree to which listeners adapt their beliefs about the novel
+talker's cue distributions, depending on the *a priori* typicality of these
+distributions.
+
+To anticipate the results, we find that typicality of the novel talker's
+cue distribution predicts the degree to which listeners adapt to the
+talker. This suggests that listeners not only have beliefs about the cue
+distributions for a *particular* single talker [as suggested by previous
+work, @Clayards2008; @Feldman2009a; @Kleinschmidt2015; @Kronrod2012],
+but also have implicit beliefs about the ways in which talkers tend to
+*differ* from each other, and hence what to expect from an unfamiliar
+talker. 
+
+This leads to the second question we address here: what is the content of
+listeners' prior beliefs about inter-talker variability? To this end, we present
+an _inverted belief-updating_ model, which allows us to work backwards from
+listeners' adaptation behavior across talkers in order to *infer* listeners'
+shared prior beliefs. This approach has a number of advantages. First, it
+provides a more direct assessment of listeners' _subjective_ prior beliefs,
+which are, according to the ideal adapter, what matters for understanding
+adaptation. Second, it allows us to compare these subjective beliefs about
+talker variability to data on the _objective_ level and type of cross-talker
+variability that is present in the world.  Third, by assessing listeners prior
+beliefs directly from their behavior, this method avoids the need for production
+data, which is difficult to collect and often requires time-consuming expert
+annotation.
+
+If this model is successful, it provides a missing methodological tool for
+understanding listeners' prior expectations. These expectations are, according
+to the ideal adapter, one of (if not _the_) most important factor in listeners'
+remarkable ability to efficiently understand speech from many different
+talkers. In particular, to fully understand listeners' prior beliefs we need to
+understand how they are learned from experience with actual, objective
+cross-talker variability, how they are structured across different
+cues/categories, and how they relate to socio-indexical grouping variables like
+gender, dialect, etc.  This modeling work thus serves as a proof-of-concept for
+future work on these questions.
+
+We first present the design and results of Experiment 1. Then we use a belief
+updating model to infer listeners' prior beliefs based on the results of that
+experiment. Finally, we present the results of Experiment 2 which uses a wider
+range of distributions, and assess how well the inferred prior beliefs predict
+listeners' adaptation behavior in Experiment 2.
+
+## Experiment 1 ##
+
+```{r typical-talker}
+
+prior_stats_by_talker <-
+  votcorpora::vot %>%
+  filter(source %in% c('gva13', 'bbg09', 'buckeye'),
+         place == 'lab') %>%
+  mutate(source = ifelse(source %in% c('gva13', 'bbg09'),
+                         'goldricketal',
+                         source)) %>%
+  group_by(source, prevoiced, subject, phoneme) %>%
+  summarise(mu = mean(vot),
+            sigma2 = var(vot),
+            sigma = sd(vot),
+            n = n()) %>%
+  rename(category = phoneme)
+
+## plot single-talker distributions to get a sense of talker variability
+## prior_stats_by_talker %>%
+##   rename(mean=mu, sd=sigma) %>%
+##   group_by(source, prevoiced, subject) %>%
+##   by_slice(stats_to_lhood, xlim=c(-100, 100), noise_sd=0, .collate='rows') %>%
+##   left_join(votcorpora::vot %>%
+##               group_by(subject, prevoiced) %>%
+##               tally() %>%
+##               mutate(prop_prevoiced = n / sum(n))) %>% 
+##   group_by(source, subject, category, vot) %>%
+##   summarise(lhood=sum(lhood * prop_prevoiced)) %>%
+##   ggplot(aes(x=vot, y=lhood, color=source, group=paste(subject, category))) +
+##   geom_line()
+
+prior_stats <-
+  prior_stats_by_talker %>%
+  filter(source == 'goldricketal', category == 'b') %>%
+  group_by(source, prevoiced, category) %>%
+  summarise_at(vars(mu, sigma2, sigma, n), funs(mean, var, sum)) %>%
+  transmute(category,
+            mean = mu_mean,
+            sd = sqrt(sigma2_mean),
+            n = n_sum) %>%
+  bind_rows(supunsup::prior_stats %>%
+              filter(source=='kronrod2012') %>%
+              mutate(n = 1))
+
+prior_lhood <- 
+  prior_stats %>%
+  filter(source == 'kronrod2012') %>%
+  supunsup::stats_to_lhood()
+
+prior_class <- prior_lhood %>% lhood_to_classification()
+
+```
+
+```{r expt1-data}
+
+data_exp1 <- supunsup::supunsup_clean %>%
+  filter(supCond == 'unsupervised') %>%
+  mutate(trueCat = respCategory,
+         subjNum = as.numeric(factor(subject)),
+         trueCatNum = as.numeric(trueCat),
+         respCatNum = as.numeric(respCat))
+
+conditions_exp1 <-
+  data_exp1 %>%
+  group_by(bvotCond, trueCat) %>%
+  summarise(mean_vot = mean(vot)) %>%
+  spread(trueCat, mean_vot) %>%
+  transmute(vot_cond = paste(b, p, sep=', '),
+            ideal_boundary = (b+p)/2) %>%
+  ungroup() %>%
+  mutate(vot_cond = factor(vot_cond, levels=vot_cond))
+
+data_exp1 %<>% left_join(conditions_exp1)
+
+vot_colors = hcl(h = seq(0,330, length.out=6)-15,
+                 c = 100,
+                 l = 65)
+
+scale_color_exp1 <- scale_color_manual('/b/, /p/\nmean VOT', values=vot_colors[2:6])
+scale_fill_exp1 <- scale_fill_manual('/b/, /p/\nmean VOT', values=vot_colors[2:6])
+
+```
+
+
+```{r vot-dists-exp1, fig.width=8, fig.height=2, fig.cap="Each subject heard one of these five synthetic accents, which differ only in the distribution of VOTs of the word-initial stops. Black dashed lines show VOT distributions from a hypothetical typical talker [as estimated by @Kronrod2012]. Note that the 0 and 10ms shifted accents are reasonably close to this typical talker, while the -10, 20, and 30ms shifted accents deviate substantially."}
+
+exposure_stats <- data_exp1 %>%
+  group_by(vot_cond, category=trueCat) %>%
+  summarise(mean=mean(vot), sd=sd(vot))
+
+sd_noise = sqrt(82)
+
+exposure_lhood <- exposure_stats %>%
+  group_by(vot_cond) %>%
+  do(supunsup::stats_to_lhood(., sd_noise))
+
+data_exp1 %>%
+  group_by(vot_cond, vot) %>%
+  filter(subject == first(subject)) %>%
+  tally() %>%
+  ggplot(aes(x=vot)) +
+  geom_bar(stat='identity', aes(y=n, fill=vot_cond)) +
+  geom_line(data=prior_lhood, aes(y=lhood*1600, group=category),
+            color="black", linetype=2) +
+  geom_text(data=data.frame(vot_cond='-10, 30'), x = 10, y = 60,
+            label = 'Typical Talker',
+            color='black', hjust=0, vjust=0.3, size=3) +
+  geom_text(data=data.frame(vot_cond='-10, 30'), x = 40, y = 50,
+            label = 'Exposure\nTalker',
+            color=vot_colors[2], hjust=0, vjust=0.8, size=3,
+            lineheight=1) + 
+  facet_grid(.~vot_cond) +
+  scale_x_continuous('VOT (ms)') +
+  scale_y_continuous('Frequency') +
+  ## scale_fill_discrete('/b/, /p/\nmean VOT') ## +
+  scale_fill_exp1
+  ## theme(legend.position='none')
+
+``` 
+
+We tested the role that listeners prior expectations play in adapting to an
+unfamiliar talker by exposing them (between subjects) to one of five synthetic "accents" (Figure
+@fig:vot-dists-exp1). These accents differed only in the distribution of
+voice onset time (VOT), the primary cue to word-initial stop consonant voicing
+in English (e.g., "beach" vs. "peach"). Adaptation was assessed based on
+listeners' classification function, or how they labeled each VOT as /b/ or /p/, which was continuously assessed throughout the experiment. 
+
+These conditions vary in how similar they are to a typical talker's VOT
+distributions.  The 0ms and 10ms VOT /b/ mean distributions are particularly
+similar to the typical talker's cue distribution (Figure @fig:vot-dists-exp1,
+black dashed lines), while the other conditions diverge substantially.
+
+For a typical talker, we use the distributions reported by @Kronrod2012, who
+determined the underlying means and variances that best explained a combination
+of listeners' VOT classification and discrimination behavior.  These
+distributions are qualitatively very similar to those reported by @Lisker1964,
+based on productions from four talkers.  The reason we use the estimates from
+@Kronrod2012 is because @Lisker1964 only report the mean VOT for each category,
+and not the variance, which is necessary to predict the classification function.
+
+### Methods {#sec:methods}
+
+#### Subjects {#sec:subjects}
+
+```{r participants-exp1}
+
+n_subj <- data_exp1 %>% group_by(subject) %>% summarise() %>% tally()
+
+excluded <- supunsup::supunsup_excluded %>%
+  filter(supCond == 'unsupervised') %>%
+  group_by(subject) %>% 
+  summarise() %>% 
+  right_join(supunsup::excludes) %>%
+  select(subject, exclude80PercentAcc, rank)
+
+n_excluded <- nrow(excluded)
+n_subj_repeat <- sum(!is.na(excluded$rank))
+n_subj_bad <- sum(!is.na(excluded$exclude80PercentAcc))
+n_both <- n_subj_repeat + n_subj_bad - n_excluded 
+
+n_total <- n_subj + n_excluded
+
+```
+
+We recruited `r n_total` subjects via Amazon's Mechanical Turk. Subjects were paid
+\$2.00 for participation, which took about 20 minutes. We excluded subjects who
+participated more than once ($n=`r n_subj_repeat`$) or who failed to classify VOTs reliably
+($n=`r n_subj_bad`$; $n=`r n_both`$ for both reasons).
+We defined reliable classification as accuracy of at least 80% at 0 and
+70ms VOT. Because some conditions had few stimuli with these VOTs, we extrapolated subjects' responses using a logistic generalize linear model (GLM).
+Excluded subjects were roughly equally distributed across conditions (maximum of
+5 in 0ms /b/ VOT condition, and minimum of 1 in 20ms /b/ VOT condition). After
+these exclusions, data from `r n_subj` subjects remained for analysis.
+
+#### Procedure ####
+
+![Example trial display (beach/peach). Listeners first click on the
+    green button to play the word, then click on one picture to indicate what
+    they heard.](figure_manual/beach_peach.png){#fig:beach-peach}
+
+Our procedure is based on @Clayards2008. Figure @fig:beach-peach shows an example trial display. On each trial,
+two response option images appeared, which corresponded to one of three /b/-/p/
+minimal pairs (beach/peach, bees/peas, or beak/peak). Subjects started each trial by clicking on a
+button between the two pictures, which played the corresponding minimal pair word audio stimulus. Subjects then
+clicked on the picture to indicate whether they heard the /b/ or /p/ member of
+the minimal pair. Subjects performed 222 of these
+trials, evenly divided between the three minimal pairs, in random order.
+
+Each trial's word was synthesized with a voice onset time (VOT) that was
+randomly drawn from a bimodal distribution, with low and high VOT clusters
+implicitly corresponding to /b/ and /p/, respectively. This distribution defined
+the *accent* that the subject heard, and each subject was pseudorandomly
+assigned to one of five accent conditions (Figure @fig:vot-dists-exp1). 
+
+#### Materials
+
+The audio and visual stimuli we used were identical to those in
+@Clayards2008. Three /b/-/p/ minimal pair audio continua were synthesized using
+the 1988 Klatt synthesizer [@Klatt1980], by manipulating VOT in 10ms increments
+(either adding voicing before the stop burst to create negative VOTs, or
+aspiration after for positive VOTs). Within a /b/-/p/ continuum, the other
+parameters were held constant, and modeled on natural tokens of the endpoints
+(beach/peach, bees/peas, and beak/peak).
+
+### Results and Discussion
+
+To assess how well listeners adapted to the exposure talker's cue distributions,
+we estimated listeners' classification functions, and compared those to the
+typical and exposure talker's classification functions.  Each listener's
+classification function was estimated by fitting a logistic GLM to the
+proportion of /p/ responses given VOT.  The classification functions for the
+typical and exposure talkers' distributions were determined using an ideal
+listener model [@Clayards2008; @Kleinschmidt2015]. Under such a model, the
+predicted probability of a /p/ response for a VOT of $x$, denoted
+$p(c=\mathrm{p}|x)$ is the _likelihood_ of $x$ under the /p/ distribution,
+$p(x|c=\mathrm{p})$, divided by the total likelihood under both /b/ and /p/,
+$p(x|c=\mathrm{b}) + p(x|c=\mathrm{p})$.
+
+Using the cue distributions for the typical talker, this provides an estimate of
+how listeners would classify VOTs if they were completely insensitive to the
+exposure talker. Using, on the other hand, the distributions produced by the
+exposure talker provides an estimate of how listeners would classify VOTs if
+they _completely_ adapted to the exposure talker, ignoring any prior beliefs
+they may have.  Such complete adaptation is not necessarily _optimal_,
+especially given limited input data.  The ideal adapter predicts that listeners'
+classification functions will be intermediate between these two extremes,
+reflecting a compromise between prior beliefs and current exposure.
+
+```{r class-curves, fig.height=2, fig.width=8, fig.cap="Listeners' responses, smoothed with logistic functions (thin lines), compared with the classification functions expected based on a typical talker (no learning; dashed black lines) and complete (but not necessarily optimal) adaptation to the exposure distributions (thick dashed colored lines). Listeners' actual category boundaries lie between the typical talker and exposure talker boundaries (see Table {@tbl:boundary-shift})."}
+
+## generate predicted classification functions assuming Bayes-optimal classifier
+## + noise
+
+perfect_learning <- exposure_stats %>%
+  group_by(vot_cond) %>%
+  do(stats_to_lhood(.)) %>%
+  lhood_to_classification()
+
+no_learning <- prior_lhood %>%
+  lhood_to_classification()
+
+prior_bound <- no_learning %>%
+  arrange(abs(prob_p - 0.5)) %>%
+  filter(row_number() ==1) %$%
+  vot
+
+vot_limits <- data_exp1 %$% vot %>% range()
+
+ggplot(data_exp1, aes(x=vot, y=respP, color=vot_cond)) +
+  geom_line(aes(group=subject), stat='smooth', method='glm', 
+            method.args=list(family='binomial'), alpha=0.2) +
+  facet_grid(.~vot_cond) +
+  geom_line(data=perfect_learning, aes(y=prob_p), group=1, linetype=2, size=1) +
+  geom_line(data=no_learning, aes(y=prob_p), group=1, linetype=2, color='black') +
+  geom_text(data=data.frame(vot_cond='-10, 30'),
+            x = 30, y = 0, label = 'Typical\ntalker',
+            size = 3.5, hjust=0, vjust = 0, color='black',
+            lineheight=1) + 
+  geom_text(data=data.frame(vot_cond='-10, 30'),
+            x = 12, y = 1, label = 'Expo-\nsure',
+            size = 3.5, hjust=1, vjust=1, color=vot_colors[2],
+            lineheight=1, fontface='bold') + 
+  geom_text(data=data.frame(vot_cond='-10, 30'),
+            x = 90, y = 0.75, label = 'Actual\nlisteners',
+            size = 3.5, hjust=1, vjust=1, color=vot_colors[2],
+            lineheight=1) + 
+  scale_x_continuous('VOT (ms)', limits = vot_limits) +
+  scale_y_continuous('Probability /p/ response') + 
+  scale_color_exp1
+
+```
+
+```{r boundaries-exp1, cache=TRUE}
+
+boundaries_exp1 <- data_exp1 %>%
+  group_by(bvotCond, vot_cond, subject) %>%
+  do({ glm(respP ~ vot, family='binomial', data=.) %>%
+         broom::tidy() %>%
+         select(term, estimate)
+  }) %>%
+  ungroup() %>%
+  spread(term, estimate) %>%
+  mutate(boundary = -`(Intercept)` / vot,
+         ideal_boundary = as.numeric(as.character(bvotCond)) + 20,
+         prior_boundary = prior_bound,
+         prop_shift = (boundary-prior_boundary)/(ideal_boundary-prior_boundary))
+
+boundary_summary_exp1 <- boundaries_exp1 %>%
+  group_by(vot_cond) %>%
+  summarise(median_shift_perc = round(100*median(prop_shift)),
+            shift_text = paste(median_shift_perc, '%', sep=''),
+            prop_between = mean(xor(boundary > ideal_boundary,
+                                    boundary > prior_boundary))
+            )
+
+```
+
+
+```{r boundary-violin-plots-exp1, fig.width=6.5, fig.height=4.5, fig.cap="Most listeners' individual boundaries fall between the boundaries implied by cue distributions from a typical talker and exposure talker. Violin plots (shaded regions) show the density of individual subjects' category boundaries.  White points and CIs show mean and bootstrapped 95% CIs for mean boundary in each condition."}
+
+ggplot(boundaries_exp1, aes(y = boundary, x = vot_cond, fill = vot_cond)) +
+  ## this is an awful hack: plot the violins first to force continuous x
+  geom_violin(color=NA,draw_quantiles=c(0.25, 0.5, 0.75), show.legend=FALSE,
+              alpha = 0) +
+  geom_segment(data = boundaries_exp1 %>%    # prior boundary
+                 summarise(xmin = min(as.numeric(vot_cond))-0.5,
+                           xmax = max(as.numeric(vot_cond))+0.5,
+                           y = unique(prior_bound)),
+               aes(x=xmin, xend=xmax, y=y, yend=y, fill=NA),
+               color='black', linetype=2) + 
+  geom_segment(aes(x=as.numeric(vot_cond)-.5, # exposure boundaries_exp1
+                   xend=as.numeric(vot_cond)+.5,
+                   y=ideal_boundary,
+                   yend=ideal_boundary,
+                   color=vot_cond),
+               linetype = 2, size = 1,
+               data = boundaries_exp1 %>% group_by(vot_cond, ideal_boundary) %>% summarise()) +
+  geom_violin(color=NA,
+              ## draw_quantiles=c(0.25, 0.5, 0.75),
+              alpha = 0.5,
+              show.legend=FALSE) +
+  coord_flip() +
+  geom_text(data=(boundaries_exp1 %>% filter(vot_cond=='20, 60') %>% head(n=1)),
+            aes(y=ideal_boundary, color=vot_cond),
+            ## x=3.5, y=41, 
+            label='Exposure talker-\nspecific boundary',
+            hjust = 0, vjust = 0,
+            nudge_x = -0.5, nudge_y = 1) +
+  geom_text(data=(boundaries_exp1 %>% filter(vot_cond=='20, 60') %>% head(n=1)),
+            aes(y=prior_boundary), color='black',
+            ## x=3.5, y=41, 
+            label='Typical talker\'s boundary\n(based on Kronrod et al.)',
+            hjust = 1, vjust = 0,
+            nudge_x = -0.5, nudge_y = -1) +
+  geom_pointrange(stat='summary', fun.data='mean_cl_boot', color='white') +
+  theme(legend.position='none') +
+  labs(x = 'Condition (/b/, /p/ mean VOT)',
+       y = 'Category boundary (ms VOT)') +
+  scale_color_exp1 +
+  scale_fill_exp1
+
+```
+
+
+Figure {@fig:class-curves} shows the classification functions for each
+individual listener. In each accent, these classification functions tend to fall
+in between the boundaries predicted by the typical talker distributions and the
+boundaries implied by the exposure distributions.  Figure
+{@fig:boundary-violin-plots-exp1} shows this directly, by plotting the
+distribution of individual listeners' /b/-/p/ boundaries, relative to the
+exposure and typical talker's boundaries.
+
+We can quantify how much listeners shifted their category boundaries by the
+percentage of the predicted shift in category boundary from the classification
+function for the typical talker to the boundary implied by the input
+distribution (Table {@tbl:boundary-shift}). A 0% shift corresponds to no
+adaptation at all, while a shift of 100% corresponds to complete adaptation to
+the exposure distributions, with no (remaining) influence of any prior beliefs.
+
+In all conditions, the average shift percentage was between 0% and 100%
+(except the 0ms shift condition, which is so close to the typical talker that
+estimating the percentage is numerically unstable). More interestingly, the more
+extreme conditions show less complete adaptation than the less extreme conditions.
+Together, these results suggest that listeners' adaptation was constrained by
+their prior expectations (given the finite amount of evidence they received
+about the unfamiliar talker).  This provides qualitative evidence that listeners
+combine their prior expectations with observed cue distributions in order to
+rapidly adapt to unfamiliar talkers, as predicted by the ideal adapter framework
+[@Kleinschmidt2015].[^exemplar]  More generally, unlike previous work showing constraints
+on distributional learning [@Idemaru2011; @Sumner2011], these results cannot be
+explained by a model where the only constraints on listeners' distributional
+learning is a binary distinction between _natural_ and _unnatural_ cue-category
+mappings.
+
+[^exemplar]: It is not immediately clear whether these results are compatible
+    with exemplar accounts of speech perception
+    [@Pierrehumbert2001; @Johnson1997a; @Goldinger1998]. On the one hand, these
+    models broadly predict that listeners will adapt their categorization based
+    on experience, and that this is guided by previous experience because
+    previously stored exemplars are used to categorize each new exemplar. On the
+    other hand, to our knowledge there are no existing studies that model
+    unsupervised distributional learning with exemplar models. This is thus a
+    question for future work based on an implemented exemplar model.
+    <!-- TODO: expand on this in a section in the discussion. Why are exemplar
+    models broadly compatible (or not) with these results? -->
+
+<!-- Actually Im' not sure that these results ARE compatible with an exemplar model. I'm actually not even sure that distributional learning itself is compatible with a pure exemplar model. it seems like early tokens might lead to the model getting "dug in" and committed to the most similar other talkers' pre-existing category boundaries, since the stored exemplars are given the category they are perceived as. there's no mechanism to go back and extract talker-specific _distributional_ information. -->
+
+```{r boundary-shift, results='asis', tbl.cap="Percentage of boundary shift from typical talker to each exposure talker (see Figure {@fig:class-curves}), averaged over subjects with 95% bootstrapped confidence intervals.  0% shift corresponds to no adaptation at all, while 100% corresponds to perfect adaptation, ignoring any prior  beliefs. Typical and exposure talker boundaries were too close together to reliably determine boundary shift percentage in the 0ms condition."}
+
+## bootstrapped boundary summary
+boundaries_exp1 %>% 
+  group_by(vot_cond, bvotCond) %>% 
+  do(daver::boot_ci(., function(d,i) {mean(d$prop_shift[i])})) %>%
+  mutate(observed = round(observed * 100),
+         ci_lo = round(ci_lo * 100),
+         ci_high = round(ci_high * 100)) %>%
+  ungroup() %>%
+  transmute(`/b/, /p/ mean VOT` = vot_cond,
+            `Mean shift` = ifelse(bvotCond == 0,
+                                  '---',
+                                  sprintf('%d%%', observed)),
+            `95% CI` = ifelse(bvotCond == 0,
+                              '---',
+                              sprintf('%d--%d%%', ci_lo, ci_high))) %>%
+  knitr::kable(escape = FALSE)
+
+```
+
+## Inferring prior beliefs about talker variability {#sec:model}
+
+Our second goal in this paper is to test whether it is possible to infer
+listeners' prior beliefs about talker variability, based on their
+patterns of adaptation to different accents. To that end, we use a
+variant of a Bayesian belief-updating model that has previously provided
+a good account of how listeners incrementally update their beliefs in
+order to rapidly adapt to an unfamiliar talker [@Kleinschmidt2015]. This
+previous modeling work has treated the content of listeners prior
+beliefs---the category means and variances they think are most likely---as
+known and fixed, setting them based on pre-adaptation classification
+data, and then fitting the confidence in those prior beliefs as a free
+parameter. 
+<!-- TODO: integrate this better -->
+The goal of this earlier modeling work was to test how well belief updating
+itself could explain the rapid build up of adaptation, and fixing the prior
+expected category means and variances restricted the 
+
+Here, we wish to fit both the content of (prior expected mean
+and variance of each category) and the confidence in prior beliefs,
+based on adaptation data presented above.
+
+@Kronrod2012 also use a Bayesian model to estimate the underlying distributions
+of VOT for /b/ and /p/ based on comprehension behavior. Specifically, they fit
+the mean and variance of each category directly to listeners' classification
+function for a VOT continuum.[^sensory-uncertainty] However, despite this
+superficial similarity, their approach is very different from ours.  Their
+estimates are based on listeners' perception of speech from a _single_ talker,
+who moreover produced a highly unnatural flat distribution over a wide range of
+VOTs.  Thus, the resulting estimates of the underlying distributions reflect, at
+most, listeners' beliefs about this single, highly unusual talker's production
+of VOT, and don't support any conclusions about cross-talker patterns at the
+population level.  While this might also seem to invalidate our use of their
+estimates as a "typical" talker, the distributions they inferred bear a close
+resemblance to those from @Lisker1964. This suggests that listeners in their
+experiment may have discounted the unusual, flat VOT distribution they
+experienced as too unusual to be representative of the talker's actual
+distributions.
+
+[^sensory-uncertainty]: They also estimated a _sensory uncertainty_, or noise
+    variance, parameter, based on discrimination of pairs of VOTs at different
+    points on the VOT continuum.  The primary goal of their study was to
+    investigate the relative contribution of intrinsic category variability and
+    sensory uncertainty in listeners' perception.  We lump both of these factors
+    together in this study, because their influence cannot be disentangled based
+    on classification alone.
+
+### Methods {#sec:methods-model}
+
+We model each category (/b/ and /p/) as a single normal distribution. Listeners' _uncertain beliefs_ about the underlying cue distributions can thus be modeled as a probability distribution over the parameters of the category distributions, which we denote
+$$\theta = \{ \mu_\mathrm{b}, \sigma^2_\mathrm{b}, \mu_\mathrm{p},
+            \sigma^2_\mathrm{p} \}$$ 
+where $\mu_c$ is the mean VOT of category $c$ and $\sigma^2_c$ is its variance. We do not include the mixing weight (category prior
+probability) as a parameter, assuming that each category is equally likely. This
+is true in the context of our experiment, and moreover the only effect of
+unequal weights is a constant shift in the category boundary, regardless of the
+distributions [@Feldman2009a].  As in @Kleinschmidt2015, we use an independent,
+conjugate Normal-$\chi^{-2}$ prior for each category, with parameters $\phi$
+[@Gelman2003]
+
+$$\begin{aligned}
+\phi &= \{ \mu_{0,\mathrm{b}}, \sigma^2_{\mathrm{b}},
+            \mu_{0,\mathrm{p}}, \sigma^2_{\mathrm{p}}, 
+            \kappa_0, \nu_0 \} \\ 
+\theta | \phi &\sim
+    \prod_{c \in \{\mathrm{b,p}\}} 
+    \mathrm{Normal} \left(\mu_c | \mu_{0,c}, \frac{\sigma_c^2}{\kappa_0}\right) 
+    \chi^{-2} (\sigma_c^2 | \sigma^2_{0,c}, \nu_0)
+\end{aligned}$$ 
+where $\mu_{0,c}$ and $\sigma^2_{0,c}$ are the prior expected mean VOT and
+variance of category $c$, respectively, and $\kappa_0$ and $\nu_0$ are the listener's confidence
+in these prior expectations. In this parametrization, the prior confidence parameters $\kappa_0$ and $\nu_0$ can be interpreted as _pseudo-counts_, or the number of hypothetical
+observations that listeners' prior beliefs about the category means and
+variances are based on.  Note that, as in our previous modeling work, these
+prior confidence parameters are shared between the two categories. That is, we
+assume that listeners have equal confidence in their prior beliefs about the
+mean of /b/ and of /p/ (and likewise for the variance of /b/ and
+/p/).[^unequal-conf]
+
+[^unequal-conf]: This is not an in-principle limitation of this framework, but
+    rather a limitation of the data. Preliminary simulations showed that it
+    wasn't possible to uniquely identify the model using separate prior
+    confidence parameters for the two categories, with the posterior
+    distributions of the two category's confidence parameters given the data
+    highly correlated.
+
+To estimate the listeners' prior beliefs, we infer values for these
+parameters given the observed adaptation behavior (category responses
+$y$ and input VOTs $x$) using Bayesian inference, marginalizing over
+the actual category means and variances $\theta$:
+
+$$\begin{aligned}
+  p(\phi | x, y) &\propto p(y | \phi, x) p(\phi) \\
+                 &\propto \int \mathrm{d} \theta p(y | \theta, x) p(\theta | x, \phi)
+                           p(\phi)\end{aligned}$$
+
+We make two simplifying assumptions. First, we assume that the order of the
+trials does not matter.[^trial-order] Second, we assume that listeners pick up
+on the cluster structure of the input they receive, updating their beliefs about
+each category based on the true mean and variance of the corresponding cluster,
+and classify each trial's VOT based on these updated beliefs.  These two
+assumptions together mean that, given the prior belief parameters, we can
+express the predicted classification function (that is, probability of /p/ for
+each VOT) in closed form, which makes model fitting substantially more
+tractable.
+
+[^trial-order]: The order of trials _does_ matter, in general
+    [@Vroomen2007; @Kleinschmidt2015; @Kraljic2008a]. In particular, our
+    previous modeling work models such trial effects. However, the
+    paradigm that this previous work models is very different, with a small
+    number of _critical_ trials that are maximally ambiguous. Such
+    _recalibration_ paradigms produce very rapid adaptation. The build-up time
+    course of the distributional learning paradigm we use here has not been
+    studied in detail, but what evidence exists suggests that the effects are
+    much slower, and thus trial effects are less pronounced
+    [@Munson2011, and in our data as well].  Assuming batch inference
+    substantially simplifies the model fitting process.  Thus, we leave the
+    effect of ignoring trial order as a question for future work.
+
+At first blush, our second assumption seems to leave a lot of information in our
+dataset on the table, since we don't consider listeners' own judgments about
+the category of each observation when modeling how beliefs are updated. It is
+possible to back off on this assumption, but in exploring this we found that the
+question of how to incorporate listeners' judgments into the belief updating
+model to be surprisingly subtle.  For instance, one seemingly obvious fix that
+we investigated is to treat listeners' responses as the category
+labels to be used for belief updating (rather than the experimenter-defined
+categories). However, this technique effectively fits the _exposure_
+distributions to listeners' classification functions, and in doing so biases the
+model to completely ignore the prior.
+
+Moreover, this approach has conceptual problems, because by treating listeners'
+responses to earlier trials as fixed it eliminates the model's ability to go
+back and re-evaluate previous judgments. This is not _necessarily_ an
+unreasonable assumption, and similar ideas have been proposed as
+resource-limited approximate inference strategies [@Sanborn2010]. But such
+approaches would complicate the interpretation of this initial study of
+inferring listeners' prior beliefs, because they conflate the basic assumptions
+of the inverted belief-updating _framework_ and the _model fitting procedure_
+[see @Goldwater2009 for a cautionary tale from word segmentation]. We thus leave
+it as a question for future work to determine how to back off on the assumption
+that listeners know the underlying cluster structure.
+
+Finally, we also include a lapse rate parameter that allows for some proportion
+of responses to be attributed to random guessing (e.g., because of attentional
+blinks). This prevents datapoints where the model predicts nearly 100% /p/ or
+/b/ responses from having an outside effect on the likelihood and thus the
+parameter estimates [see @Clayards2008 for a discussion].
+
+```{r run-model, eval=FALSE}
+
+## run the belief-updating model for inferring prior. the model source is in
+## the beliefupdatr package, or will be soon :)
+##
+## devtools::install_github('kleinschmidt/beliefupdatr')
+
+data_exp1_stan_conj <- data_exp1 %>%
+  supunsup::supunsup_to_stan_conj()
+  
+library(rstan)
+mod_lapsing <- beliefupdatr::compile_stan('conj_id_lapsing_fit.stan')
+
+fit_lapsing <- stan(fit = mod_lapsing,
+                    data = data_exp1_stan_conj,
+                    chains = 4,
+                    iter = 1000)
+
+head(summary(fit_lapsing)$summary, n=10)
+
+mod_summary <- summary(fit_lapsing)$summary
+mod_samples <- rstan::extract(fit_lapsing)
+
+saveRDS(mod_samples, file='models/samples_lapsing.rds')
+saveRDS(mod_summary, file='models/summary_lapsing.rds')
+
+```
+
+```{r load-samples}
+
+mod_samples <- readRDS('models/samples_lapsing.rds')
+
+```
+
+```{r load-summary}
+mod_summary <- readRDS('models/summary_lapsing.rds')
+```
+
+```{r model-analysis-exp1, cache=TRUE}
+
+
+## rename dimensions to make melting easier
+rename_dims <- function(x, var, new_names) {
+  names(dimnames(x[[var]])) <- new_names
+  return(x)
+}
+
+mod_samples %<>%
+  rename_dims('mu_0', c('iterations', 'cat_num')) %>%
+  rename_dims('sigma_0', c('iterations', 'cat_num')) %>%
+  rename_dims('mu_n', c('iterations', 'cat_num', 'subject_num')) %>%
+  rename_dims('sigma_n', c('iterations', 'cat_num', 'subject_num')) %>%
+  rename_dims('kappa_n', c('iterations', 'cat_num', 'subject_num')) %>%
+  rename_dims('nu_n', c('iterations', 'cat_num', 'subject_num'))
+  
+
+max_Rhat <- max(mod_summary[, 'Rhat'])
+lapse_rate <- mean(mod_samples$lapse_rate)
+
+## correspondence between subject IDs and subject indices in model
+subjects <-
+  data_exp1 %>%
+  mutate(subject_num = as.numeric(factor(subject))) %>%
+  group_by(subject, bvotCond, subject_num) %>%
+  summarise() %>%
+  arrange(subject_num)
+
+categories <-
+  data_frame(cat_num = 1:2,
+             category = c('b', 'p'))
+
+# helper function to melt a mult-dimensional array of samples into a df
+melt_samples <- function(samples, varname) {
+  reshape2::melt(samples[[varname]], value.name=varname) %>%
+    tbl_df
+}
+
+## create a data_frame with samples for prior parameters
+prior_samples_df <- 
+  c('mu_0', 'sigma_0', 'kappa_0', 'nu_0') %>%
+  map( ~ melt_samples(mod_samples, .x)) %>%
+  reduce(inner_join) %>%
+  tbl_df %>%
+  left_join(categories)
+
+## create a data_frame with samples for updated parameters
+updated_samples_df <- 
+  c('mu_n', 'sigma_n', 'kappa_n', 'nu_n') %>%
+  map( ~ melt_samples(mod_samples, .x)) %>%
+  reduce(inner_join) %>%
+  tbl_df %>%
+  left_join(categories) %>%
+  left_join(subjects) %>%
+  group_by(bvotCond) %>%
+  filter(subject == first(subject)) %>% # just need one per condition
+  select(-cat_num, -subject_num, -subject)
+
+## create a data_frame for lapsing rate samples
+lapse_rate_samples <- melt_samples(mod_samples, 'lapse_rate')
+
+
+```
+
+
+The posterior distributions of each of these parameters (the shared prior
+beliefs plus lapsing rate) were estimated by Hamiltonian Monte Carlo, using the
+Stan software package [@Stan2015].  We used weakly informative normal priors to
+prevent the sampler from getting stuck in regions of parameter space that did
+not affect model fit.  For the expected means and variances, the priors were
+centered at 0 with standard deviations of 100 (making them roughly uniform over
+reasonable values). For the confidence parameters, the priors were centered as 0
+with standard deviation of 888 (which was four times the total number of trials
+that listeners heard), making it essentially uniform on the whole range from
+completely ignoring prior beliefs to not adapting at all. The prior for the
+lapsing rate was uniform on $[0,1]$. We ran four chains for 1000 samples each,
+discarding the first 500 as burn-in for a total of 2000 samples overall. This
+sampler converged well and achieved good mixing
+[maximum $\hat{R}= `r round(max_Rhat, 3)`$; @Gelman1992].
+
+### Results and discussion ###
+
+```{r model-goodness-of-fit}
+
+mod_fitted <-
+  data_exp1 %>%
+  supunsup::supunsup_to_stan_conj() %$%
+  z_test_counts %>%
+  data.frame() %>%
+  tbl_df() %>%
+  mutate(prob_p = apply(mod_samples$p_test_conj[, , 2], 2, mean),
+         prob_p_lapse = prob_p * (1-lapse_rate) + lapse_rate/2)
+
+mod_goodness_of_fit <- 
+  mod_fitted %>%
+  mutate(LL_mod = dbinom(x = p, size = b+p, prob = prob_p_lapse, log = TRUE),
+         LL_null = dbinom(x = p, size = b+p, prob = mean(p/(b+p)), log = TRUE)) %>%
+  summarise(LL_mod = sum(LL_mod),
+            LL_null = sum(LL_null),
+            rho = cor(p/(b+p), prob_p_lapse, method='spearman'),
+            n = n()) %>%
+  mutate(LL_ratio = LL_mod - LL_null,
+         pseudo_R2_mcfadden = 1 - LL_mod/LL_null,
+         pseudo_R2_nagelkerke = (1 - exp(2/n * -LL_ratio)) / (1-exp(2/n*LL_null)))
+
+```
+
+```{r model-fit-classification, fig.width=8, fig.height=2, fig.cap="The classification functions (shaded ribbons, 95% posterior predictive intervals) predicted by the belief updating model fit listeners' responses well (dots with lines showing bootstrapped 95% confidence intervals)."}
+
+
+## pick a random subset of iterations to do the MCMC integration for posterior
+## predictive checks
+some_iterations <- 
+  updated_samples_df %>%
+  group_by(iterations) %>%
+  summarise() %>%
+  sample_n(200)
+
+## convert samples into distributions and then classification functions for each
+## condition
+mod_class_funs <- 
+  updated_samples_df %>%
+  right_join(some_iterations) %>%
+  mutate(mean=mu_n, sd=sigma_n) %>%
+  select(iterations, bvotCond, category, mean, sd) %>%
+  group_by(iterations, bvotCond) %>%
+  do(stats_to_lhood(., noise_sd=0)) %>%
+  lhood_to_classification() %>%
+  left_join(lapse_rate_samples) %>%
+  mutate(prob_p = (1-lapse_rate)*prob_p + lapse_rate/2) %>%
+  select(bvotCond, vot, prob_p) %>%
+  group_by(bvotCond, vot) %>%
+  summarise(prob_p_low = quantile(prob_p, 0.025),
+            prob_p_high = quantile(prob_p, 0.975),
+            prob_p = mean(prob_p))
+
+data_by_subject <- data_exp1 %>%
+  group_by(subject, vot_cond, vot) %>%
+  summarise(prob_p = mean(respP))
+
+
+
+## plot observed and model-predicted classification functions
+mod_class_funs %>%
+  left_join(conditions_exp1) %>%
+  ggplot(aes(x=vot, y=prob_p, color=vot_cond, fill=vot_cond)) +
+  geom_ribbon(aes(ymin=prob_p_low, ymax=prob_p_high), size=0, alpha=0.5) + 
+  geom_point(data = data_by_subject, stat='summary', fun.y='mean') + 
+  geom_linerange(data=data_by_subject, stat='summary', fun.data='mean_cl_boot') + 
+  facet_grid(.~vot_cond) +
+  scale_x_continuous('VOT (ms)') +
+  scale_y_continuous('Probability /p/ response') + 
+  scale_color_exp1 +
+  scale_fill_exp1
+
+
+```
+
+The first way we evaluate this model is to ask how well it fits listeners'
+behavior. Figure {@fig:model-fit-classification} shows listeners' average
+classification functions, compared with the posterior predictive classification
+functions from the belief-updating model.  The first thing to notice is that the
+model fits the data well (log-likelihood ratio vs. an intercept-only binomial
+null model of $`r mod_goodness_of_fit[['LL_ratio']] %>% sprintf('%.1e', .)`$,
+and Spearman's $\rho$ = `r mod_goodness_of_fit[['rho']]`, $p<10^{-10}$ in both
+cases) capturing the different classification functions that result from
+exposure to each input distribution.  This in and of itself is an interesting
+result: it shows that there does exist some set of prior beliefs such that the
+range of adaptation behavior we observed can be explained by a model where the
+listeners assigned to the different accent conditions all start from a common
+set of prior beliefs.
+
+
+
+#### Do inferred beliefs align with a typical talker?
+
+```{r inferred-prior, fig.width=6, fig.height=2.5, fig.cap="Expected cue distributions based on the prior beliefs inferred here from behavioral adaptation data. Plotted with VOT distributions measured by @Kronrod2012 based on a combination of classification and discrimination behavior, and from production data by @Goldrick2013 for /b/, including pre-voicing."}
+
+prior_summary <- 
+  prior_samples_df %>% 
+  gather('stat', 'val', mu_0:sigma_0) %>% 
+  unite(stat_cat, stat, category) %>% 
+  select(-cat_num) %>% spread(stat_cat, val) %>%
+  gather('stat', 'value', kappa_0:sigma_0_p) %>% 
+  group_by(stat) %>%
+  summarise(mean=mean(value), 
+            low=quantile(value, 0.025), 
+            high=quantile(value, 0.975)) %>%
+  mutate(units = ifelse(str_detect(stat, '(kappa|nu)'), 
+                        'observations', 
+                        'ms VOT'))
+
+prior_expected <-
+  prior_summary %>%
+  select(stat, mean) %>%
+  spread(stat, mean) %>%
+  map(round) %>%
+  as_vector()
+
+
+typical_talker_lhoods <- 
+  prior_stats %>%
+  group_by(source, prevoiced, n) %>%
+  by_slice(stats_to_lhood, xlim=c(-100, 100), .collate='rows') %>%
+  group_by(source, category, vot) %>%
+  summarise(lhood = sum(lhood * n) / sum(n)) # combine prevoiced and non, weighted
+
+## Plot prior vs. typical talker from various sources
+prior_samples_df %>% 
+  group_by(category) %>% 
+  summarise(mean = mean(mu_0), sd = mean(sigma_0)) %>%
+  stats_to_lhood(xlim=c(-100,100), noise_sd = 0) %>%
+  ggplot(aes(x=vot, y=lhood, group=category, linetype=category)) +
+  geom_line(data = typical_talker_lhoods %>%
+              filter(source %in% c('goldricketal', 'kronrod2012')),
+            aes(color=source, group=paste(source, category)),
+            size = 1) +
+  geom_line(aes(color='Inferred prior'), size=2) +
+  scale_color_discrete('Source') +
+  scale_x_continuous('VOT (ms)') +
+  scale_y_continuous('Likelihood')
+
+## TODO: clearer legend
+
+```
+
+The second way to evaluate this model is based on the prior beliefs it infers
+listeners to have.  Table {@tbl:inferred-prior-params} shows the posterior expectation
+and 95% highest posterior density intervals for each of the prior belief
+parameters given the adaptation data above. 
+
+Figure {@fig:inferred-prior} shows the cue distributions corresponding to the
+posterior expected values of the prior expected mean and variance parameters
+given the behavioral data.
+These prior beliefs are reasonably consistent with other attempts to determine
+what listeners think the underlying cue distributions are [@Kronrod2012], as
+well as the distributions produced by actual talkers
+[@Lisker1964; @Baese-Berk2009; @Goldrick2013]. In fact, the prior expected VOT
+distribution for /p/ that our model inferred is almost identical to that
+observed by both @Kronrod2012 and @Lisker1964. The distribution for /b/ deviates
+from prior work, however: 
+the mean is slightly lower
+($\mathrm{E}(\mu_{0,\mathrm{b}}) = `r prior_expected['mu_0_b']`$ ms), and the
+standard deviation is slightly higher
+($\mathrm{E}(\sigma_{0,\mathrm{b}}) = `r prior_expected['sigma_0_b']`$ ms).
+
+One possible reason for this is that a substantial minority of English speakers
+produce pre-voiced /b/ [@Lisker1964; @Goldrick2013], which is characterized by a
+lower (negative) VOT and a higher variance (often higher even than /p/). That
+is, across talkers, the /b/ VOT distribution parameters (mean and variance) have
+a *bimodal* distribution. We assumed a single, unimodal prior distribution, and
+the prior beliefs we inferred to be most likely are consistent with a compromise
+between the two types of /b/ distributions that talkers actually produce. Figure
+@fig:inferred-prior shows the bimodal distribution of /b/ VOTs observed by
+@Goldrick2013, which has one short-lag cluster around 10ms VOT with low
+variance, and another prevoiced cluster centered around -100ms VOT, with high variance.
+The model-inferred /b/ distribution is a reasonable compromise, lying in between
+these two clusters in its mean and variance.
+
+This possibility suggests two directions for future work. First, existing
+studies of voiced stop production suggest that some talkers prevoice /b/ more
+than others, making the distribution of /b/ means _across_ talkers bimodal
+[@Lisker1964; @Goldrick2013]. But these studies do not include enough talkers to
+properly assess whether this is really representative of population-level
+variability. Moreover, the only large-scale study we know of considers only
+non-negative VOTs [@Chodroff2015], making it impossible to assess the extend and
+variability in prevoicing.  Second, more modeling work is needed to test whether
+a multimodal prior is justified given the adaptation data, and if so, whether it
+would change the inference about listeners' prior expectations for /b/.
+
+This also raises the question of why @Kronrod2012---who also used perception
+data to estimate underlying VOT distributions---did not come to a similar
+conclusion.  One possible answer is that listeners in their experiment did not
+hear a range of different accents, and therefore the resulting distribution
+reflect their listeners' beliefs about a _single_ talker, not about the
+_population_. Moreover, the exposure distribution in @Kronrod2012 was flat over
+VOTs, providing little information about the underlying distributions. Given
+that short-lag /b/s appear to be more common across talkers
+[accounting for the majority of tokens in both @Lisker1964; and @Goldrick2013],
+the best guess for a single, particular talker's /b/ distribution would be the
+short-lag distribution.  A second, related reason is that if a talker produces
+any short-lag VOTs at all, the prevoiced cluster will not have a substantial
+effect on the optimal classification boundary, since it will have lower
+likelihood than either the short-lag or /p/ distributions for VOTs near the
+boundary.
+
+```{r inferred-prior-params, results='asis', tbl.cap="Expected values and 95% highest posterior density intervals for the prior parameters, given the adaptation data."}
+
+format_params <- function(s) {
+  s %>%
+    str_replace('_0_([bp])$', '_{0,\\\\mathrm{\\1}}') %>%
+    str_c('$\\', ., '$')
+}
+
+prior_summary %>% 
+  transmute(Parameter = format_params(stat),
+            Expected = mean,
+            `95% HPD Int.` = sprintf('%.0f--%.0f', low, high),
+            Units = units) %>%
+  as.data.frame() %>%
+  knitr::kable(escape=FALSE, digits=0)
+
+```
+
+
+#### How confident are listeners in their prior beliefs?
+
+Qualitatively, the prior parameters show that 
+listeners have 
+high confidence in their prior expectations about the mean and variance of /b/ and /p/ VOT distributions. The model-inferred confidence in category
+variances is $\mathrm{E}(\nu_0) = `r prior_expected['nu_0']`$, which is is higher than the inferred confidence
+about means ($\mathrm{E}(\kappa_0) = `r prior_expected['kappa_0']`$).  Both
+of these can be interpreted as _pseudo-counts_, and both are larger than the number of trials
+that listeners heard in the experiment (222). This means that as far as the
+belief-updating model is concerned, listeners' beliefs about the exposure talker's /b/ and /p/ distributions reflected their
+prior beliefs as much as (in the case of the means) or more than (for the
+variances) the distributions they experienced in the experiment.  This is consistent with
+the qualitative finding that listeners' category boundaries are intermediate
+between the boundaries corresponding to a typical talker and the experimental
+exposure talker.  In previous work modeling adaptation to a /b/-/d/ contrast, we 
+found that listeners had less confidence in their prior beliefs than we found here.
+As we discuss below, this apparent discrepancy is in fact _predicted_ by the
+ideal adapter, at least qualitatively, based on patterns of between-talker
+variability.
+
+#### Do inferred beliefs accurately reflect _cross-talker_ variability?
+
+```{r prior-variance, eval=FALSE}
+
+## Compare with actual variance across talkers
+
+## devtools::install_bitbucket('hlplab/votcorpora')
+
+votcorpora::vot %>%
+  filter(place == 'lab') %>%
+  group_by(source, prevoiced, voicing, phoneme, subject) %>%
+  summarise(mean_vot = mean(vot)) %>%
+  summarise_each(funs(mean, sd), mean_vot)
+
+prior_samples_df %>%
+  mutate(mu_var = sigma_0^2/kappa_0,
+         mu_sd = sqrt(mu_var)) %>%
+  select(iterations, category, starts_with('mu')) %>%
+  gather(parameter, value, starts_with('mu')) %>%
+  group_by(category, parameter) %>%
+  summarise_each(funs(mean, low=quantile(., 0.025), high=quantile(., 0.975)),
+                 value)
+
+```
+
+Lastly, we can ask whether the model-inferred beliefs match the actual level of
+between-talker variability in VOT distributions.
+
+In this model, the prior confidence parameters control how much
+VOT distributions are expected to vary _across_ talkers. Specifically, the
+variance in category means is, under the form of prior we used, equal to the
+expected _within-category_ variance divided by the pseudocount corresponding to the confidence in the mean,
+$\mathrm{Var(\mu_c) = \sigma_{0,c}^2 / \kappa_0}$ [@Murphy2007].
+Numerically, this corresponds to cross-talker variability in category means on the
+order of a standard deviation of 1-2ms VOT. This underestimates the actual level of variability across talkers.
+Based on production data from both read [@Baese-Berk2009; @Goldrick2013; @Lev-Ari2013] and conversational speech (extracted from the Buckeye corpus, Wedel _in prep_), actual cross-talker variability is on the
+order of a standard deviation of 3--4ms VOT for (short-lag) /b/ and
+10--15ms VOT for /p/.
+
+This is likely due to the particular mathematical form we assumed listeners'
+prior beliefs to have. The conjugate Normal-$\chi^{-2}$ prior is mathematically
+convenient (in that it allows Bayesian belief updating to be expressed
+analytically in closed form), but it makes the assumption that cross-talker
+variance is proportional to within-talker variance [@Gelman2003]. This
+assumption may not be warranted in reality, and it's a question for future
+modeling work to explore the feasibility and consequences of relaxing this
+assumption.
+
+
+## Experiment 2 ##
+
+The results of Experiment 1 show that listeners' adaptation to an unfamiliar
+talker is _constrained_. Such constraints are predicted by the ideal adapter
+framework, which says that listeners use their knowledge of how
+VOT distributions vary _across_ talkers to guide their adaptation to an
+unfamiliar talker.  Our modeling results provide further evidence for this
+explanation, and show that the constraints are consistent with belief updating
+starting from a single set of prior beliefs about cross-talker variability in
+VOT distributions.
+
+In Experiment 2, we provide a further, more specific test of the ideal adapter
+explanation. There are many ways that cue distributions can vary, and in
+Experiment 1 we manipulated just one of them, shifting a single bimodal VOT
+distribution up or down but leaving the overall shape the same. 
+Experiment 2 goes one step further, shifting the means of the /b/ and /p/
+clusters semi-independently. This results in bimodal distributions that differ
+both in the _overall_ mean VOT, and in the _separation_ of the /b/ and /p/
+clusters (Figure @fig:exposure-dists-exp2).
+
+The main goal of this experiment is to test the predictive power of the model
+and prior beliefs it inferred listeners to have based on the data from Experiment 1. Above we showed that belief updating---starting from
+these inferred prior beliefs---provides an excellent fit to listeners'
+adaptation behavior across conditions in Experiment 1. However, the real utility of a
+model is its ability to predict behavior in new situations. The qualitatively
+different set of input distributions we use in Experiment 2 provides a
+stringent test of the predictive utility of this framework.
+
+The particular set of distributions we chose was informed by
+how the model fit the data from Experiment 1. 
+The posterior distributions of the model parameters given the data were not independent: the prior expected mean VOTs for /b/ and /p/ were inversely correlated, which means that the model fit was more uncertain about the _distance_ between the two category means than the midpoint between them. This reflects the fact that the exposure distributions in Experiment 1 all had the same separation between the cluster means (40ms VOT).  By varying the separation between
+the clusters we test how much the uncertainty
+inherent in the structure of the first experiment affects the predictive power
+of the model.
+<!-- TODO: use experiment 2 to predict 1 instead? this is "modeler's perspective" -TFJ -->
+
+Another, secondary goal is to test how listeners adapt to large, negative
+VOTs. The inferred prior beliefs about the /b/ VOT distribution of a typical
+talker have higher variance than the short-lag distribution generally considered
+to be typical of American English, but are consistent with a compromise between
+short-lag and prevoiced distributions.  One way to determine whether listeners
+consider prevoiced and short-lag VOT distributions are a single cluster or two
+different clusters is to directly compare adaptation to short-lag and prevoiced
+distributions, which informs the specific choice of distributions we used in
+this second experiment. In the short term, this allows us to assess how well the
+model's inferred prior beliefs generalize to adaptation to prevoiced
+distributions. In the long term, it provides data to directly compare the
+current model (that treats /b/ as a single VOT cluster) to a model that treats
+/b/ as a mixture of short-lag and prevoiced clusters. Such a model is a
+conceptually straightforward---but technically difficult---extension of the
+current model.
+<!-- TODO: spell this out more clearly -->
+That is, Experiment 2 is aimed at facilitating future modeling work that can provide
+insights into the sort of phonetic category _representations_ that listeners
+might be using to process speech. By focusing on the different possible sorts of
+distributional representations, this has the potential to go beyond the
+_computational principles_ like distributional learning that modeling work in
+this framework has largely focused on.
+
+```{r separatemeans-data}
+
+sepmeans <- supunsup::separatemeans_clean
+
+sepmeans_conds <-
+  sepmeans %>%
+  group_by(bvotCond, pvotCond) %>%
+  summarise() %>%
+  ungroup() %>%
+  arrange(bvotCond, pvotCond) %>%
+  mutate(vot_cond = paste(bvotCond, pvotCond, sep=', '),
+         vot_cond = factor(vot_cond, levels=vot_cond),
+         ideal_boundary = (pvotCond + bvotCond)/2)
+
+sepmeans_stats <-
+  sepmeans %>%
+  filter(!is_test) %>%
+  left_join(sepmeans_conds) %>%
+  group_by(bvotCond, pvotCond, vot_cond, trueCat) %>%
+  summarise(mean = mean(vot), sd = sd(vot)) %>%
+  rename(category = trueCat)
+
+sepmeans_exposure_lhood <-
+  sepmeans_stats %>%
+  group_by(bvotCond, pvotCond, vot_cond) %>%
+  do({stats_to_lhood(.)})
+
+sepmeans_exposure_class <-
+  sepmeans_exposure_lhood %>%
+  do({lhood_to_classification(.)})
+
+sepmeans_test <-
+  sepmeans %>%
+  filter(is_test) %>%
+  left_join(sepmeans_conds)
+
+scale_color_exp2 <- scale_color_manual('/b/, /p/\nmean VOT', values=vot_colors[1:5])
+scale_fill_exp2 <- scale_fill_manual('/b/, /p/\nmean VOT', values=vot_colors[1:5])
+
+
+
+```
+
+### Methods
+
+```{r exposure-dists-exp2, fig.width=10, fig.height=2, fig.cap="In Experiment 2, each subject heard a talker that produced one of these five VOT distributions. The variance of each category was constant across conditions, but the means varied semi-independently."}
+
+
+sepmeans %>%
+  left_join(sepmeans_conds) %>%
+  filter(!is_test) %>%
+  group_by(vot_cond, vot) %>%
+  filter(subject == first(subject)) %>%
+  tally() %>%
+  ggplot(aes(x=vot)) +
+  geom_bar(stat='identity', aes(y=n, fill=vot_cond)) +
+  geom_line(data=prior_lhood, aes(y=lhood*1600, group=category),
+            color="black", linetype=2) +
+  facet_grid(.~vot_cond) +
+  scale_x_continuous('VOT (ms)') +
+  scale_y_continuous('Frequency') +
+  scale_fill_exp2
+
+```
+
+As in Experiment 1, listeners performed a distributional learning task, hearing
+a talker who produced one of five different bimodal VOT distributions. Across
+these distributions, we varied /b/ and /p/ mean VOT semi-independently (Figure
+{@fig:exposure-dists-exp2}). These distributions cover a wider range of
+implied category boundaries (from -15 to 45ms VOT) than Experiment 1 (10 to
+50ms), especially on the lower end. They also varied in the distance between
+cluster means (from 40 to 130ms VOT), unlike Experiment 1 which maintained a constant
+separation between /b/ and /p/ mean VOT of 40ms. Note that the condition with
+/b/ mean of 10ms and /p/ mean of 50ms VOT is the same as in Experiment 1. This condition was included to provide a way of comparing with Experiment 1, since the design of Experiment 2 required a change in procedure (which we discuss below).
+
+#### Subjects
+
+```{r exp2-subjects}
+
+n_excl2 <- supunsup::separatemeans_excluded %>%
+  left_join(sepmeans_conds) %>%
+  group_by(vot_cond, subject) %>%
+  summarise() %>%
+  tally()
+
+n_clean2 <- sepmeans %>%
+  left_join(sepmeans_conds) %>%
+  group_by(vot_cond, subject) %>%
+  summarise() %>%
+  tally()
+
+n_total2 <- bind_rows(n_excl2, n_clean2) %$% sum(n)
+
+accept_to_submit_time <-
+  supunsup::separatemeans_assignments %>%
+  do(daver::boot_ci(., function(d,i) with(d[i, ], mean(submittime-accepttime))))
+
+active_time <- supunsup::separatemeans %>%
+  group_by(subject) %>%
+  summarise(time = max(tend) - min(tstart)) %>%
+  mutate(time_min = time / 60000) %>%
+  do(daver::boot_ci(.$time_min, function(d,i) mean(d[i])))
+
+post_test_len <-
+  sepmeans_test %>%
+  filter(subject==first(subject)) %>%
+  nrow()
+
+```
+
+We recruited `r n_total2` subjects via Amazon's Mechanical Turk. Subjects were paid
+\$2.50 for participation. The task took subjects about 25 minutes to
+complete (because of the additional post-test, discussed next). As in Experiment 1, we excluded subjects ($n=`r n_excl2 %$% sum(n)`$)
+who failed to classify words with unambiguous VOTs reliably during exposure (not
+post-test, see below). After exclusion, `r n_clean2 %$% sum(n)` subjects remained for
+analysis (no subjects had previously participated in one of our VOT studies). Subjects were
+evenly distributed across conditions (range of `r n_clean2 %$% min(n)` to 
+`r n_clean2 %$% max(n)` per condition).
+
+#### Procedure: assessing category boundaries
+
+The procedure was identical to Experiment 1, with one exception. After
+completing the 222 trial exposure phase as in Experiment 1, listeners completed
+a test phase in order to assess their category boundaries. This phase consisted
+of `r post_test_len` additional trials with VOTs evenly distributed from -10 to
+50ms in 10ms steps. This additional phase was necessary because of the large separation between
+/b/ and /p/ clusters in the exposure distributions meant that in most conditions
+there were no trials with VOTs anywhere near the predicted (or typical)
+boundaries.
+
+Critically, listeners were not told about the change from exposure to test
+phase: the procedures were identical, and there was no break in between.
+Besides the change in VOT distributions, there was no way for listeners to tell
+that they had entered the test phase. Of course, if listeners are actually (as
+we hypothesize) _learning_ these distributions, their behavior may well change
+as they proceed through the test phase, gradually erasing any effect of the
+differences in the exposure distributions. Thus, when analyzing data from the
+test phase, whenever possible we limit ourselves to the early parts of the test
+phase, when listeners behavior should be minimally affected by the change in
+distributions.
+<!-- TODO: see also Liu and Jaeger for evidence this works -->
+
+As in Experiment 1, we evaluated listeners adaptation by their classification
+functions, which we estimated by fitting a logistic GLM. In addition to VOT, we
+included a predictor for trial in order to account for any (un-)learning effects
+that might happen during post-test. In order to visualize the fitted
+classification functions and to estimate listeners' category boundaries, we used
+the classification function estimates from the trial halfway through the first
+third of the post-test.[^why-not-beginning]
+
+[^why-not-beginning]: The predictions from a regression model are more uncertain
+    and more driven by noise at the extreme ranges of continuous predictors,
+    like trial number. Thus we use the point one-sixth into the post-test to estimate
+    classification functions, rather than the very beginning, because it is
+    _close_ to the beginning of the post test, but not so close that the
+    predictions are substantially affected by the extra instability of the
+    predictions that come at the edge of a continuous predictors range.
+
+```{r fit-cat-bounds}
+
+bound_at_trial <- post_test_len / 6
+
+## estimate category boundares at 1/6 of post test trials (bound_at_trial)
+boundaries_exp2 <- sepmeans %>%
+  filter(is_test) %>%
+  group_by(bvotCond, pvotCond, subject) %>%
+  mutate(trial = trial - min(trial) - bound_at_trial) %>% 
+  do({ glm(respP ~ vot + trial, family='binomial', data=.) %>%
+         broom::tidy() %>%
+         select(term, estimate)
+  }) %>%
+  ungroup() %>%
+  spread(term, estimate) %>%
+  mutate(boundary = -`(Intercept)` / vot,
+         ideal_boundary = (bvotCond + pvotCond)/2,
+         prior_boundary = prior_bound,
+         prop_shift = (boundary-prior_boundary)/(ideal_boundary-prior_boundary)) %>%
+  left_join(sepmeans_conds) %>%
+  filter(boundary < 100, boundary > -100)
+
+```
+
+```{r boundary-exposure-vs-test-exp2, fig.width=5, fig.height=2.5, fig.cap="Category boundaries estimated during post-test are correlated with estimates from exposure (in the 10, 50 condition where such an estimate is possible), but more variable. Blue line shows best linear fit, and black line shows where the two estimates are equal."}
+
+boundaries_exp2_exposure <-
+  sepmeans %>%
+  filter(!is_test, bvotCond == 10, pvotCond == 50) %>%
+  group_by(subject) %>%
+  do({ glm(respP ~ vot, family='binomial', data=.) %>%
+         broom::tidy() %>%
+         select(term,estimate) }) %>%
+  spread(term, estimate) %>%
+  mutate(boundary_exposure = -`(Intercept)` / vot)
+
+boundaries_exp2_comparison <- 
+  boundaries_exp2_exposure %>%
+  left_join(boundaries_exp2 %>% select(subject, boundary)) %>%
+  ungroup()
+
+exp2_cor <-
+  boundaries_exp2_comparison %>%
+  cor.test(formula=~ boundary_exposure + boundary, data=.) %>%
+  broom::tidy()
+
+exp2_var <-
+  boundaries_exp2_comparison %>%
+  summarise_each(funs(sd, se=sd(.)/sqrt(length(.))), boundary_exposure, boundary)
+
+boundaries_exp2_exp_v_test_summary <- 
+  boundaries_exp2_comparison %>%
+  do(daver::boot_ci(., function(d,i) with(d[i, ], mean(boundary_exposure - boundary))))
+
+
+
+boundaries_exp2_comparison %>%
+  ggplot(aes(x=boundary, y=boundary_exposure)) +
+  geom_abline() +
+  geom_point() +
+  geom_text(data = boundaries_exp2_comparison %>%
+              filter(boundary == min(boundary)),
+            label = 'One subject', hjust=0, vjust=0,
+            nudge_x = .5, nudge_y = .5) +
+  stat_smooth(method='lm') +
+  coord_equal(ylim=c(20,36)) +
+  labs(x='Category boundary estimated from post-test',
+       y='Boundary estimated\nfrom exposure')
+
+```
+
+We validated this procedure in the 10ms, 50ms mean /b/ VOT distribution
+condition, which is the same as in Experiment 1.  We first obtained an estimate
+of each listener's category boundary based on their responses during the
+exposure phase, as in Experiment 1.  We then obtained a second estimate for
+these same subjects using the novel procedure, based on the post-test phase.
+This allowed us to compare the method of assessing listener's category
+boundaries from Experiment 1 (using exposure trials themselves) with the
+following post-test trials _within_ the same listeners. Figure
+@fig:boundary-exposure-vs-test-exp2 shows that the post-test estimates are more
+variable than the exposure estimates (standard deviations across subjects of
+`r exp2_var[['boundary_sd']]` and 
+`r exp2_var[['boundary_exposure_sd']]`, respectively)
+but correlated with 
+(Pearson's $R = `r exp2_cor[['estimate']]`$, 
+95% CI = $[`r exp2_cor[['conf.low']]`, `r exp2_cor[['conf.high']]`]$, 
+$`r p_val_to_less_than(exp2_cor[['p.value']])`$).
+Critically, they are not biased, differing only by
+`r boundaries_exp2_exp_v_test_summary$observed` ms VOT 
+on average (95% CI of 
+`r boundaries_exp2_exp_v_test_summary %$% sprintf('%.1f--%.1f', ci_lo, ci_high)`
+ms VOT). This means we can compare the boundary estimates from Experiments 1 and
+2, despite the differences between the procedures.
+
+The inclusion of this condition in both experiments also allows us to replicate
+the results of Experiment 1 using a different method (Figure
+@fig:boundary-violin-plots-exp2, un-shaded distribution). This allows us to test
+how well the prior beliefs inferred from Experiment 1 can predict adaptation to
+the same exposure distributions by a different set of subjects, using a slightly
+different procedure (see below, and Figure
+@fig:plot-exp2-predictions-first-third).
+
+### Results
+
+```{r fig.width=10, fig.height=2, fig.cap="Listeners' categorization functions in Experiment 2 (during post-test) reflect partial adaptation to the exposure talker, especially for more extreme conditions extreme distributions. Adaptation was even less complete than in Experiment 1. Classification functions are estimated with a logistic GLM including trial; curves show predictions for the beginning of the post-test phase to minimize impact of unlearning during test."}
+
+## generate and plot predictions halfway through first third (1/6 of 70 = 
+exp2_predict_at <- data_frame(trial = bound_at_trial,
+                              vot = seq(min(sepmeans_test$vot),
+                                        max(sepmeans_test$vot)))
+
+sepmeans_test %>%
+  group_by(subject, vot_cond) %>%
+  mutate(trial = trial - min(trial)) %>%
+  nest() %>%
+  mutate(mod = map(data, glm, formula=respP ~ vot+trial, family='binomial'),
+         pred = map(mod, predict, exp2_predict_at, type='response')) %>%
+  unnest(map(pred, ~ mutate(exp2_predict_at, prob_p = .))) %>%
+  ggplot(aes(x=vot, y=prob_p, color=vot_cond)) +
+  geom_line(aes(group=subject), alpha=0.2) +
+  geom_line(data = prior_class,
+            linetype=2, color='black') +
+  geom_line(data = sepmeans_exposure_class,
+            linetype=2, size=1) +
+  facet_grid(.~vot_cond) +
+  scale_x_continuous('VOT (ms)', limits = vot_limits) +
+  scale_y_continuous('Probability /p/ response') + 
+  scale_color_exp2
+
+
+```
+
+
+```{r boundary-violin-plots-exp2, fig.width=6.5, fig.height=4.5, fig.cap="The distribution of listeners' individual category boundaries in Experiment 2 reflects partial adaptation to the exposure talker's VOT distributions. Extreme shifts have minimal additional effect on listeners' boundaries, corroborating the strong prior biases observed in Experiment 1. The un-filled distribution shows the boundaries from listeners in the corresponding 10ms VOT /b/ mean condition from Experiment 1. These conditions had the same exposure distributions, but differed in whether category boundaries were estimated based on the exposure (Experiment 1) or post-test data (Experiment 2)."}
+
+ggplot(boundaries_exp2, aes(y = boundary, x = vot_cond, fill = vot_cond)) +
+  ## this is an awful hack: plot the violins first to force continuous x
+  geom_violin(color=NA,draw_quantiles=c(0.25, 0.5, 0.75), show.legend=FALSE,
+              alpha = 0) +
+  geom_segment(data = boundaries_exp2 %>%    # prior boundary
+                 summarise(xmin = min(as.numeric(vot_cond))-0.5,
+                           xmax = max(as.numeric(vot_cond))+0.5,
+                           y = unique(prior_bound)),
+               aes(x=xmin, xend=xmax, y=y, yend=y, fill=NA),
+               color='black', linetype=2) + 
+  geom_segment(aes(x=as.numeric(vot_cond)-.5, # exposure boundaries_exp2
+                   xend=as.numeric(vot_cond)+.5,
+                   y=ideal_boundary,
+                   yend=ideal_boundary,
+                   color=vot_cond),
+               linetype = 2, size = 1,
+               data = boundaries_exp2 %>% group_by(vot_cond, ideal_boundary) %>% summarise()) +
+  geom_violin(color=NA,
+              ## draw_quantiles=c(0.25, 0.5, 0.75),
+              alpha = 0.5,
+              show.legend=FALSE) +
+  coord_flip() +
+  geom_pointrange(stat='summary', fun.data='mean_cl_boot', color='white') +
+  theme(legend.position='none') +
+  labs(x = 'Condition (Mean /b/ and /p/ VOT)',
+       y = 'Category boundary (ms VOT)') +
+  scale_color_exp2 +
+  scale_fill_exp2 +
+  geom_violin(data = boundaries_exp1 %>%
+                filter(bvotCond == 10) %>%
+                mutate(vot_cond = '10, 50'),
+              fill=NA, aes(color=vot_cond))
+
+```
+
+As in Experiment 1, listeners adapted to the different input distributions, but
+in a constrained way. On average, listeners' classification functions were
+intermediate between the boundaries based on a typical talker's distributions and the exposure talker's distributions.
+In the one condition that was shared with Experiment 1 (mean VOT of 10ms
+for /b/, 50ms for /p/), listeners in Experiment 2 adapted just as much as those in Experiment 1, but the estimates of their boundaries were more variable (Figure
+@fig:boundary-violin-plots-exp2, empty vs. filled distribution).
+
+#### Evidence for separate prevoiced cluster?
+
+```{r boot-diff-pvot}
+
+boot_50_ne_80 <-
+  boundaries_exp2 %>%
+  filter(bvotCond=='10') %>%
+  boot_ci(function(d,i) d[i, ] %>%
+                          group_by(vot_cond) %>%
+                          summarise(boundary=mean(boundary)) %$%
+                          diff(boundary),
+          h0=0)
+
+```
+
+Listeners showed very little sensitivity to increasingly large negative mean /b/
+VOTs: the average category boundaries were very similar in the -20, -50, and
+-80ms /b/ mean conditions. On average these were comparable to the 0ms /b/, 40ms
+/p/ mean condition from Experiment 1, which had a higher /b/ mean but lower /p/
+mean. This suggests that listeners are more ready to adapt to variation in /p/ than
+in /b/. Nevertheless, listeners in the 10ms /b/, 80ms /p/ still did not fully
+adapt to the exposure distribution, producing category boundaries that were not
+significantly different from those in the 10ms /b/, 50ms /p/ condition
+(bootstrapped $`r boot_50_ne_80 %$% boot_p %>% p_val_to_less_than()`$).
+
+```{r prop-prevoicing}
+prop_pre_by_talker <- 
+  votcorpora::vot %>%
+  filter(source == 'gva13') %>%
+  group_by(subject) %>%
+  summarise(prop_pre = mean(prevoiced)) %>%
+  arrange(prop_pre)
+```
+
+One interpretation of this lack of sensitivity to large negative /b/ mean VOTs
+is that listeners treat /b/ as being a mixture of a short-lag cluster (with a
+mean around 0ms VOT) and a prevoiced cluster (with a large negative mean
+VOT). Most American English talkers produce at least some short-lag VOTs, even
+if they produce mostly prevoiced. @Goldrick2013 found that, even the talker who prevoiced the most still produced short-lag VOTs
+`r prop_pre_by_talker %$% round(100 - prop_pre*100) %>% min()`% of the time. 
+Thus, even for a talker who produces mostly prevoiced /b/s, a listener needs to
+be ready for some short-lag /b/s as well. Because the short-lag distribution is
+closer to the /p/ distribution, it is the one---rather than the prevoiced cluster---that determines where an ideal 
+listener's category boundary will fall. In conditions where the exposure
+distributions do not provide very much (if any) information about a talker's
+short-lag distribution, we would thus expect listeners' category boundaries to be
+unchanged from a typical talker. This is in fact exactly what we observe in the
+Experiment 2 conditions with large negative /b/ mean VOTs.
+<!-- TODO: unpack and visualize -->
+
+There are other possible explanations for the lack of large shifts in
+these conditions. For instance, even if listeners treat /b/ as a single unimodal
+cluster, the negative VOT distributions we used are still extreme relative to
+the range of /b/ mean VOTs across talkers.  In the next section, we
+address this possibility, by evaluating how well the prior
+beliefs inferred from Experiment 1---which assume a single /b/ cluster---predict
+the pattern of adaptation here.
+
+#### Predicted adaptation from inferred priors
+
+Next, we ask how well the prior beliefs inferred on the basis of Experiment 1
+can predict the pattern of adaptation across exposure distributions we observed
+in Experiment 2. Figure @fig:plot-exp2-predictions-first-third shows the
+predicted classification functions (95% posterior predictive intervals) for the
+exposure conditions in Experiment 2, using the same parameters that were fit to
+Experiment 1 (and visualized in Figure @fig:model-fit-classification).
+
+```{r predict-expt2-from-inferred, cache=TRUE}
+
+#' Convert from stan parametrization to beliefupdatr::nix2
+stan_conj_to_nix2 <- function(stan_p) {
+  with(stan_p, list(nu = nu_0,
+                    kappa = kappa_0,
+                    mu = mu_0,
+                    sigma2 = sigma_0 ^ 2))
+}
+
+# convert samples of prior params in array form to list of samples in nix2
+# parameter list form.
+#
+# e.g., mod_nix2_samples[[1]][[1]] is the first 
+mod_nix2_samples <- 
+  mod_samples[c('nu_0', 'kappa_0', 'mu_0', 'sigma_0')] %>%
+  ## repeate these since there's just one for both categories
+  map_at(c('nu_0', 'kappa_0'), ~ cbind(.x, .x)) %>%
+  ## turn arrays into nested lists
+  map(array_tree) %>%
+  ## zip list of variables into list of samples
+  transpose() %>%
+  ## zip each sample's list of variables into list of categories
+  map(transpose) %>%
+  ## ...and zip list of samples into a list of categories
+  transpose() %>%
+  set_names(c('b', 'p')) %>%
+  ## rename and convert expected sd to var
+  at_depth(2, stan_conj_to_nix2)
+
+## confirm that we have nix2 params at depth 2
+invisible(mod_nix2_samples %>% at_depth(2, ~ assert_that(is_nix2_params(.))))
+
+## get summary statistics for each condition
+updated_nix2_samples <- 
+  sepmeans %>%
+  left_join(sepmeans_conds) %>%
+  group_by(bvotCond, pvotCond, trueCat) %>%
+  filter(subject == first(subject),
+         is_test == FALSE) %>%
+  nest() %>%
+  mutate(prior_samples = map(trueCat, ~ mod_nix2_samples[[.x]]),
+         updated_samples = map2(data, prior_samples,
+                                function(d, s) map(s, nix2_update, x=d$vot)))
+
+sample_to_lhood <- function(p)
+  data_frame(vot = seq(-10,50),
+             lhood = d_nix2_predict(vot, p))
+
+predicted_lhood <- updated_nix2_samples %>%
+  mutate(test_lhood = map(updated_samples,
+                          . %>%
+                            map(sample_to_lhood) %>%
+                            do.call(what=rbind))) %>%
+  unnest(test_lhood)
+
+lapse_rate_samples <-
+  mod_samples[['lapse_rate']] %>%
+  as.numeric() %>%
+  data_frame(lapse_rate=.) %>%
+  mutate(sample = row_number())
+
+predicted_prob_p <-
+  predicted_lhood %>%
+  group_by(bvotCond, pvotCond, trueCat, vot) %>%
+  mutate(sample = row_number()) %>%
+  spread(trueCat, lhood) %>%
+  left_join(lapse_rate_samples) %>%
+  mutate(prob_p = p / (b+p),
+         prob_p_lapse = prob_p * (1-lapse_rate) + lapse_rate*0.5) %>%
+  group_by(bvotCond, pvotCond, vot) %>%
+  summarise_each(funs(mean=mean, lo=quantile(., 0.025), hi=quantile(., 0.975)),
+                 prob_p, prob_p_lapse)
+
+```
+
+```{r plot-exp2-predictions-first-third, fig.width=8, fig.height=2, fig.cap="The prior beliefs inferred from Experiment 1 predict how much listeners adapt to each of the input distributions of Experiment 2. Shaded regions show the 95% posterior predictive intervals for the belief updating model, based on prior beliefs inferred from Experiment 1 and exposure distributions from Experiment 2.  Dots and errorbars show mean and 95% bootstrapped CIs for the mean probability of /p/ response over subjects. Note the additional uncertainty in predictions relative to the posterior predictive distribution given Experiment 1's conditions (Figure {@fig:model-fit-classification})."}
+
+predicted_prob_p %>%
+  left_join(sepmeans_conds) %>%
+  ggplot(aes(x=vot, y=prob_p_lapse_mean, color=vot_cond, fill=vot_cond)) +
+  ## geom_line() +
+  geom_ribbon(aes(ymin=prob_p_lapse_lo, ymax=prob_p_lapse_hi),
+              alpha=0.2, color=NA) +
+  geom_pointrange(data = sepmeans_test %>%
+                    filter(ntile(trial,3) == 1) %>%
+                    group_by(vot_cond, vot, subject) %>%
+                    summarise(resp_p = mean(respP)),
+                  aes(y=resp_p),
+                  stat='summary', fun.data=mean_cl_boot) +
+  facet_grid(.~vot_cond) +
+  labs(x = 'VOT (ms)',
+       y = 'Probability /p/ response') +
+  scale_color_exp2 +
+  scale_fill_exp2
+
+```
+
+```{r exp2-mod-goodness-of-fit, cache=TRUE}
+
+#' @param d_test test data
+#' @param pred model predictions (i.e., predicted_prob_p)
+#' @param ... additional arguments passed to group_by for output summary
+exp2_gof <- function(d_test, pred, ...) {
+  d_test %>%
+    group_by(subject, vot, bvotCond, pvotCond, vot_cond, respCat, ...) %>%
+    tally() %>%
+    spread(respCat, n, fill=0) %>%
+    left_join(pred) %>%
+    group_by(...) %>%
+    mutate(LL_mod = dbinom(x = p, size = b+p, prob = prob_p_lapse_mean,
+                           log = TRUE),
+           LL_null = dbinom(x = p, size = b+p, prob = mean(p/(b+p)),
+                            log = TRUE)) %>%
+    summarise(LL_mod = sum(LL_mod),
+              LL_null = sum(LL_null),
+              rho = cor(p/(b+p), prob_p_lapse_mean, method='spearman'),
+              n = n()) %>%
+    mutate(LL_ratio = LL_mod - LL_null,
+           pseudo_R2_mcfadden = 1 - LL_mod/LL_null,
+           pseudo_R2_nagelkerke = (1 - exp(2/n * -LL_ratio)) / (1-exp(2/n*LL_null)))
+}
+
+mod_pred_gof_exp2 <- sepmeans_test %>% exp2_gof(predicted_prob_p)
+
+## by condition
+mod_pred_gof_exp2_by_cond <-
+  sepmeans_test %>%
+  filter(ntile(trial,3) == 1) %>%
+  exp2_gof(predicted_prob_p, vot_cond) %>%
+  mutate(LL_mod_each = LL_mod/n, LL_ratio_each = LL_ratio/n)
+
+mod_pred_gof_exp2_by_third <- 
+  sepmeans_test %>%
+  mutate(third=ntile(trial, 3)) %>%
+  exp2_gof(predicted_prob_p, third)
+
+## compare boundaries
+set.seed(102)
+exp2_pred_vs_actual_boundaries <- 
+  predicted_prob_p %>%
+  group_by(bvotCond, pvotCond) %>%
+  mutate(dev = abs(prob_p_lapse_mean - 0.5)) %>%
+  filter(dev==min(dev)) %>%
+  rename(boundary_pred=vot) %>%
+  right_join(boundaries_exp2) %>%
+  group_by(boundary_pred, add=TRUE) %>%
+  do(daver::boot_ci(.,
+                    function(d,i) with(d[i, ], mean(boundary-boundary_pred)),
+                    h0=0,
+                    R=10000)) 
+
+```
+
+Overall, the predicted classification functions line up reasonably well with
+listeners' actual category boundaries at test (Figure
+@fig:plot-exp2-predictions-first-third; 
+Spearman's $\rho=`r mod_pred_gof_exp2_by_third %>% filter(third==1) %$% rho`$,
+log-likelihood ratio with intercept-only null model of 
+`r mod_pred_gof_exp2_by_third %>% filter(third==1) %$% LL_ratio`, both $p<10^{-10}$). 
+In particular, the excellent fit to the 10ms /b/, 50ms /p/ mean condition shows that the prior beliefs inferred in Experiment 1 effectively predict adaptation to the same exposure distributions in Experiment 2, despite the differences in test procedures.
+
+Moreover, the category boundaries listeners actually produce align well with the boundaries predicted based on the inferred prior beliefs from Experiment 1. The average difference between predicted and observed category boundary is small (average absolute deviation across conditions of `r exp2_pred_vs_actual_boundaries[['observed']] %>% abs() %>% mean()`ms VOT). These differences are not significantly higher or lower than zero in any condition (all bootstrapped $p>0.1$, with the exception of the -80ms, 50ms and the 10ms, 80ms conditions where 
+$p=`r exp2_pred_vs_actual_boundaries[['boot_p']] %>% head(n=1) %>% sprintf(fmt='%0.3f')`$
+and 
+$`r exp2_pred_vs_actual_boundaries[['boot_p']] %>% tail(n=1) %>% sprintf(fmt='%0.3f')`$,
+respectively)
+
+The model predictions become less accurate as the test phase progresses
+(likelihood ratios vs. null model for the first, second, and final third of the
+post-test phase of
+`r mod_pred_gof_exp2_by_third %$% LL_ratio %>% round() %>% paste_and()`).
+This suggests that listeners may be unlearning the distributions encountered in
+the test phase. Such unlearning is consistent with other work that shows
+that phonetic adaptation (recalibration) can be undone by prolonged testing
+[@Kraljic2005; @Vroomen2004; and specifically for the case of a flat test distribution, @LiuInPrep2016].
+
+<!-- TODO: check that cuts here read okay -->
+
+### Discussion ###
+
+The results of Experiment 2 provide further evidence that VOT distributional
+learning is constrained. Using more extreme
+distribution, we found even larger discrepancies between the category boundaries
+implied by the input distributions and listeners' actual classifications than in
+Experiment 1. In fact, it appears that moving the /b/ mean VOT from -20 to -50
+and even -80 has little additional effect on the category boundary, even though
+each of these changes would move the boundary by -15ms VOT each (if the prior
+was completely ignored).
+
+While these constraints might appear to be even more extreme than we observed in
+Experiment 1, they are in fact _predicted_ from the results of Experiment 1 by
+our inverted belief-updating model. This model treats adaptation to the exposure
+talker as a process of optimal (or near-optimal) distributional learning, which
+involves integrating current experience with prior expectations.  The
+predictions of this model are in generally good agreement with listeners'
+behavior in Experiment 2, despite the fact that the input distributions differ
+markedly from the Experiment 1 data used to fit the model.
+
+## General discussion
+
+In two experiments, we have evaluated how well listeners can adapt to different
+pseudo-'accents' by learning distributions of VOTs. Our results confirm previous
+findings that listeners can adapt to novel accents like these via distributional
+learning [@Clayards2008; @Munson2011]. We go beyond previous work by
+systematically evaluating adaptation performance on a range of different
+distributions. Our results show that listeners do not adapt as well to extreme
+distributions that deviate substantially from what it typical of American
+English. This goes to show that while distributional learning is, in principle,
+a very powerful general-purpose approach to dealing with talker variability,
+it is _constrained_---or, we have argued, _guided_ by prior experience---in actual practice.
+
+### Constraints on distributional learning
+
+Where do these constraints come from? A central tenet of the ideal adapter
+framework [@Kleinschmidt2015] is that listeners can---and should---benefit from
+structure in how talkers vary in the cue distributions they produce. Even if all
+a listener knows is that a talker is speaking American English, their prior experience
+with other speakers of American English provides a lot of information about the cue
+distributions that they should expect, which makes the process of inferring that
+particular talkers' distributions more efficient. At the same time, this view predicts that listeners
+will pay a price when they encounter a talker whose distributions fall outside
+the range they expect (such as when encountering novel accents, languages, or---to a milder extent---the present experiments). In order to get as much benefit from the head
+start provided by prior expectations while avoiding the cost of over-confidence, listeners should _match_ their prior expectations to the actual variability across talkers in the world.
+
+Our modeling results show that this explanation is at least consistent with the
+pattern of constraints that we observed behaviorally. The range of adaptation
+behavior across different distributions in Experiment 1 can be fit very well by
+a model that assumes that listeners update their beliefs based on the
+distributions they experience, starting from a prior expectation about what a
+typical talker sounds like and how much talkers vary. These prior expectations
+also effectively _predict_ how well listeners will adapt to the substantially
+different exposure distributions in Experiment 2.  Moreover, the expectations
+that we infer listeners to have for an unfamiliar talker match the actual cue
+distributions produced by American English speakers reasonably well. (with the
+caveat that our model makes potentially problematic assumptions about the
+structure of categories within and across talkers, which we discuss below).
+
+
+### What is the source of constraints on distributional learning?
+
+We have proposed that the constraints on distributional learning we observed in Experiments 1 and 2 are _learned_ by listeners from their experience with how phonetic cue distributions vary across talkers.
+There are, of course, other possible sources for these constraints. For
+instance, the basic nature of the mammalian auditory system may constrain the
+distributions that are actually psychoacoustically distinguishable. Failure to
+adapt to particular distributions may then simply be a side effect of these
+distributions being difficult to perceive because of non-linearities in the
+underlying psychoacoustic dimensions (which we model as linear in VOT). This is
+a plausible explanation for VOT in particular. Cross-linguistically, category
+boundaries occur at a small number of VOT values [@Lisker1964].[^cross-lx] Moreover, non-human animals
+also categorize voiced and voiceless stops along these boundaries as well
+[@Kuhl1975]. Moreover, the typical boundary between (short-lag) voiced and
+voiceless word initial stops is approximately the same as the temporal
+asynchrony required for neural responses to separately time lock to two events,
+and thus identify the release burst and onset of voicing as distinct acoustic
+events [@Steinschneider1994].
+
+[^cross-lx]: Such cross-linguistic regularities must, however, be interpreted
+    with caution, since they may be due to shared ancestry of languages or
+    language contact [e.g., @Jaeger2011], rather than reflecting innate
+    constraints.
+
+Another possibility is that listeners' expectations are driven by their _own_
+productions, and that any regularity between these comes from acquisition or
+innate anatomical constraints [e.g., @Moulin-Frier2015].  For instance there are
+limits on the VOTs that can be produced by the human vocal tract, although this would not explain our results here because the actual VOTs of our stimuli are all well within the range of what is physically possible [and actually attested; @Baese-Berk2009;
+@Goldrick2013].
+Other, intermediate possibilities exist, too. For instance, listeners'
+expectations may be based on their own productions, but their _confidence_ based
+on the level of cross-talker variability they have experienced.
+
+These alternative explanations may be plausible in the case of voicing, in large
+part because the cue distributions are generally consistent across talkers
+[@Allen2003]. However, many contrasts---especially those that are distinguished by spectral cues---_do_ vary
+substantially across talkers, and moreover show substantial stylistic
+variability that cannot be normalized away
+[@McMurray2011a; @Jongman2000; @Hagiwara1997; @Hillenbrand1995; @Clopper2005; @Newman2001].
+
+Testing for constraints on adaptation for these other, more variable contrasts
+would help resolve these different possible explanations. For instance, if
+listeners are _more_ constrained than would be expected based on cross-talker
+variation, it would suggest that the constraints come from something like their
+own productions, since levels of _within_ talker variability are similar across
+contrasts [@Newman2001; @Allen2003]. The presence of _structure_ in cross-talker
+variation also provides a means to test more specific predictions of the ideal
+adapter. In particular, the ideal adapter predicts that when talkers cluster into
+groups, listeners' distributional learning should be informed (and hence
+constrained) by their experience with _within-group_ variability, not only population-level variability. For instance, if listeners pick up on the fact that
+male and female talkers systematically differ in their vowel formant
+distributions, then knowing that a talker is male or female should lead to more
+constrained adaptation than if they do not know the gender of the talker (all
+else being equal, including other cues to gender).
+
+### Measuring listeners' subjective beliefs about unfamiliar talkers
+
+Our other major finding is that it is possible to infer what cue distributions
+listeners expect from an unfamiliar talker, based solely on listeners adaptation
+behavior (as measured by phonetic classification). The actual beliefs that our
+model infers listeners to have provide a good fit to this adaptation behavior,
+can predict adaptation for distributions that were not used to train the model,
+and align reasonably well with distributions that talkers actually produce. The
+combination of presenting listeners with a parametrically manipulated range of
+distributions and analyzing the resulting changes in phonetic classification
+with a belief updating model provides a potentially powerful tool for measuring
+listeners' expectations. This is important because these expectations are an
+essential part of how listeners manage to adapt to efficiently to talker
+variability, but are difficult to measure, being implicit and subjective. The
+subjective nature of these expectations is particularly important, because they
+may deviate in substantial ways from the actual nature of cross-talker
+variation. For instance, arbitrary aspects of linguistic variation can become
+"enregistered", where listeners consider particular variants stereotypical of
+social groups, whether they are in fact differentially associated with them or not
+[see, e.g., @Eckert1989; @Eckert2012a; @Podesva2001; @Niedzielski1999; @Levon2014].
+
+This tool nevertheless has limitations. Most importantly, the prior
+beliefs a model can infer are fundamentally bound by the assumptions the model
+makes about that nature of those beliefs and how they are updated. If the
+structure of the world does not align with what is assumed by the model, the
+models' inferences may be misleading in subtle ways, _even if the predictive
+accuracy of the model is good_.  For instance, we assumed that each phonetic
+category is a single normal distribution, but in reality the way people actually
+produce /b/ appears to be a mixture of two distinct clusters. Even so, our model
+effectively predicted adaptation to different distributions, even with negative
+VOTs where the structure of the /b/ category seems like it should make a
+difference. The beliefs that the model infers listeners to have for /b/, though,
+do not look like distributions of VOTs that talkers actually produce for
+/b/. Instead, they look like a good _approximation_ of the true distribution
+using only a single cluster, with a mean and variance that is intermediate
+between the two clusters talkers actually produce. It would be premature to
+conclude that listeners actually believe a typical talker would produce this
+distribution. Rather, this discrepancy highlights areas where more data is
+needed. That is, a model need not be _true_ for it to be _useful_, as long as
+it's understood as a means for interpreting and guiding empirical work and not a
+source of ground truth.
+
+We also assumed that listeners prior beliefs can be modeled using a particular
+form, the Normal-$\chi^{-2}$ distribution. This is mathematically convenient, but
+makes the assumption that listeners' uncertainty about category means _across_
+talkers is proportional to their beliefs about variance _within_ a talker. This
+is unlikely to be an accurate reflection of actual patterns of talker
+variability, but it is not immediately obvious what the consequences of this
+assumption are. It may explain the discrepancy between the amount of talker
+variability that actually occurs and the level predicted by the model's inferred
+beliefs, but this remains to be seen. 
+
+### What makes listeners confident in their prior beliefs?
+
+Our modeling results suggest that listeners have high confidence in their prior
+expectations about the VOT distributions of /b/ and /p/, acting as if they had
+already observed around 200–800 samples from each category (for the category
+means and variances, respectively) from the unfamiliar talker they encountered
+in our experiment.  This is consistent with the qualitative findings in
+Experiments 1 and 2 that distributional learning is substantially constrained.
+
+However, at first blush, this conflicts with our previous modeling work on
+adaptation to another phonetic contrast, /b/-/d/, which found confidence values
+that were one or two orders of magnitude smaller than those inferred here
+[@Kleinschmidt2015].  This contrast is cued by spectral cues (formant frequency
+transitions) which generally vary substantially across talkers
+[e.g., @Peterson1952]. The acoustic cues to the /b/-/p/ contrast used in the
+current study do not show as much variability across talkers
+[e.g., @Allen2003; @Chodroff2015]. When there is little variability across
+talkers, past experience with other talkers' VOT distributions is highly
+informative about the distributions that an unfamiliar talker will produce,
+requiring less adaptation. Likewise, when there is more variability across
+talkers, listeners need to rely more on the current talker's cue distributions
+and less on their prior experience. Thus, the apparent discrepancy between the
+confidence that listeners place in their prior beliefs in the current study and
+in @Kleinschmidt2015 is actually in line with an *ideal adapter* which combines
+prior beliefs with current experience weighted according to confidence. 
+
+This idea finds further empirical support in @Kraljic2007, who found that after
+the same amount of exposure, listeners recalibrate a /d/-/t/ contrast (analogous
+to the /b/-/p/ contrast used here) much less than an /s/-\ph S contrast
+<!-- TODO: fix IPA -->
+[where the latter exhibits larger variability across talkers; e.g., @Newman2001].
+This leads to the following clear prediction for future work: Listeners should
+adapt more flexibly to phonetic contrasts where there is more talker
+variability. At present this prediction is qualitative. In order to make it more
+precise, we need better measurements of the actual extent of talker variability
+in different contrasts. Chapter \ref{chap:talker-variation} provides a first
+step in this direction. Based on what we know about talker variability at the
+moment, we specifically predict that distributional learning for vowels and
+fricatives should be more flexible (i.e., best fit with lower confidence
+parameters) than for stop voicing.
+<!-- TODO-paper: remove chapter reference -->
+
+## Conclusion {#sec:conclusion}
+
+In order to cope with cross-talker variability, the speech perception system
+needs to be highly flexible. At the same time, a system that is _completely_
+flexible, adapting from scratch every time, would be ineffective. One solution
+to this dilemma is to leverage prior experience with _other_ talkers in order to
+provide an informative starting point when adapting to an unfamiliar
+talker. This is what rational accounts predict
+[i.e., the ideal adapter, @Kleinschmidt2015]. More specifically, these accounts
+predict that prior experience _constrains_ (or _guides_) learning and
+adaptation to an unfamiliar talker's accent. Even if all the listener knows
+about the talker is that they are speaking English, they can still benefit from
+prior experience with other speakers of English to provide an informative head
+start for adaptation. In this view, prior experience can only be helpful to the
+extent that it rules out some possible accents (cue distributions). If a
+listener encounters a talker whose accent (cue distributions) lies outside the range that they think
+is _a priori_ plausible based on their prior experience, they will have a hard
+time adapting to that talker (cf. @Pajak2016 for a discussion of second-language learning as an extreme example from this perspective).
+
+We found that listeners' behavior in two distributional
+learning experiments is constrained and guided in exactly this way.
+Specifically, we found that listeners' classification of a novel talker's VOT
+continuum reflects a compromise between what would be expected for the VOT
+distributions produced by a typical talker and the exposure talker. More
+specifically, the range of adaptation behavior observed across the various
+accents that listeners heard can be captured by a belief-updating model with a
+single set of prior expectations that are updated based on experience with the
+exposure talker. Moreover, these inferred beliefs effectively predict adaptation
+to different distributions.
+
+The modeling framework we use has the
+additional advantage of allowing us to *infer* what cue distributions listeners
+believe an unfamiliar talker will produce. This provides a potentially
+powerful---and heretofore missing---tool for probing listeners' prior
+expectations, based only on comprehension data. These beliefs reflect what
+listeners have learned about the variability they can expect across talkers, and
+probing how this internal model is related to the *actual* variability across
+talkers (measured via speech production data) is an important next step in
+advancing our understanding of robust speech perception.
+
+More generally, prior knowledge is increasingly understood to play in important
+role in a number of perceptual and memory domains [e.g,. @Brady2013; @Froyen2015a;
+@Orhan2011]. Distributional learning provides an approach to probing prior
+expectations about the *statistics* of the sensory world, which, as in speech
+perception, are critical to effectively coping with non-stationarity in sensory
+statistics.
