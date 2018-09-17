@@ -761,13 +761,33 @@ parameter estimates [see @Clayards2008 for a discussion].
 data_exp1_stan_conj <- data_exp1 %>%
   supunsup::supunsup_to_stan_conj()
   
-library(rstan)
-mod_lapsing <- beliefupdatr::compile_stan('conj_id_lapsing_fit.stan')
+data_exp1_stan_conj <-
+  prepare_data_conj_suff_stats_infer_prior(data_exp1,
+                                           cue = "vot",
+                                           category = "trueCat",
+                                           response = "respCat",
+                                           condition = "vot_cond",
+                                           ranefs = "subject")
 
-fit_lapsing <- stan(fit = mod_lapsing,
-                    data = data_exp1_stan_conj,
-                    chains = 4,
-                    iter = 1000)
+data_exp1_stan_conj_inc6 <-
+  prepare_data_incremental_suff_stats(data_exp1,
+                                      cue = "vot",
+                                      category = "trueCat",
+                                      response = "respCat",
+                                      condition = "vot_cond",
+                                      ranefs = "subject",
+                                      n_blocks=6)
+
+library(rstan)
+fit_lapsing <- sampling(beliefupdatr:::stanmodels$conj_id_lapsing_sufficient_stats_fit,
+                        data = data_exp1_stan_conj,
+                        chains = 4,
+                        iter = 2000)
+
+fit_lapsing_inc6 <- sampling(beliefupdatr:::stanmodels$conj_id_lapsing_sufficient_stats_incremental_fit,
+                             data = data_exp1_stan_conj_inc6,
+                             chains = 4,
+                             iter = 1000)
 
 head(summary(fit_lapsing)$summary, n=10)
 
@@ -776,6 +796,12 @@ mod_samples <- rstan::extract(fit_lapsing)
 
 saveRDS(mod_samples, file='models/samples_lapsing.rds')
 saveRDS(mod_summary, file='models/summary_lapsing.rds')
+
+mod_inc_summary <- summary(fit_lapsing_inc6)$summary
+mod_inc_samples <- rstan::extract(fit_lapsing_inc6)
+
+saveRDS(mod_inc_samples, file='models/samples_inc_lapsing.rds')
+saveRDS(mod_inc_summary, file='models/summary_inc_lapsing.rds')
 
 ```
 
