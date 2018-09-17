@@ -1,15 +1,20 @@
 * TODO adapt dissertation chapter
-
-  Make the introduction a little less myopicly concerned with ideal adapter
-  stuff.
-
-  manage expectations in the intro: anticipate that the inferred prior migth be
-  a little weird. (if can't do that, then maybe need to revisit)
-
-  de-emphasize mind reading (and need for production data), emphasize presence
-  (and nature) of constraints.  "additional exploratory thing...how much can we
-  trust this"
   
+** TODO revise introduction
+
+   Make the introduction a little less myopicly concerned with ideal adapter
+   stuff.
+
+   manage expectations in the intro: anticipate that the inferred prior migth be
+   a little weird. (if can't do that, then maybe need to revisit)
+
+   de-emphasize mind reading (and need for production data), emphasize presence
+   (and nature) of constraints.  "additional exploratory thing...how much can we
+   trust this"
+
+  
+* follow-up modeling analyses
+
 ** TODO re-analyse results with incremental model
 
    I've run this model but I haven't looked at the results, buried in
@@ -31,6 +36,18 @@
    use production means/variances and just fit confidence.  how well does it
    explain adaptation?
 
+   
+* more literature to consider
+
+** TODO L2 learning
+
+   Baese Berk stuff?  (I think some of that is on dist learning of prevoiced VOT
+   categories)
+
+** TODO Diehl papers
+
+** TODO Holt follow-ups to Idemaru and Holt 2011
+
 * Outline
 
 ** Lots of flexibility in adult language
@@ -41,4 +58,12 @@
 
    e.g. learning L2 phonetic categories
 
-** what are the constraints?
+** what _are_ the constraints?
+
+** where do they come from?
+
+   prior experience...
+
+   don't seek to rule out or even articulate possible alternatives here; just
+   want to establish some empirical facts and see whether the ideal adapter
+   story is consistent with them.
