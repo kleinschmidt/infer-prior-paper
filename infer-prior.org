@@ -54,12 +54,21 @@
 
    recal, dist learning, etc.
 
-** but not limitless.
+** dist learning links adult language plasticity with acquisition
+
+** not as fully flexible as during development however
 
    e.g. learning L2 phonetic categories
 
 ** what _are_ the constraints?
 
+   if we're serious about distributional learning as a mechanisms for
+   adaptation/flexibility into adulthood then we need to figure out what the
+   constraints on adult distributional learning are.
+
+   systematically explore a range of distributions; see what (English-speaking)
+   adults manage to learn and what they do not.
+   
 ** where do they come from?
 
    prior experience...
