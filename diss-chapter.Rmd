@@ -751,7 +751,8 @@ blinks). This prevents datapoints where the model predicts nearly 100% /p/ or
 /b/ responses from having an outside effect on the likelihood and thus the
 parameter estimates [see @Clayards2008 for a discussion].
 
-```{r run-model, eval=FALSE}
+
+```{r prepare-data-model}
 
 ## run the belief-updating model for inferring prior. the model source is in
 ## the beliefupdatr package, or will be soon :)
@@ -775,6 +776,10 @@ data_exp1_stan_conj_inc6 <-
                                       ranefs = "subject",
                                       n_blocks=6)
 
+```
+
+```{r run-model, eval=FALSE}
+
 library(rstan)
 fit_lapsing <- sampling(beliefupdatr:::stanmodels$conj_id_lapsing_sufficient_stats_fit,
                         data = data_exp1_stan_conj,
@@ -787,6 +792,7 @@ fit_lapsing_inc6 <- sampling(beliefupdatr:::stanmodels$conj_id_lapsing_sufficien
                              iter = 1000)
 
 head(summary(fit_lapsing)$summary, n=10)
+head(summary(fit_lapsing_inc6)$summary, n=10)
 
 mod_summary <- summary(fit_lapsing)$summary
 mod_samples <- rstan::extract(fit_lapsing)
@@ -824,22 +830,14 @@ rename_dims <- function(x, var, new_names) {
 mod_samples %<>%
   rename_dims('mu_0', c('iterations', 'cat_num')) %>%
   rename_dims('sigma_0', c('iterations', 'cat_num')) %>%
-  rename_dims('mu_n', c('iterations', 'cat_num', 'subject_num')) %>%
-  rename_dims('sigma_n', c('iterations', 'cat_num', 'subject_num')) %>%
-  rename_dims('kappa_n', c('iterations', 'cat_num', 'subject_num')) %>%
-  rename_dims('nu_n', c('iterations', 'cat_num', 'subject_num'))
+  rename_dims('mu_n', c('iterations', 'cat_num', 'cond_num')) %>%
+  rename_dims('sigma_n', c('iterations', 'cat_num', 'cond_num')) %>%
+  rename_dims('kappa_n', c('iterations', 'cat_num', 'cond_num')) %>%
+  rename_dims('nu_n', c('iterations', 'cat_num', 'cond_num'))
   
 
 max_Rhat <- max(mod_summary[, 'Rhat'])
 lapse_rate <- mean(mod_samples$lapse_rate)
-
-## correspondence between subject IDs and subject indices in model
-subjects <-
-  data_exp1 %>%
-  mutate(subject_num = as.numeric(factor(subject))) %>%
-  group_by(subject, bvotCond, subject_num) %>%
-  summarise() %>%
-  arrange(subject_num)
 
 categories <-
   data_frame(cat_num = 1:2,
@@ -866,10 +864,9 @@ updated_samples_df <-
   reduce(inner_join) %>%
   tbl_df %>%
   left_join(categories) %>%
-  left_join(subjects) %>%
+  left_join(conditions_exp1 %>% mutate(cond_num=as.numeric(bvotCond))) %>%
   group_by(bvotCond) %>%
-  filter(subject == first(subject)) %>% # just need one per condition
-  select(-cat_num, -subject_num, -subject)
+  select(-cat_num, -cond_num)
 
 ## create a data_frame for lapsing rate samples
 lapse_rate_samples <- melt_samples(mod_samples, 'lapse_rate')
@@ -898,8 +895,7 @@ sampler converged well and achieved good mixing
 ```{r model-goodness-of-fit}
 
 mod_fitted <-
-  data_exp1 %>%
-  supunsup::supunsup_to_stan_conj() %$%
+  data_exp1_stan_conj %$%
   z_test_counts %>%
   data.frame() %>%
   tbl_df() %>%
