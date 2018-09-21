@@ -812,11 +812,13 @@ saveRDS(mod_inc_summary, file='models/summary_inc_lapsing.rds')
 ```{r load-samples}
 
 mod_samples <- readRDS('models/samples_lapsing.rds')
+mod_inc_samples <- readRDS("models/samples_inc_lapsing.rds")
 
 ```
 
 ```{r load-summary}
 mod_summary <- readRDS('models/summary_lapsing.rds')
+mod_inc_summary <- readRDS("models/summary_inc_lapsing.rds")
 ```
 
 ```{r model-analysis-exp1, cache=TRUE}
