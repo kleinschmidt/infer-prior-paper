@@ -66,8 +66,9 @@
    adaptation/flexibility into adulthood then we need to figure out what the
    constraints on adult distributional learning are.
 
-   systematically explore a range of distributions; see what (English-speaking)
-   adults manage to learn and what they do not.
+   systematically explore a range of distributions that vary in their similarity
+   to a typical talker's distributions; see what (English-speaking) adults
+   manage to learn and what they do not.
    
 ** where do they come from?
 
