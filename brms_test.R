@@ -46,3 +46,57 @@ fit3 = brm(bf(y ~ lapselow + (1-lapsehigh-lapselow) * 1 / (1+exp(-(eta))),
            prior = c(set_prior("student_t(3,0,10)", class="b", nlpar="eta"),
                      set_prior("uniform(0,0.5)", class="b", nlpar="lapselow"),
                      set_prior("uniform(0,0.5)", class="b", nlpar="lapsehigh")))
+
+
+
+
+fit4 = brm(bf(y ~ lapselow + (1-lapsehigh-lapselow) * inv_logit(eta),
+              eta ~ 1+x,
+              lapselow ~ 1,
+              lapsehigh ~ 1, 
+              family=bernoulli(link="identity"),
+              nl=TRUE),
+           data=dat,
+           inits="0",
+           control=list(adapt_delta=0.99),
+           prior = c(prior(student_t(7, 0, 10), class="b", nlpar="eta"),
+                     prior(beta(1, 1), nlpar="lapselow", lb=0.0, ub = 0.1),
+                     prior(beta(1, 1), nlpar="lapsehigh", lb=0.0, ub = 0.1)))
+
+
+
+
+################################################################################
+# run on real data!
+
+library(supunsup)
+
+d <- supunsup::supunsup_clean %>%
+  filter(supCond == "unsupervised") %>%
+  select(subject, bvotCond, trial, vot, respP) %>%
+  mutate(vot_s = (vot - mean(vot)) / sd(vot),
+         trial_s = (trial - mean(trial)) / sd(trial))
+
+f <- bf(respP ~ lapselow + (1-lapsehigh-lapselow) * inv_logit(eta),
+        eta ~ 1 + vot_s*trial_s*bvotCond + (1 + vot_s*trial_s | subject),
+        lapselow ~ 1,
+        lapsehigh ~ 1,
+        family = bernoulli(link="identity"),
+        nl=TRUE)
+
+priors = c(prior(student_t(7, 0, 10), class="b", nlpar="eta"),
+           prior(beta(1, 1), nlpar="lapselow", lb=0.0, ub = 0.1),
+           prior(beta(1, 1), nlpar="lapsehigh", lb=0.0, ub = 0.1))
+
+fit_supunsup = brm(f,
+                   data = d,
+                   prior = priors)
+
+
+
+fit_supunsup_logistic = brm(respP ~ 1 + vot_s*trial_s*bvotCond +
+                              (1 + vot_s*trial_s | subject),
+                            family=bernoulli(),
+                            data = d)
+
+saveRDS(fit_supunsup_logistic, file="models/fit_supunsup_logistic.rds")
