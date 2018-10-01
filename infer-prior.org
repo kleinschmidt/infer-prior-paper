@@ -77,3 +77,18 @@
    don't seek to rule out or even articulate possible alternatives here; just
    want to establish some empirical facts and see whether the ideal adapter
    story is consistent with them.
+
+* notes/snippets
+
+  One of the most remarkable forms of plasticity in speech perception is
+  /distributional learning/.  Listeners adjust their representations of phonetic
+  categories with mere exposure to distributions of acoustic stimuli.  This
+  occurs without explicit instruction or labels.
+
+  Suggests that listeners are closely attuned to the statistical patterns in
+  their language environment, and pick up on changes in these contingencies to
+  more effectively recover a talker's intended message from noisy, variable, and
+  ambiguous acoustic signals.
+
+  This paper addresses the /limits/ of distributional learning in adults.  What
+  sort of speech statistics can adult speakers of American English /not/ learn?
