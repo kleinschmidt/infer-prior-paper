@@ -70,19 +70,62 @@ categories <-
 prior_samples_df <-
   fit_inc %>%
   spread_draws(nu_0, kappa_0, mu_0[cat_num], sigma_0[cat_num]) %>%
-  filter(.iteration > 1000) %>%
   left_join(categories)
 
 ## create a data_frame with samples for updated parameters
 updated_samples_df <-
   fit_inc %>%
-  spread_draws(c(kappa_n, nu_n, mu_n, sigma_n)[block_num, cat_num, cond_num]) %>%
-  filter(.iteration > 1000) %>%
+  spread_draws(c(kappa_n, nu_n, mu_n, sigma_n)[block_num, cat_num, cond_num],
+               lapse_rate[block_num]) %>%
   left_join(categories) %>%
   left_join(conditions_exp1)
 
 ## create a data_frame for lapsing rate samples
 lapse_rate_samples <-
   fit_inc %>%
-  spread_draws(lapse_rate[block_num]) %>%
-  filter(.iteration > 1000)
+  spread_draws(lapse_rate[block_num])
+
+
+## some visualizations
+
+data_exp1 %>%
+  mutate(block_num = ntile(trial, 6)) %>%
+  group_by(subject, bvotCond, block_num, vot) %>%
+  summarise(respP = mean(respP)) %>%
+  ggplot(aes(x=vot, y=respP, color=bvotCond)) +
+  geom_line(aes(group=subject), alpha=0.2) +
+  geom_pointrange(stat="summary", fun.data=mean_cl_boot) +
+  facet_grid(block_num ~ bvotCond)
+  
+
+
+mod_class_funs <- 
+  updated_samples_df %>%
+  group_by(.draw) %>%
+  nest() %>%
+  sample_n(200) %>%
+  unnest() %>%
+  mutate(mean=mu_n, sd=sigma_n) %>%
+  select(.draw, block_num, bvotCond, category, mean, sd) %>%
+  group_by(.draw, bvotCond, block_num) %>%
+  do(stats_to_lhood(., noise_sd=0)) %>%
+  lhood_to_classification() %>%
+  left_join(lapse_rate_samples) %>%
+  mutate(prob_p = (1-lapse_rate)*prob_p + lapse_rate/2) %>%
+  group_by(bvotCond, block_num, vot) %>%
+  select(bvotCond, block_num, vot, prob_p) %>%
+  summarise(prob_p_low = quantile(prob_p, 0.025),
+            prob_p_high = quantile(prob_p, 0.975),
+            prob_p = mean(prob_p))
+
+
+
+data_exp1 %>%
+  mutate(block_num = ntile(trial, 6)) %>%
+  group_by(subject, bvotCond, block_num, vot) %>%
+  summarise(respP = mean(respP)) %>%
+  ggplot(aes(x=vot, y=respP, color=bvotCond)) +
+  geom_line(aes(group=subject), alpha=0.2) +
+  geom_pointrange(stat="summary", fun.data=mean_cl_boot) +
+  geom_ribbon(data=mod_class_funs, aes(y=prob_p, ymin=prob_p_low, ymax=prob_p_high, fill=bvotCond))+
+  facet_grid(block_num ~ bvotCond)
