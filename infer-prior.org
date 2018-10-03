@@ -50,37 +50,99 @@
 
 * Outline
 
-** Lots of flexibility in adult language
+** Intro
+  
+*** Lots of flexibility in adult language
 
-   recal, dist learning, etc.
+    recal, dist learning, etc.
 
-** dist learning links adult language plasticity with acquisition
+*** what _are_ the constraints?
 
-** not as fully flexible as during development however
+*** goal
 
-   e.g. learning L2 phonetic categories
+    systematically explore a range of distributions that vary in their similarity
+    to a typical talker's distributions; see what (English-speaking) adults
+    manage to learn and what they do not.
 
-** what _are_ the constraints?
+*** preview
 
-   if we're serious about distributional learning as a mechanisms for
-   adaptation/flexibility into adulthood then we need to figure out what the
-   constraints on adult distributional learning are.
+    people have a harder time adapting to distributions that deviate a lot from
+    what's typical of American English.  This happens even in the presence of
+    labeling information that tells them which VOTs are /b/ and which are /p/.
 
-   systematically explore a range of distributions that vary in their similarity
-   to a typical talker's distributions; see what (English-speaking) adults
-   manage to learn and what they do not.
+    The pattern of adaptation across conditions is consistent with statistically
+    optimal distributional learning starting from a shared set of prior beliefs,
+    and the shared prior beliefs are reasonably similar to what a typical talker
+    of American English produces.
+    
+** Experiment 1
    
-** where do they come from?
+   A bunch of VOT distributions which vary in terms of similarity to standard
+   American English VOT distributions.  Only going to vary the means of these
+   distributions (keep things tractable).
 
-   prior experience...
+*** Results
 
-   don't seek to rule out or even articulate possible alternatives here; just
-   want to establish some empirical facts and see whether the ideal adapter
-   story is consistent with them.
+*** Discussion    
+
+    Distributional learning is incomplete: in more extreme conditions, produced
+    boundaries don't get all the way to the ideal boundary for the exposure
+    distributions.  
+
+    Why?
+
+    One possible explanation: "shrinkage" towards a typical talker's boundary.
+
+    Another possible explanation: this is an unsupervised task, so maybe
+    listeners aren't picking up on the underlying distributions.  Test that in
+    Experiment 2
+
+** Experiment 2
+
+   Same distributions, but half the trials are labeled.  Always one voiced and
+   one voiceless, but on labeled trials the options are not minimal pairs, so
+   only one is a plausible option.
+
+*** Results
+
+    Are boundaries different with supervision?
+
+    Still don't get all the way there, even with supervised teaching signal.
+
+*** Discussion
+
+    Suggests that the constraint comes from something about the distributions
+    themselves.  As above, one possible source is prior experience with a
+    typical talker.  Explore this possibility with modeling.
+
+** Modeling
+
+   two questions: is the pattern of adaptation consistent with distributional
+   learning starting from a single (shared) set of prior beliefs?  And if so,
+   are those shared prior beliefs similar to what a typical talker of American
+   English produces?
+
+   Model belief updating process.  Because we didn't find large differences
+   between the supervised and unsupervised conditions, we're going to treat this
+   as a supervised learning process because it's /much/ simpler to model.
+
+
+** Experiment 3
+
+   
 
 * notes/snippets
 
-  One of the most remarkable forms of plasticity in speech perception is
+  One of the basic facts about human language is that a neurotypical human
+  infant can learn any of the many and varied languages spoken on Earth.  That
+  is, the language system is incredibly flexible during development.  However,
+  at a certain point people lose the ability to learn other languages to
+  native-like proficiency.  Nevertheless, recent research has shown that adults
+  still remain the ability to learn new variants of their _native_ language.
+  That is, the language system seems to remain plastic at least into adulthood,
+  even if the form of this plasticity changes.
+  
+  One of the most remarkable forms of plasticity in adult speech perception is
   /distributional learning/.  Listeners adjust their representations of phonetic
   categories with mere exposure to distributions of acoustic stimuli.  This
   occurs without explicit instruction or labels.
@@ -90,5 +152,15 @@
   more effectively recover a talker's intended message from noisy, variable, and
   ambiguous acoustic signals.
 
+  A comprehensive understanding of distributional learning requires that we
+  understand not only how and when it does happen but also how and when it does
+  _not_ happen, or is only incomplete.  That goal of this paper is to
+  systematically probe the limits of distributional learning for speech in one
+  phonetic system: word-initial stop voicing in American English.
+
+
   This paper addresses the /limits/ of distributional learning in adults.  What
   sort of speech statistics can adult speakers of American English /not/ learn?
+
+
+  
