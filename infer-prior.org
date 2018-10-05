@@ -1,41 +1,45 @@
-* TODO adapt dissertation chapter
-  
-** TODO revise introduction
 
-   Make the introduction a little less myopicly concerned with ideal adapter
-   stuff.
+* todos
+** follow-up modeling analyses
 
-   manage expectations in the intro: anticipate that the inferred prior migth be
-   a little weird. (if can't do that, then maybe need to revisit)
+*** DONE re-analyse results with incremental model
 
-   de-emphasize mind reading (and need for production data), emphasize presence
-   (and nature) of constraints.  "additional exploratory thing...how much can we
-   trust this"
+    I've run this model but I haven't looked at the results, buried in
+    ~beliefupdatr~ somewhere?  IN particular, want to know what the inferred prior
+    looks like.
 
-  
-* follow-up modeling analyses
+*** TODO joint fits to expts 1 and 3 (two mean)
 
-** TODO re-analyse results with incremental model
+*** TODO how much does assuming labels known hurt us?
 
-   I've run this model but I haven't looked at the results, buried in
-   ~beliefupdatr~ somewhere?  IN particular, want to know what the inferred prior
-   looks like.
+    run forward simulations based on inferred prior with unsupervised algorithm
+    (particles).  In lieu of actually doing the full unsupervised prior inferring,
+    see how far off we are.
 
-   ESTIMATE: 
+*** TODO additional models
 
-** TODO how much does assuming labels known hurt us?
+    control model: just change lapse rate (maybe)
 
-   run forward simulations based on inferred prior with unsupervised algorithm
-   (particles).  In lieu of actually doing the full unsupervised prior inferring,
-   see how far off we are.
+    use production means/variances and just fit confidence.  how well does it
+    explain adaptation?
 
-** TODO additional models
+** TODO analyze results with (lapsing) Bayesian logistic regression
 
-   control model: just change lapse rate (maybe)
+   that way I can get good estimates of the boundary uncertainty both at the
+   subject level and across conditions/experiments.  Especially important to
+   compare between the supervised and unsupervised conditions.
 
-   use production means/variances and just fit confidence.  how well does it
-   explain adaptation?
+*** TODO fit brms logistic regression to experiments 1 and 2
 
+    include: intercept, vot, supervised/unsupervised, exposure condition
+
+*** TODO extract subject boundaries from logistic regression fits
+
+*** TODO plot subject curves and overall curves
+
+*** TODO fit brms logistic regression to experiment 3
+
+*** TODO (maybe) fix lapsing logistic regression to expts 1, 2, and 3
    
 * more literature to consider
 
