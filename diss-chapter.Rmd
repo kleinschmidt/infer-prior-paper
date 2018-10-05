@@ -1807,7 +1807,7 @@ predicted_prob_p %>%
 
 ```
 
-```{r plot-exp2-inc-predictions}
+```{r plot-exp2-inc-predictions, fig.width=8, fig.height=2, fig.cap="Predicted classification functions for conditions from Experiment 2 based on prior beliefs inferred from Experiment 1"}
 
 
 predicted_prob_p_inc %>%
