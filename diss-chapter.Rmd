@@ -1,7 +1,7 @@
 ---
 Title: What do you expect from an unfamiliar talker?
 Author: Dave Kleinschmidt
-bibliography: /Users/dkleinschmidt/Documents/papers/library-clean.bib
+bibliography: /home/dave/Documents/papers/library-clean.bib
 output:
     html_document:
         code_folding: hide
@@ -10,17 +10,13 @@ output:
         md_extensions: +implicit_figures
         pandoc_args:
         - --filter
-        - pandoc-fignos
-        - --filter
-        - pandoc-tablenos
+        - pandoc-crossref
     pdf_document:
         md_extensions: +implicit_figures
         keep_tex: true
         pandoc_args:
         - --filter
-        - pandoc-fignos
-        - --filter
-        - pandoc-tablenos
+        - pandoc-crossref
         includes:
             in_header: header_tipa.tex
 ---
