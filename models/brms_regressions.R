@@ -17,12 +17,15 @@ d <- supunsup::supunsup_clean %>%
          
 
 
-# this is _extremely slow_
-b_logit <- brm(respP ~ 1 + bvotCond*supervised*vot_s +
-                 (1 + vot_s ~ subject),
+# this is _extremely slow. 
+b_logit <- brm(respP ~ 0 + bvotCond * supervised * vot_s * trial_s +
+                 (1 + vot_s | subject),
                data = d,
                family = bernoulli(),
-               algorithm="fullrank")
+               chains=4,
+               iter=1000)
+
+saveRDS(b_logit, "brm_logistic.rds")
 
 
 b_logit_exp1 <- brm(respP ~ 0 + bvotCond*vot_s +
