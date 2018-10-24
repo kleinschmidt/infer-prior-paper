@@ -63,6 +63,8 @@ fit_inc <- infer_prior_beliefs(data_exp1,
 
 saveRDS(fit_inc, "fit_inc.rds")
 
+fit_inc <- readRDS("fit_inc.rds")
+
 categories <-
   data_frame(cat_num = 1:2,
              category = c('b', 'p'))
@@ -118,6 +120,22 @@ mod_class_funs <-
             prob_p_high = quantile(prob_p, 0.975),
             prob_p = mean(prob_p))
 
+prior_class_funs <-
+  prior_samples_df %>%
+  group_by(.draw) %>%
+  nest() %>%
+  sample_n(200) %>%
+  unnest() %>%
+  mutate(mean=mu_0, sd=sigma_0) %>%
+  select(.draw, category, mean, sd) %>%
+  group_by(.draw, category) %>%
+  do(stats_to_lhood(., noise_sd=0)) %>%
+  lhood_to_classification() %>%
+  group_by(vot) %>%
+  summarise(prob_p_low = quantile(prob_p, 0.025),
+            prob_p_high = quantile(prob_p, 0.975),
+            prob_p = mean(prob_p))
+
 
 
 data_exp1 %>%
@@ -128,4 +146,5 @@ data_exp1 %>%
   geom_line(aes(group=subject), alpha=0.2) +
   geom_pointrange(stat="summary", fun.data=mean_cl_boot) +
   geom_ribbon(data=mod_class_funs, aes(y=prob_p, ymin=prob_p_low, ymax=prob_p_high, fill=bvotCond))+
+  geom_line(data=prior_class_funs, aes(y=prob_p), color="black", linetype=2) +
   facet_grid(block_num ~ bvotCond)
