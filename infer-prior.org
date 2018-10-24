@@ -52,6 +52,10 @@
 
 ** TODO Holt follow-ups to Idemaru and Holt 2011
 
+** Chladkova et al. 2017: unsupervised "recalibration"
+
+   Do lexically driven re-tuning with non-words.  Shifted i/e and good e/i.
+
 * Outline
 
 ** Intro
