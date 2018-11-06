@@ -43,7 +43,8 @@ data_pred <-
   cross_df(list(vot_s = seq(min(d1$vot_s), max(d1$vot_s), length.out=100),
                 bvotCond = unique(d1$bvotCond),
                 block = 1:3)) %>%
-  left_join(d1_blocks)
+  left_join(d1_blocks) %>%
+  mutate(vot = vot_s * sd(d1$vot) + mean(d1$vot))
 
 data_pred_subj <-
   d1 %>%
@@ -63,24 +64,25 @@ expt1_bounds_bysub <-
   
   
 ggplot(expt1_bounds,
-       aes(x=vot_s, y=Estimate, ymin=`Q2.5`, ymax=`Q97.5`,
+       aes(x=vot, y=Estimate, ymin=`Q2.5`, ymax=`Q97.5`,
            color=bvotCond, fill=bvotCond)) +
   geom_ribbon(alpha=0.1, color=NA) +
   geom_line() +
   facet_grid(.~trial)
 
 
-ggplot(mapping=aes(x=vot_s, y=Estimate, color=bvotCond, fill=bvotCond)) +
+ggplot(mapping=aes(x=vot, y=Estimate, color=bvotCond, fill=bvotCond)) +
   geom_line(data=expt1_bounds_bysub %>% filter(block==3),
             aes(group=subject), alpha=0.2) +
   facet_grid(.~bvotCond)
 
 expt1_bounds %>%
   filter(block == 3) %>%
-  ggplot(aes(x=vot_s, y=Estimate, color=bvotCond, fill=bvotCond)) +
+  ggplot(aes(x=vot, y=Estimate, color=bvotCond, fill=bvotCond)) +
   geom_line(data=expt1_bounds_bysub %>% filter(block==3),
             aes(group=subject), alpha=0.2) +
-  geom_ribbon(aes(fill=bvotCond, ymin=`Q2.5`, ymax=`Q97.5`), alpha=0, linetype=2) +
+  geom_ribbon(aes(fill=bvotCond, ymin=`Q2.5`, ymax=`Q97.5`), alpha=0, linetype=2,
+              show.legend=FALSE) +
   geom_line(size=2) +
   facet_grid(.~bvotCond)
 
