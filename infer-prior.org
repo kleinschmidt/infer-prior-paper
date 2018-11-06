@@ -10,6 +10,9 @@
 
 *** TODO joint fits to expts 1 and 3 (two mean)
 
+    This might be hard because of the different structures ot these
+    datasets...1 is just exposure, but 3 has a separate post-test.
+
 *** TODO how much does assuming labels known hurt us?
 
     run forward simulations based on inferred prior with unsupervised algorithm
@@ -29,14 +32,15 @@
    subject level and across conditions/experiments.  Especially important to
    compare between the supervised and unsupervised conditions.
 
-*** TODO fit brms logistic regression to experiments 1 and 2
+*** DONE fit brms logistic regression to experiments 1 and 2
 
-    include: intercept, vot, supervised/unsupervised, exposure condition
+    include: intercept, vot, supervised/unsupervised, exposure condition (and
+    trial?) 
 
 *** TODO extract subject boundaries from logistic regression fits
 
-*** TODO plot subject curves and overall curves
-
+*** DONE plot subject curves and overall curves
+    [[file:models/brms_regressions.R::expt1_bounds%20%25>%25][plot at block 3]]
 *** TODO fit brms logistic regression to experiment 3
 
 *** TODO (maybe) fix lapsing logistic regression to expts 1, 2, and 3
@@ -49,9 +53,7 @@
    categories)
 
 ** TODO Diehl papers
-
 ** TODO Holt follow-ups to Idemaru and Holt 2011
-
 ** Chladkova et al. 2017: unsupervised "recalibration"
 
    Do lexically driven re-tuning with non-words.  Shifted i/e and good e/i.
