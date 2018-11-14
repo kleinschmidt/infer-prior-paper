@@ -9,6 +9,11 @@ options(mc.cores = parallel::detectCores())
 
 library(supunsup)
 
+library(ggbeeswarm)
+
+## library(Cairo)
+## CairoX11(dpi=216)
+
 ################################################################################
 # expt 1
 
@@ -19,9 +24,9 @@ d1 <- supunsup::supunsup_clean %>%
          trial_s = (trial - mean(trial)) / sd(trial))
 
 f <- respP ~ 1 + bvotCond * vot_s * trial_s + (1 + vot_s | subject)
-b_logit_exp1 <- brm(f, data=d1, family=bernoulli(), chains=4, iter=1000)
 
-saveRDS(b_logit_exp1, "brm_logistic_exp1.rds")
+# b_logit_exp1 <- brm(f, data=d1, family=bernoulli(), chains=4, iter=1000)
+# saveRDS(b_logit_exp1, "brm_logistic_exp1.rds")
 b_logit_exp1 <- readRDS("brm_logistic_exp1.rds")
 
 ## extract boundaries
@@ -83,14 +88,43 @@ expt1_bounds %>%
             aes(group=subject), alpha=0.2) +
   geom_ribbon(aes(fill=bvotCond, ymin=`Q2.5`, ymax=`Q97.5`), alpha=0, linetype=2,
               show.legend=FALSE) +
-  geom_line(size=2) +
+  geom_line(size=1) +
   facet_grid(.~bvotCond)
+
+
+expt1_bounds_bysub %>%
+  group_by(subject, block) %>%
+  filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5))) %>%
+  ggplot(aes(x=bvotCond, y=vot, fill=bvotCond)) +
+  geom_violin() +
+  facet_grid(.~block)
+
+expt1_bounds_bysub %>%
+  group_by(subject, block) %>%
+  filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5))) %>%
+  ggplot(aes(x=bvotCond, y=vot, fill=bvotCond, color=bvotCond)) +
+  geom_violin(alpha=0.2) +
+  geom_beeswarm(cex=2) +
+  facet_grid(.~block)
+
+# sorta re-creates the original figure
+expt1_bounds_bysub %>%
+  group_by(subject, block) %>%
+  filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5))) %>%
+  ## filter(block==3) %>%
+  ggplot(aes(x=bvotCond, y=vot, fill=bvotCond, color=bvotCond)) +
+  geom_violin(alpha=0.5, color=NA) +
+  ## geom_beeswarm(cex=2) +
+  geom_pointrange(stat="summary", fun.data=mean_cl_boot, color="white") +
+  facet_grid(block ~ .) +
+  coord_flip()
+
 
 
 ################################################################################
 # expt 1 vs 2: effect of supervision
 
-d <- supunsup::supunsup_clean %>%
+d2 <- supunsup::supunsup_clean %>%
   filter(labeled == "unlabeled", bvotCond != "-10") %>%
   select(subject, supCond, labeled, bvotCond, trial, vot, respP) %>%
   mutate(vot_s = (vot - mean(vot)) / sd(vot),
@@ -100,15 +134,14 @@ d <- supunsup::supunsup_clean %>%
 f_noint <- respP ~ 0 + bvotCond * supervised * vot_s * trial_s +
   (1 + vot_s | subject)
 
-b_logit_sup_v_unsup <- brm(f_noint,
-               data = d,
-               family = bernoulli(),
-               chains=4,
-               iter=1000)
+## b_logit_sup_v_unsup <- brm(f_noint,
+##                data = d2,
+##                family = bernoulli(),
+##                chains=4,
+##                iter=1000)
 
-saveRDS(b_logit_sup_v_unsup, "brm_logistic_sup_v_unsup.rds")
+## saveRDS(b_logit_sup_v_unsup, "brm_logistic_sup_v_unsup.rds")
 
 b_logit_sup_v_unsup <- readRDS("brm_logistic_sup_v_unsup.rds")
-
 
 

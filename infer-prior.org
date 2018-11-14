@@ -37,7 +37,8 @@
     include: intercept, vot, supervised/unsupervised, exposure condition (and
     trial?) 
 
-*** TODO extract subject boundaries from logistic regression fits
+*** DONE extract subject boundaries from logistic regression fits
+    [[file:models/brms_regressions.R::expt1_bounds_bysub%20<-][subject boundaries]]
 
 *** DONE plot subject curves and overall curves
     [[file:models/brms_regressions.R::expt1_bounds%20%25>%25][plot at block 3]]
