@@ -135,6 +135,10 @@
     to a typical talker's distributions; see what (English-speaking) adults
     manage to learn and what they do not.
 
+    In this paper I explore a simple hypothesis: people a harder time learning
+    distributions that are less similar to the distributions that they've
+    previously encountered.  
+    
 *** preview
 
     people have a harder time adapting to distributions that deviate a lot from
@@ -189,7 +193,7 @@
 ** Modeling
 
    two questions: is the pattern of adaptation consistent with distributional
-   learning starting from a single (shared) set of prior beliefs?  And if so,
+   Learning starting from a single (shared) set of prior beliefs?  And if so,
    are those shared prior beliefs similar to what a typical talker of American
    English produces?
 
@@ -200,7 +204,12 @@
 
 ** Experiment 3
 
-   
+** Discussion   
+
+*** Ideal adapter: learn where to be flexible
+    Under this interpretation, people don't become less flexible _per se_ as
+    they enter adulthood.  Rather, they become _smarter_ about where to be
+    flexible, because this allows them to learn more efficiently.
 
 * notes/snippets
 
