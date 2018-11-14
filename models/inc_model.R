@@ -148,3 +148,132 @@ data_exp1 %>%
   geom_ribbon(data=mod_class_funs, aes(y=prob_p, ymin=prob_p_low, ymax=prob_p_high, fill=bvotCond))+
   geom_line(data=prior_class_funs, aes(y=prob_p), color="black", linetype=2) +
   facet_grid(block_num ~ bvotCond)
+
+################################################################################
+# don't include -10 ms shift
+
+fit_inc_posshift <- infer_prior_beliefs(filter(data_exp1, bvotCond != "-10"),
+                                        cue = "vot",
+                                        category = "trueCat",
+                                        response = "respCat",
+                                        condition = "vot_cond",
+                                        ranefs = "subject",
+                                        n_blocks = 6,
+                                        chains = 4,
+                                        iter = 2000)
+
+
+scale_shift <- prior_samples_df %>%
+  group_by(.draw, nu_0, kappa_0) %>%
+  summarise() %>%
+  mutate(solution = ifelse(nu_0 > kappa_0, "shift", "scale")) %>%
+  ungroup() %>%
+  select(.draw, solution)
+
+prior_samples_long <-
+  fit_inc %>%
+  gather_draws(nu_0, kappa_0, mu_0[cat_num], sigma_0[cat_num]) %>%
+  group_by(.draw) %>%
+  left_join(categories) %>%
+  left_join(scale_shift)
+
+prior_samples_posshift_long <-
+  fit_inc_posshift %>%
+  gather_draws(nu_0, kappa_0, mu_0[cat_num], sigma_0[cat_num]) %>%
+  left_join(categories)
+  
+prior_samples_long_all <-
+  bind_rows(prior_samples_long %>% mutate(model="all conds"),
+            prior_samples_posshift_long %>% mutate(model="pos shift"))
+
+ggplot(prior_samples_long_all,
+       aes(x=.value, color=category)) +
+  geom_density(aes(y=..scaled..)) +
+  facet_grid(model ~ .variable, scales="free")
+
+prior_samples_long_all %>%
+  ggplot(aes(x=.value, color=category)) +
+  geom_density(aes(y=..scaled..)) +
+  facet_grid(paste(model, solution) ~ .variable, scales="free")
+
+prior_samples_posshift_wide <-
+  fit_inc_posshift %>%
+  spread_draws(nu_0, kappa_0, mu_0[cat_num], sigma_0[cat_num]) %>%
+  left_join(categories)
+
+bind_rows(prior_samples_posshift_wide %>% mutate(model="pos shift"),
+          prior_samples_df %>% mutate(model="all shift")) %>%
+  ggplot( aes(x=kappa_0, y=nu_0)) +
+  stat_density_2d() +
+  facet_grid(.~model) +
+  scale_x_log10() +
+  scale_y_log10()
+
+#' Okay what am I seeing here?  the fit looks _more_ like a "scale" solution
+#' when you drop the -10ms condition.
+#'
+#' I kinda wish I didn't know this because it makes writing it up a little more
+#' complicated.  I "like" the shift solution better from a theoretical
+#' perspective, but then again why should that be preferable??  I mean what
+#' theoretical reason is there to prefer that solution??  I think it has more to
+#' do with the fact that the stimuli were constructed with a shift design,
+#' right?
+#' 
+
+
+################################################################################
+# all un-labeled trials
+
+data_exp12 <- supunsup::supunsup_clean %>%
+  filter(labeled == 'unlabeled') %>%
+  mutate(trueCat = respCategory,
+         subjNum = as.numeric(factor(subject)),
+         trueCatNum = as.numeric(trueCat),
+         respCatNum = as.numeric(respCat)) %>%
+  left_join(conditions_exp1)
+
+fit_12_inc <- infer_prior_beliefs(data_exp12,
+                                  cue = "vot",
+                                  category = "trueCat",
+                                  response = "respCat",
+                                  condition = "vot_cond",
+                                  ranefs = "subject",
+                                  n_blocks = 6,
+                                  chains = 4,
+                                  iter = 2000)
+
+prior_samples_12_long <-
+  fit_12_inc %>%
+  gather_draws(nu_0, kappa_0, mu_0[cat_num], sigma_0[cat_num]) %>%
+  left_join(categories)
+
+
+
+
+fit_12_posshift_inc <- infer_prior_beliefs(filter(data_exp12, bvotCond != "-10"),
+                                           cue = "vot",
+                                           category = "trueCat",
+                                           response = "respCat",
+                                           condition = "vot_cond",
+                                           ranefs = "subject",
+                                           n_blocks = 6,
+                                           chains = 4,
+                                           iter = 2000)
+
+prior_samples_12_posshift_long <-
+  fit_12_posshift_inc %>%
+  gather_draws(nu_0, kappa_0, mu_0[cat_num], sigma_0[cat_num]) %>%
+  left_join(categories)
+
+
+prior_samples_long_all %>%
+  bind_rows(prior_samples_12_long %>% mutate(model="all shifts (+sup)"),
+            prior_samples_12_posshift_long %>% mutate(model="pos shifts (+sup)")) %>%
+  ggplot(aes(x=.value, color=category)) +
+  geom_density(aes(y=..scaled..)) +
+  facet_grid(model ~ .variable, scales="free")
+
+
+#' See a very similar thing when we include all the data from the supervised
+#' conditions too: dropping the -10 shift leads to 
+#' 

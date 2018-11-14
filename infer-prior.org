@@ -8,24 +8,54 @@
     ~beliefupdatr~ somewhere?  IN particular, want to know what the inferred prior
     looks like.
 
-*** TODO joint fits to expts 1 and 3 (two mean)
+*** joint fits to expts 1 and 3 (two mean)
 
     This might be hard because of the different structures ot these
     datasets...1 is just exposure, but 3 has a separate post-test.
 
-*** TODO how much does assuming labels known hurt us?
+*** how much does assuming labels known hurt us?
 
     run forward simulations based on inferred prior with unsupervised algorithm
     (particles).  In lieu of actually doing the full unsupervised prior inferring,
     see how far off we are.
 
-*** TODO additional models
+*** additional models
 
     control model: just change lapse rate (maybe)
 
     use production means/variances and just fit confidence.  how well does it
     explain adaptation?
 
+*** DONE consider only analyzing positive VOT shifts
+    only have positive shfits for supervised ones...and maybe it simplifies
+    things somewhat.
+
+**** considerations
+    the issue is that the data from the other experiment starts to look weird
+    then since there's no negative VOT shifts...but negative VOTs are weird
+    anyway so maybe it's best to just stay away from those altogether. 
+
+    but then it feels a little icky to withold data just because it's
+    conceptually tricky/makes for a less clean story.  I mean it's probably fine
+    to just say "okay negative VOTs are weird but leaving that aside let's see
+    what happens".  THen again it also doesn't go AGAINST any story I'm trying
+    to tell, it's just not super clear what relevance it has to anything.
+
+**** Update
+     [[file:models/inc_model.R::#'%20Okay%20what%20am%20I%20seeing%20here?%20the%20fit%20looks%20_more_%20like%20a%20"scale"%20solution][summary and plots]]
+
+     Okay, so I did this.  And the inferred prior changes from a "shift" to a
+     "scale" (less confidence in variance than mean).  The fit to all five
+     conditions actually has like 80/20 split in the samples, so it's not
+     *super* surprising but it's a little troubling that the "headline" changes
+     so much.
+
+     I kind of wish I didn't know this; now I have to decide which to report.
+     It seems pretty clear that no matter _what_ I'll have to add the caveat
+     that the fits are different.  But I'm not so sure what to make of the
+     difference.  Is it actually important?  Just a basic instability in the
+     model?
+    
 ** TODO analyze results with (lapsing) Bayesian logistic regression
 
    that way I can get good estimates of the boundary uncertainty both at the
