@@ -31,15 +31,16 @@
     things somewhat.
 
 **** considerations
-    the issue is that the data from the other experiment starts to look weird
-    then since there's no negative VOT shifts...but negative VOTs are weird
-    anyway so maybe it's best to just stay away from those altogether. 
+     the issue is that the data from the other experiment starts to look weird
+     then since there's no negative VOT shifts...but negative VOTs are weird
+     anyway so maybe it's best to just stay away from those altogether.
 
-    but then it feels a little icky to withold data just because it's
-    conceptually tricky/makes for a less clean story.  I mean it's probably fine
-    to just say "okay negative VOTs are weird but leaving that aside let's see
-    what happens".  THen again it also doesn't go AGAINST any story I'm trying
-    to tell, it's just not super clear what relevance it has to anything.
+     but then it feels a little icky to withold data just because it's
+     conceptually tricky/makes for a less clean story.  I mean it's probably
+     fine to just say "okay negative VOTs are weird but leaving that aside let's
+     see what happens".  THen again it also doesn't go AGAINST any story I'm
+     trying to tell, it's just not super clear what relevance it has to
+     anything.
 
 **** Update
      [[file:models/inc_model.R::#'%20Okay%20what%20am%20I%20seeing%20here?%20the%20fit%20looks%20_more_%20like%20a%20"scale"%20solution][summary and plots]]
@@ -88,7 +89,36 @@
 ** Chladkova et al. 2017: unsupervised "recalibration"
 
    Do lexically driven re-tuning with non-words.  Shifted i/e and good e/i.
+* TODO decide which data goes in this paper
+  One of the issues I keep coming back to is the question of *which data to
+  discuss in this paper*.  A priori, my strong preferences is *all of it*.
 
+  There are two main sticking points for me:
+  1. The -10 /b/ VOT condition was added after the fact, and there's only
+     unsupervised data on that one.  So if the supervised data is included,
+     there's a discrepancy.
+  2. If the -10 condition is excluded from the belief updating model, the
+     inferred prior changes, in a rather dramatic way: switches from a "shift"
+     (lower mean confidence) to a "scale" (lower var confidence) solution.
+
+  I actually don't think *1.* is that big of a deal: learning in the large
+  positive shifts is also incomplete, so the supervised conditions still provide
+  a reasonable test of the hypothesis that what's blocking learning is the lack
+  of labels.
+
+  And *2.* is only a problem inasmuch as the goal is to draw strong conclusions
+  based on the content of the inferred prior.  I think it's really better as a
+  sanity check here: _can_ the constraints we see be explained by belief
+  updating based on a common starting point??  Either way the answer is gonna be
+  yes (there's no reason that the fits to a restricted subset of the data would
+  fit _worse_ on those data than a fit to a superset).
+
+  So there's no reason to give up my prior preferences to include all the data.
+  Just need to be honest about how the data was collected and the caveats about
+  the interpretation of the inferred prior.  But there are already _lots_ of
+  caveates needed there anyway (assuming direct access to the statistical
+  properties of the clusters/labels are known, constraints on the confidence
+  parameters being equal across categories, etc.).  So.
 * Outline
 
 ** Intro
