@@ -1,0 +1,151 @@
+# Introduction
+
+# Experiment 1
+
+```{r data-exp1}
+
+data_exp1 <- supunsup::supunsup_clean %>%
+  filter(supCond == 'unsupervised') %>%
+  mutate(trueCat = respCategory,
+         subjNum = as.numeric(factor(subject)),
+         trueCatNum = as.numeric(trueCat),
+         respCatNum = as.numeric(respCat))
+
+conditions_exp1 <-
+  data_exp1 %>%
+  group_by(bvotCond, trueCat) %>%
+  summarise(mean_vot = mean(vot)) %>%
+  spread(trueCat, mean_vot) %>%
+  transmute(vot_cond = paste(b, p, sep=', '),
+            ideal_boundary = (b+p)/2) %>%
+  ungroup() %>%
+  mutate(vot_cond = factor(vot_cond, levels=vot_cond))
+
+data_exp1 %<>% left_join(conditions_exp1)
+
+```
+
+```{r vot-dists-exp1, fig.width=8, fig.height=2, fig.cap="Each subject heard one of these five synthetic accents, which differ only in the distribution of VOTs of the word-initial stops. Black dashed lines show VOT distributions from a hypothetical typical talker [as estimated by @Kronrod2012]. Note that the 0 and 10ms shifted accents are reasonably close to this typical talker, while the -10, 20, and 30ms shifted accents deviate substantially."}
+
+exposure_stats <- data_exp1 %>%
+  group_by(vot_cond, category=trueCat) %>%
+  summarise(mean=mean(vot), sd=sd(vot))
+
+sd_noise = sqrt(82)
+
+exposure_lhood <- exposure_stats %>%
+  group_by(vot_cond) %>%
+  do(supunsup::stats_to_lhood(., sd_noise))
+
+data_exp1 %>%
+  group_by(vot_cond, vot) %>%
+  filter(subject == first(subject)) %>%
+  tally() %>%
+  ggplot(aes(x=vot)) +
+  geom_bar(stat='identity', aes(y=n, fill=vot_cond)) +
+  geom_line(data=prior_lhood, aes(y=lhood*1600, group=category),
+            color="black", linetype=2) +
+  geom_text(data=data.frame(vot_cond='-10, 30'), x = 10, y = 60,
+            label = 'Typical Talker',
+            color='black', hjust=0, vjust=0.3, size=3) +
+  geom_text(data=data.frame(vot_cond='-10, 30'), x = 40, y = 50,
+            label = 'Exposure\nTalker',
+            color=vot_colors[2], hjust=0, vjust=0.8, size=3,
+            lineheight=1) + 
+  facet_grid(.~vot_cond) +
+  scale_x_continuous('VOT (ms)') +
+  scale_y_continuous('Frequency') +
+  ## scale_fill_discrete('/b/, /p/\nmean VOT') ## +
+  scale_fill_exp1
+  ## theme(legend.position='none')
+
+``` 
+
+## Methods
+
+### Subjects {#sec:subjects}
+
+```{r participants-exp1}
+
+n_subj <- data_exp1 %>% group_by(subject) %>% summarise() %>% tally()
+
+excluded <- supunsup::supunsup_excluded %>%
+  filter(supCond == 'unsupervised') %>%
+  group_by(subject) %>% 
+  summarise() %>% 
+  right_join(supunsup::excludes) %>%
+  select(subject, exclude80PercentAcc, rank)
+
+n_excluded <- nrow(excluded)
+n_subj_repeat <- sum(!is.na(excluded$rank))
+n_subj_bad <- sum(!is.na(excluded$exclude80PercentAcc))
+n_both <- n_subj_repeat + n_subj_bad - n_excluded 
+
+n_total <- n_subj + n_excluded
+
+```
+
+`r n_total` subjects were recruited via Amazon's Mechanical Turk. Subjects were
+paid \$2.00 for participation, which took about 20 minutes. We excluded subjects
+who participated more than once ($n=`r n_subj_repeat`$) or who failed to
+classify VOTs reliably ($n=`r n_subj_bad`$; $n=`r n_both`$ for both reasons).
+We defined reliable classification as accuracy of at least 80% at 0 and 70ms
+VOT. Because some conditions had few stimuli with these VOTs, we extrapolated
+subjects' responses using a logistic generalize linear model (GLM).  Excluded
+subjects were roughly equally distributed across conditions (maximum of 5 in 0ms
+/b/ VOT condition, and minimum of 1 in 20ms /b/ VOT condition). After these
+exclusions, data from `r n_subj` subjects remained for analysis.
+
+### Procedure
+
+![Example trial display (beach/peach). Listeners first click on the
+    green button to play the word, then click on one picture to indicate what
+    they heard.](figure_manual/beach_peach.png){#fig:beach-peach}
+
+The procedure is based on @Clayards2008. Figure @fig:beach-peach shows an
+example trial display.  On each trial, two response option images appeared,
+which corresponded to one of three /b/-/p/ minimal pairs (beach/peach,
+bees/peas, or beak/peak).  Subjects started each trial by clicking on a button
+between the two pictures, which played the corresponding minimal pair word audio
+stimulus. Subjects then clicked on the picture to indicate whether they heard
+the /b/ or /p/ member of the minimal pair. Subjects performed 222 of these
+trials, evenly divided between the three minimal pairs, in random order.
+
+Each trial's word was synthesized with a voice onset time (VOT) that was
+randomly drawn from a bimodal distribution, with low and high VOT clusters
+implicitly corresponding to /b/ and /p/, respectively. This distribution defined
+the *accent* that the subject heard, and each subject was pseudorandomly
+assigned to one of five accent conditions (Figure @fig:vot-dists-exp1). 
+
+### Materials
+
+The audio and visual stimuli we used were identical to those in
+@Clayards2008. Three /b/-/p/ minimal pair audio continua were synthesized using
+the 1988 Klatt synthesizer [@Klatt1980], by manipulating VOT in 10ms increments
+(either adding voicing before the stop burst to create negative VOTs, or
+aspiration after for positive VOTs). Within a /b/-/p/ continuum, the other
+parameters were held constant, and modeled on natural tokens of the endpoints
+(beach/peach, bees/peas, and beak/peak).
+
+## Results
+
+In order to assess distributional learning, I estimated each subject's
+classification functions with a Bayesian multilevel logistic regression, using
+the `brms` package [@Burkner2017] for `R` [@RCoreTeam2017].  This approach
+simultaneously estimates the group-level effects of the experimental
+manipulation (VOT shift condition) on the /b/-/p/ category boundary location and
+sharpness, and each individual subjects' boundary locations and slopes.  A
+multilevel approach like this has the benefit of properly accounting for and
+balancing the joint uncertainty about the group- and individual-level effects
+[@Gelman2007].
+
+
+
+## Discussion
+
+
+# Experiment 2
+
+# Model
+
+# Experiment 3
