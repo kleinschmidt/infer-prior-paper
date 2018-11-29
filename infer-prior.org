@@ -89,6 +89,9 @@
 ** Chladkova et al. 2017: unsupervised "recalibration"
 
    Do lexically driven re-tuning with non-words.  Shifted i/e and good e/i.
+** Schweinhart, Shafto, and Essock 2017
+   Adapt to orientation distributions, basically the same finding as Idemaru and
+   Holt (2011).
 * TODO decide which data goes in this paper
   One of the issues I keep coming back to is the question of *which data to
   discuss in this paper*.  A priori, my strong preferences is *all of it*.
