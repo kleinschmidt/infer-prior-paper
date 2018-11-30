@@ -278,8 +278,85 @@ data_exp1_mod <-
 # saveRDS(b_logit_exp1, "models/brm_logistic_exp1.rds")
 b_logit_exp1 <- readRDS("models/brm_logistic_exp1.rds")
 
+# extract fitted classification functions:
+# first get trials from first, second, and third thirds
+exp1_blocks <-
+  data_exp1_mod %>%
+  group_by(block=ntile(trial, 3)) %>%
+  summarise_at(vars(trial, trial_s), mean)
+# overall fit (fixed effects):
+data_pred <-
+  cross_df(list(vot_s = seq(min(d1$vot_s), max(d1$vot_s), length.out=100),
+                bvotCond = unique(d1$bvotCond),
+                block = 1:3)) %>%
+  left_join(d1_blocks, by="block") %>%
+  mutate(vot = vot_s * sd(d1$vot) + mean(d1$vot)) %>%
+  left_join(conditions_exp1, by="bvotCond")
+
+expt1_class <-
+  fitted(b_logit_exp1, newdata=data_pred, re_formula=NA) %>%
+  as_tibble() %>%
+  bind_cols(data_pred)
+
+# by-subject fit (fixed+random effects):
+data_pred_subj <-
+  d1 %>%
+  group_by(subject, bvotCond) %>%
+  summarise() %>%
+  left_join(data_pred, by="bvotCond")
+
+expt1_class_bysub <-
+  fitted(b_logit_exp1, newdata=data_pred_subj) %>%
+  as_tibble() %>%
+  bind_cols(data_pred_subj)
+
+# get x-intercept (category boundary):
+expt1_bounds <-
+  expt1_class %>%
+  group_by(bvotCond, block) %>%
+  filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5)))
+  
+expt1_bounds_bysub <-
+  expt1_class_bysub %>%
+  group_by(subject, block) %>%
+  filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5)))
 
 ```
+
+```{r exp1-results}
+
+perfect_learning <- exposure_stats %>%
+  group_by(vot_cond) %>%
+  do(stats_to_lhood(.)) %>%
+  lhood_to_classification()
+
+no_learning <- prior_lhood %>%
+  lhood_to_classification()
+
+prior_bound <- no_learning %>%
+  arrange(abs(prob_p - 0.5)) %>%
+  filter(row_number() ==1) %>%
+  pull(vot)
+
+vot_limits <- data_exp1 %>% pull(vot) %>% range()
+
+ggplot(expt1_class_bysub, aes(x=vot, color=vot_cond)) +
+  geom_line(data=.%>%filter(block==3), aes(y=Estimate, group=subject), alpha=0.2) +
+  facet_grid(.~vot_cond) +
+  geom_line(data=perfect_learning, aes(y=prob_p), group=1, linetype="33", size=1,
+            show.legend=FALSE) +
+  geom_line(data=no_learning, aes(y=prob_p), group=1, linetype="99", color='black',
+            show.legend=FALSE) +
+  geom_point(data=expt1_bounds %>% filter(block==3),
+             y=0.5) +
+  labs(x="VOT (ms)",
+       y="Probability /p/ response",
+       title="Experiment 1: Classification functions",
+       subtitle="Fitted with mixed effects logistic regression, predictions for final third of trials")
+
+```
+
+
 
 
 
