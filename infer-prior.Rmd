@@ -62,6 +62,10 @@ library(tidyverse)
 library(beliefupdatr)
 library(supunsup)
 
+library(rstan)
+library(brms)
+library(tidybayes)
+
 library(cowplot)
 theme_set(cowplot::theme_cowplot() +
             theme(plot.title=element_text(hjust=0)))
@@ -260,6 +264,22 @@ sharpness, and each individual subjects' boundary locations and slopes.  A
 multilevel approach like this has the benefit of properly accounting for and
 balancing the joint uncertainty about the group- and individual-level effects
 [@Gelman2007].
+
+```{r exp1-regression, dependson=c("data-exp1")}
+
+data_exp1_mod <-
+  data_exp1 %>%
+  select(subject, bvotCond, trial, vot, respP) %>%
+  mutate(vot_s = (vot - mean(vot)) / sd(vot),
+         trial_s = (trial - mean(trial)) / sd(trial))
+
+# b_logit_exp1 <- brm(respP ~ 1 + bvotCond * vot_s * trial_s + (1 + vot_s | subject),
+#                     data=data_exp1_mod, family=bernoulli(), chains=4, iter=1000)
+# saveRDS(b_logit_exp1, "models/brm_logistic_exp1.rds")
+b_logit_exp1 <- readRDS("models/brm_logistic_exp1.rds")
+
+
+```
 
 
 
