@@ -164,13 +164,14 @@ data_exp1 %>%
             color='black', hjust=0, vjust=0.3, size=3) +
   geom_text(data=data.frame(vot_cond='-10, 30'), x = 40, y = 50,
             label = 'Exposure\nTalker',
-            color=vot_colors[2], hjust=0, vjust=0.8, size=3,
+            hjust=0, vjust=0.8, size=3,
             lineheight=1) + 
   facet_grid(.~vot_cond) +
   scale_x_continuous('VOT (ms)') +
   scale_y_continuous('Frequency') +
+  labs(title="Experiment 1: VOT distribution conditions",
+       subtitle="Similarity of exposure talker to typical talker controlled by shifting means of /b/ and /p/ distributions")
   ## scale_fill_discrete('/b/, /p/\nmean VOT') ## +
-  scale_fill_exp1
   ## theme(legend.position='none')
 
 ``` 
@@ -185,10 +186,10 @@ n_subj <- data_exp1 %>% group_by(subject) %>% summarise() %>% tally()
 
 excluded <- supunsup::supunsup_excluded %>%
   filter(supCond == 'unsupervised') %>%
-  group_by(subject) %>% 
+  group_by(subject, bvotCond) %>% 
   summarise() %>% 
-  right_join(supunsup::excludes) %>%
-  select(subject, exclude80PercentAcc, rank)
+  left_join(supunsup::excludes, by="subject") %>%
+  select(subject, bvotCond, exclude80PercentAcc, rank)
 
 n_excluded <- nrow(excluded)
 n_subj_repeat <- sum(!is.na(excluded$rank))
@@ -196,6 +197,11 @@ n_subj_bad <- sum(!is.na(excluded$exclude80PercentAcc))
 n_both <- n_subj_repeat + n_subj_bad - n_excluded 
 
 n_total <- n_subj + n_excluded
+
+n_excl_cond <- excluded %>%
+  group_by(bvotCond) %>%
+  tally() %>%
+  arrange(n)
 
 ```
 
@@ -205,10 +211,12 @@ who participated more than once ($n=`r n_subj_repeat`$) or who failed to
 classify VOTs reliably ($n=`r n_subj_bad`$; $n=`r n_both`$ for both reasons).
 We defined reliable classification as accuracy of at least 80% at 0 and 70ms
 VOT. Because some conditions had few stimuli with these VOTs, we extrapolated
-subjects' responses using a logistic generalize linear model (GLM).  Excluded
-subjects were roughly equally distributed across conditions (maximum of 5 in 0ms
-/b/ VOT condition, and minimum of 1 in 20ms /b/ VOT condition). After these
-exclusions, data from `r n_subj` subjects remained for analysis.
+subjects' responses using a logistic generalized linear model (GLM).  Excluded
+subjects were roughly equally distributed across conditions (maximum of 
+`r last(n_excl_cond$n)` in `r last(n_excl_cond$bvotCond)`ms /b/ VOT condition,
+and minimum of `r first(n_excl_cond$n)` in `r first(n_excl_cond$bvotCond)`ms /b/
+VOT condition). After these exclusions, data from `r n_subj` subjects remained
+for analysis.
 
 ### Procedure
 
@@ -216,7 +224,7 @@ exclusions, data from `r n_subj` subjects remained for analysis.
     green button to play the word, then click on one picture to indicate what
     they heard.](figure_manual/beach_peach.png){#fig:beach-peach}
 
-The procedure is based on @Clayards2008. Figure @fig:beach-peach shows an
+The procedure is based on @Clayards2008. Figure -@fig:beach-peach shows an
 example trial display.  On each trial, two response option images appeared,
 which corresponded to one of three /b/-/p/ minimal pairs (beach/peach,
 bees/peas, or beak/peak).  Subjects started each trial by clicking on a button
@@ -229,7 +237,7 @@ Each trial's word was synthesized with a voice onset time (VOT) that was
 randomly drawn from a bimodal distribution, with low and high VOT clusters
 implicitly corresponding to /b/ and /p/, respectively. This distribution defined
 the *accent* that the subject heard, and each subject was pseudorandomly
-assigned to one of five accent conditions (Figure @fig:vot-dists-exp1). 
+assigned to one of five accent conditions ([@Fig:vot-dists-exp1]).
 
 ### Materials
 
