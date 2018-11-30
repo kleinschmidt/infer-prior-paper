@@ -108,7 +108,7 @@ data_exp1 <- left_join(data_exp1, conditions_exp1, by="bvotCond")
 
 ```
 
-```{r vot-dists-exp1, fig.width=8, fig.height=2, fig.cap="Each subject heard one of these five synthetic accents, which differ only in the distribution of VOTs of the word-initial stops. Black dashed lines show VOT distributions from a hypothetical typical talker [as estimated by @Kronrod2012]. Note that the 0 and 10ms shifted accents are reasonably close to this typical talker, while the -10, 20, and 30ms shifted accents deviate substantially."}
+```{r vot-dists-exp1, fig.width=10, fig.height=3, fig.cap="Each subject heard one of these five synthetic accents, which differ only in the distribution of VOTs of the word-initial stops. Black dashed lines show VOT distributions from a hypothetical typical talker [as estimated by @Kronrod2012]. Note that the 0 and 10ms shifted accents are reasonably close to this typical talker, while the -10, 20, and 30ms shifted accents deviate substantially."}
 
 prior_stats_by_talker <-
   votcorpora::vot %>%
