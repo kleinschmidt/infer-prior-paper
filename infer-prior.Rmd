@@ -1,3 +1,82 @@
+---
+Title: What Constrains distributional learning in adults?
+Author: Dave Kleinschmidt
+bibliography: /home/dave/Zotero/library.bib
+output:
+    html_document:
+        code_folding: hide
+        dev: png
+        keep_md: true
+        md_extensions: +implicit_figures
+        pandoc_args:
+        - --filter
+        - pandoc-crossref
+    pdf_document:
+        md_extensions: +implicit_figures
+        keep_tex: true
+        pandoc_args:
+        - --filter
+        - pandoc-crossref
+---
+
+
+```{r knitr-setup, warning=FALSE, message=FALSE, error=FALSE, echo=FALSE, results='hide'}
+
+library(knitr)
+opts_chunk$set(warning = FALSE,
+               message = FALSE,
+               error = FALSE,
+               cache=TRUE,
+               echo=opts_knit$get("rmarkdown.pandoc.to") != 'latex')
+
+options(digits=2)
+
+## Produce markdown-formatted figures so that pandoc knows what to do with
+## the captions. requires pandoc-fignos to parse the IDs. refer to figures
+## in text with {@fig:label} or just @fig:label
+## 
+## (see https://github.com/tomduck/pandoc-fignos)
+knit_hooks$set(plot = function(x, options) {
+  paste0('![', options$fig.cap, ']',
+         '(', opts_knit$get('base.url'), paste(x, collapse='.'), ')',
+         '{#fig:', options$label, '}')
+})
+## Produce markdown-formatted table captions with anchors for cross-refs.
+## Requires pandoc-tablenos to parse the IDs. Refer to tables
+## in text with {@tbl:label} or @tbl:label.
+## Based partly on http://stackoverflow.com/a/18672268
+##
+## (see https://github.com/tomduck/pandoc-tablenos)
+knit_hooks$set(tbl.cap = function(before, options, envir) {
+  if(!before){
+    paste0('\n\nTable: ', options$tbl.cap,
+           ' {#tbl:', options$label, '}', sep = '')
+  }
+})
+
+```
+
+```{r preamble, cache=FALSE}
+
+library(tidyverse)
+library(beliefupdatr)
+library(supunsup)
+
+library(cowplot)
+theme_set(cowplot::theme_cowplot() +
+            theme(plot.title=element_text(hjust=0)))
+
+## devtools::install_github('kleinschmidt/daver')
+library(daver)
+## devtools::install_github('kleinschmidt/phonetic-sup-unsup')
+library(supunsup)
+## devtools::install_github('kleinschmidt/beliefupdatr')
+library(beliefupdatr)
+
+```
+
+
+
 # Introduction
 
 # Experiment 1
@@ -21,11 +100,46 @@ conditions_exp1 <-
   ungroup() %>%
   mutate(vot_cond = factor(vot_cond, levels=vot_cond))
 
-data_exp1 %<>% left_join(conditions_exp1)
+data_exp1 <- left_join(data_exp1, conditions_exp1, by="bvotCond")
 
 ```
 
 ```{r vot-dists-exp1, fig.width=8, fig.height=2, fig.cap="Each subject heard one of these five synthetic accents, which differ only in the distribution of VOTs of the word-initial stops. Black dashed lines show VOT distributions from a hypothetical typical talker [as estimated by @Kronrod2012]. Note that the 0 and 10ms shifted accents are reasonably close to this typical talker, while the -10, 20, and 30ms shifted accents deviate substantially."}
+
+prior_stats_by_talker <-
+  votcorpora::vot %>%
+  filter(source %in% c('gva13', 'bbg09', 'buckeye'),
+         place == 'lab') %>%
+  mutate(source = ifelse(source %in% c('gva13', 'bbg09'),
+                         'goldricketal',
+                         source)) %>%
+  group_by(source, prevoiced, subject, phoneme) %>%
+  summarise(mu = mean(vot),
+            sigma2 = var(vot),
+            sigma = sd(vot),
+            n = n()) %>%
+  rename(category = phoneme)
+
+prior_stats <-
+  prior_stats_by_talker %>%
+  filter(source == 'goldricketal', category == 'b') %>%
+  group_by(source, prevoiced, category) %>%
+  summarise_at(vars(mu, sigma2, sigma, n), funs(mean, var, sum)) %>%
+  transmute(category,
+            mean = mu_mean,
+            sd = sqrt(sigma2_mean),
+            n = n_sum) %>%
+  bind_rows(supunsup::prior_stats %>%
+              filter(source=='kronrod2012') %>%
+              mutate(n = 1))
+
+prior_lhood <- 
+  prior_stats %>%
+  filter(source == 'kronrod2012') %>%
+  supunsup::stats_to_lhood()
+
+prior_class <- prior_lhood %>% lhood_to_classification()
+
 
 exposure_stats <- data_exp1 %>%
   group_by(vot_cond, category=trueCat) %>%
