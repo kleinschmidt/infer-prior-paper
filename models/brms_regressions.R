@@ -107,6 +107,15 @@ expt1_bounds_bysub %>%
   geom_beeswarm(cex=2) +
   facet_grid(.~block)
 
+# estimate uncertainty of fixed effects boundaries:
+exp1_bounds_fixef <-
+  tidybayes::linpred_draws(b_logit_exp1, data_pred, re_formula=NA) %>%
+  group_by(bvotCond, block, trial, .draw) %>%
+  arrange((.value - 0.5)^2) %>%         # sort by distance from 0.5
+  filter(row_number() == 1) %>%         # take the closest to 0.5
+  group_by(bvotCond, block, trial) %>%
+  summarise(low=quantile(vot, 0.025), high=quantile(vot, 0.975), mean=mean(vot))
+
 # sorta re-creates the original figure
 expt1_bounds_bysub %>%
   group_by(subject, block) %>%
@@ -115,7 +124,9 @@ expt1_bounds_bysub %>%
   ggplot(aes(x=bvotCond, y=vot, fill=bvotCond, color=bvotCond)) +
   geom_violin(alpha=0.5, color=NA) +
   ## geom_beeswarm(cex=2) +
-  geom_pointrange(stat="summary", fun.data=mean_cl_boot, color="white") +
+  geom_pointrange(data = exp1_bounds_fixef,
+                  aes(y=mean, ymin=low, ymax=high),
+                  color="white", show.legend=FALSE) +
   facet_grid(block ~ .) +
   coord_flip()
 
