@@ -108,7 +108,7 @@ data_exp1 <- left_join(data_exp1, conditions_exp1, by="bvotCond")
 
 ```
 
-```{r vot-dists-exp1, fig.width=10, fig.height=3, fig.cap="Each subject heard one of these five synthetic accents, which differ only in the distribution of VOTs of the word-initial stops. Black dashed lines show VOT distributions from a hypothetical typical talker [as estimated by @Kronrod2012]. Note that the 0 and 10ms shifted accents are reasonably close to this typical talker, while the -10, 20, and 30ms shifted accents deviate substantially."}
+```{r vot-dists-exp1, fig.width=10, fig.height=3, fig.cap="Each subject heard one of these five synthetic accents, which differ only in the distribution of VOTs of the word-initial stops. Black dashed lines show VOT distributions from a hypothetical typical talker [as estimated by @Kronrod2016]. Note that the 0 and 10ms shifted accents are reasonably close to this typical talker, while the -10, 20, and 30ms shifted accents deviate substantially."}
 
 prior_stats_by_talker <-
   votcorpora::vot %>%
@@ -178,7 +178,7 @@ data_exp1 %>%
   ## scale_fill_discrete('/b/, /p/\nmean VOT') ## +
   ## theme(legend.position='none')
 
-``` 
+```
 
 ## Methods
 
@@ -255,15 +255,32 @@ parameters were held constant, and modeled on natural tokens of the endpoints
 
 ## Results
 
-In order to assess distributional learning, I estimated each subject's
-classification functions with a Bayesian multilevel logistic regression, using
-the `brms` package [@Burkner2017] for `R` [@RCoreTeam2017].  This approach
-simultaneously estimates the group-level effects of the experimental
-manipulation (VOT shift condition) on the /b/-/p/ category boundary location and
-sharpness, and each individual subjects' boundary locations and slopes.  A
-multilevel approach like this has the benefit of properly accounting for and
-balancing the joint uncertainty about the group- and individual-level effects
-[@Gelman2007].
+In order to assess distributional learning, each subject's classification
+function is compared to two baselines: the category boundary for a _typical
+talker_'s VOT distributions [based on @Kronrod2016], and the category boundary
+based solely on the exposure talker's distributions.  I refer to the typical
+talker's boundary as the "no learning" baseline, and the exposure talker's
+boundary as the "complete learning" baseline.
+
+Each subject's classification function was estimated with a Bayesian multilevel
+logistic regression, using the `brms` package [@Burkner2017] for `R`
+[@RCoreTeam2017].  This approach simultaneously estimates the group-level
+effects of the experimental manipulation (VOT shift condition) on the /b/-/p/
+category boundary location and sharpness, and each individual subjects' boundary
+locations and slopes.  A multilevel approach like this has the benefit of
+properly accounting for and balancing the joint uncertainty about the group- and
+individual-level effects [@Gelman2007].[^shrinkage]
+
+[^shrinkage]: One effect of using a multilevel approach is that the estimate of
+    each subject's boundary is "shrunk" towards the group-level estimate.  This
+    reflects the assumption that subjects are drawn from the same population,
+    and hence the data from one subject in a group are informative about other
+    subjects in that group (and vice versa).  The amount of this shrinkage
+    depends on the amount of data available from each individual subject, and
+    the consistency of the individual subject estimates.  In this case, each
+    subject contributes sufficient data to make shrinkage mild, and an
+    alternative analysis that estimates each subjects' boundary with a separate
+    logistic GLM produces qualitatively similar effects.
 
 ```{r exp1-regression, dependson=c("data-exp1")}
 
@@ -286,11 +303,13 @@ exp1_blocks <-
   summarise_at(vars(trial, trial_s), mean)
 # overall fit (fixed effects):
 data_pred <-
-  cross_df(list(vot_s = seq(min(d1$vot_s), max(d1$vot_s), length.out=100),
-                bvotCond = unique(d1$bvotCond),
+  cross_df(list(vot_s = seq(min(data_exp1_mod$vot_s),
+                            max(data_exp1_mod$vot_s),
+                            length.out=100),
+                bvotCond = unique(data_exp1_mod$bvotCond),
                 block = 1:3)) %>%
-  left_join(d1_blocks, by="block") %>%
-  mutate(vot = vot_s * sd(d1$vot) + mean(d1$vot)) %>%
+  left_join(exp1_blocks, by="block") %>%
+  mutate(vot = vot_s * sd(data_exp1_mod$vot) + mean(data_exp1_mod$vot)) %>%
   left_join(conditions_exp1, by="bvotCond")
 
 expt1_class <-
@@ -300,7 +319,7 @@ expt1_class <-
 
 # by-subject fit (fixed+random effects):
 data_pred_subj <-
-  d1 %>%
+  data_exp1_mod %>%
   group_by(subject, bvotCond) %>%
   summarise() %>%
   left_join(data_pred, by="bvotCond")
