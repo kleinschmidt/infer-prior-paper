@@ -375,6 +375,36 @@ ggplot(expt1_class_bysub, aes(x=vot, color=vot_cond)) +
 
 ```
 
+Figure [-@fig:exp1-results] shows that distributional learning is _incomplete_
+for distributions that differ substantially from what a typical talker produces.
+Subjects' fitted boundaries cluster around the exposure talker's boundary for
+small shifts (0/40ms VOT and 10/50ms VOT), but for larger shifts subject's
+boundaries fall (on average) between the typical and exposure talker.
+
+```{r expt1-boundaries, fig.cap="Category boundaries for each subject and for each condition.  Violins show the distribution of subjects' boundaries, and the white points show the group-level boundary (with 95% Bayesian confidence intervals)"}
+
+# estimate uncertainty of fixed effects boundaries:
+exp1_bounds_fixef <-
+  tidybayes::linpred_draws(b_logit_exp1, data_pred, re_formula=NA) %>%
+  group_by(bvotCond, block, trial, .draw) %>%
+  arrange((.value - 0.5)^2) %>%         # sort by distance from 0.5
+  filter(row_number() == 1) %>%         # take the closest to 0.5
+  group_by(bvotCond, block, trial) %>%
+  summarise(low=quantile(vot, 0.025), high=quantile(vot, 0.975), mean=mean(vot))
+
+expt1_bounds_bysub %>%
+  group_by(subject, block) %>%
+  filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5))) %>%
+  filter(block==3) %>%
+  ggplot(aes(x=bvotCond, y=vot, fill=bvotCond, color=bvotCond)) +
+  geom_violin(alpha=0.5, color=NA) +
+  ## geom_beeswarm(cex=2) +
+  geom_pointrange(data = exp1_bounds_fixef %>% filter(block==3),
+                  aes(y=mean, ymin=low, ymax=high),
+                  color="white", show.legend=FALSE) +
+  coord_flip()
+
+```
 
 
 
