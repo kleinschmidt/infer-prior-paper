@@ -342,7 +342,7 @@ expt1_bounds_bysub <-
 
 ```
 
-```{r exp1-results}
+```{r exp1-results, fig.width=10, fig.height=3, fig.cap="Results from experiment 1 show that distributional learning is incomplete for large shifts of VOT distributions from a typical talker's distributions"}
 
 perfect_learning <- exposure_stats %>%
   group_by(vot_cond) %>%
