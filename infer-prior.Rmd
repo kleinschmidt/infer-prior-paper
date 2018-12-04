@@ -395,12 +395,6 @@ ggplot(expt1_class_bysub, aes(x=vot, color=vot_cond)) +
 
 ```
 
-Figure [-@fig:exp1-results] shows that distributional learning is _incomplete_
-for distributions that differ substantially from what a typical talker produces.
-Subjects' fitted boundaries cluster around the exposure talker's boundary for
-small shifts (0/40ms VOT and 10/50ms VOT), but for larger shifts subject's
-boundaries fall (on average) between the typical and exposure talker.
-
 ```{r expt1-boundaries, fig.cap="Category boundaries for each subject and for each condition.  Violins show the distribution of subjects' boundaries, and the white points show the group-level boundary (with 95% Bayesian confidence intervals)"}
 
 no_learning_bound <-
@@ -461,10 +455,62 @@ expt1_bounds_bysub %>%
 
 ```{r bound-diff-p-vals}
 
-  tidybayes::linpred_draws(b_logit_exp1, data_pred, re_formula=NA)
+expt1_bounds_fixef_diffs <-
+  expt1_bounds_fixef_samples %>%
+  group_by(.draw, block) %>%
+  arrange(vot_cond) %>%
+  mutate(vot_cond_next = lead(vot_cond),
+         bound_diff = vot - lead(vot))
+
+expt1_bounds_fixef_diff_stats <-
+  expt1_bounds_fixef_diffs %>%
+  group_by(block, vot_cond, vot_cond_next) %>%
+  filter(!is.na(vot_cond_next)) %>%
+  summarise_at(vars(bound_diff),
+               funs(mean,
+                    low=quantile(., 0.025),
+                    high=quantile(., 0.975),
+                    p=mean(.>0)))
+
+ex1_pval_str <-
+  expt1_bounds_fixef_diff_stats %>%
+  filter(block == 3) %>%
+  pull(p) %>%
+  max() %>%
+  daver::p_val_to_less_than()
+
 ```
 
+The first question is whether listeners learned anything at all from exposure to
+these VOT distributions.  One way to answer this is to look at the _category
+boundary_---the VOT that is ambiguous between /b/ and /p/---corresponding to the
+fixed effects for each exposure condition.  Because trial number was inluded as
+a regressor, trial was fixed at 184 (83% or 5/6 of the 222 total trials).  The
+large white points in Figure [-@fig:expt1-boundaries] show the estimated
+boundary for each condition, and the corresponding confidence intervals are the
+95% posterior intervals (e.g., the 95% quantiles of the posterior samples).
+Visual inspection shows that the group-level posterior distributions of the
+boundaries are almost entirely non-overlapping with their
+most-similar/neighboring conditions (all $`r ex1_pval_str`$[^bayes_p]), even though the
+_subject_-level distributions do overlap (as shown by the colored violins).
 
+[^bayes_p]: The $p$ values reported here are Bayesian $p$ values, or the
+    posterior probability that the relevant statement holds conditional on the
+    data and model.  These are determined using _samples_ from the posterior,
+    by computing the proportion of those samples where the statement is true.
+    In this case, the relevant condition is whether the category boundary for
+    one condition is reliably less than the boundary for the condition with a
+    next highest mean VOTs.
+
+The second question is how _completely_ listeners learned the distributions they
+were exposed to.  Visual inspections of the categorization functions
+[@fig:exp1-results] and the category boundaries [@fig:exp1-boundaries] suggests
+that listeners category boundaries (at 83% through the exposure) do _not_
+perfectly correspond to the ideal category boundary for the VOT distributions
+they were exposed to (thick dashed colored lines).  Specifically, listeners seem
+to _undershoot_ the ideal category boundary, and their categorizations functions
+appear to be a compromise between that boundary and the boundary corresponding
+to a typical talker of American English (thin black colored lines).
 
 ## Discussion
 
