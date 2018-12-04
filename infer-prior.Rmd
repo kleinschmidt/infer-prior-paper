@@ -383,25 +383,45 @@ boundaries fall (on average) between the typical and exposure talker.
 
 ```{r expt1-boundaries, fig.cap="Category boundaries for each subject and for each condition.  Violins show the distribution of subjects' boundaries, and the white points show the group-level boundary (with 95% Bayesian confidence intervals)"}
 
+no_learning_bound <-
+  no_learning %>%
+  arrange((prob_p - 0.5)^2) %>%
+  head(1) %>%
+  pull(vot)
+
+perfect_learning_bound <-
+  perfect_learning %>%
+  group_by(vot_cond) %>%
+  arrange((prob_p - 0.5)^2) %>%
+  filter(row_number() == 1)
+
 # estimate uncertainty of fixed effects boundaries:
 exp1_bounds_fixef <-
   tidybayes::linpred_draws(b_logit_exp1, data_pred, re_formula=NA) %>%
-  group_by(bvotCond, block, trial, .draw) %>%
+  group_by(vot_cond, block, trial, .draw) %>%
   arrange((.value - 0.5)^2) %>%         # sort by distance from 0.5
   filter(row_number() == 1) %>%         # take the closest to 0.5
-  group_by(bvotCond, block, trial) %>%
+  group_by(vot_cond, block, trial) %>%
   summarise(low=quantile(vot, 0.025), high=quantile(vot, 0.975), mean=mean(vot))
 
 expt1_bounds_bysub %>%
   group_by(subject, block) %>%
   filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5))) %>%
   filter(block==3) %>%
-  ggplot(aes(x=bvotCond, y=vot, fill=bvotCond, color=bvotCond)) +
+  ggplot(aes(x=vot_cond, y=vot, fill=vot_cond, color=vot_cond)) +
   geom_violin(alpha=0.5, color=NA) +
   ## geom_beeswarm(cex=2) +
   geom_pointrange(data = exp1_bounds_fixef %>% filter(block==3),
                   aes(y=mean, ymin=low, ymax=high),
                   color="white", show.legend=FALSE) +
+  geom_hline(yintercept=prior_bound, color="black", linetype=2) +
+  geom_segment(aes(x=as.numeric(vot_cond)-.5, # exposure boundaries_exp1
+                   xend=as.numeric(vot_cond)+.5,
+                   y=vot,
+                   yend=vot,
+                   color=vot_cond),
+               linetype = 2, size = 1,
+               data = perfect_learning_bound) +
   coord_flip()
 
 ```
