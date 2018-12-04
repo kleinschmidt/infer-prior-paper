@@ -436,10 +436,32 @@ expt1_bounds_bysub %>%
                    color=vot_cond),
                linetype = 2, size = 1,
                data = perfect_learning_bound) +
+  geom_text(data=perfect_learning_bound %>% filter(vot_cond=="20, 60"),
+            aes(y=vot, color=vot_cond),
+            ## x=3.5, y=41, 
+            label="Complete learning\n(Exposure talker)",
+            hjust = 0, vjust = 0,
+            nudge_x = -0.5, nudge_y = 1) +
+  geom_text(data=perfect_learning_bound %>% filter(vot_cond=="20, 60"),
+            aes(color=vot_cond, x = as.numeric(vot_cond)-0.5),
+            y=no_learning_bound - 1, color='black',
+            ## x=3.5, y=41, 
+            label="No learning\n(Typical talker)",
+            hjust = 1, vjust = 0,
+            ) +
+  labs(title="Experiment 1: Category boundaries",
+       subtitle="Compared with no learning and complete learning",
+       y = "boundary VOT (ms)",
+       x = "Exposure condition (/b/, /p/ mean VOT)") +
+  theme(legend.position="none") +
   coord_flip()
 
 ```
 
+```{r bound-diff-p-vals}
+
+  tidybayes::linpred_draws(b_logit_exp1, data_pred, re_formula=NA)
+```
 
 
 
