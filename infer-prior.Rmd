@@ -333,12 +333,22 @@ expt1_class_bysub <-
 expt1_bounds <-
   expt1_class %>%
   group_by(bvotCond, block) %>%
-  filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5)))
+  arrange((Estimate - 0.5)^2) %>%
+  filter(row_number() <= 2) %>% #arrange(bvotCond,block)
+  # now have two closest points (vot, Estimate)
+  summarise(vot = (0.5 - Estimate[1]) * diff(vot)/diff(Estimate) + vot[1])
   
 expt1_bounds_bysub <-
   expt1_class_bysub %>%
   group_by(subject, block) %>%
   filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5)))
+
+exp1_bounds_fixef_samples <-
+  tidybayes::linpred_draws(b_logit_exp1, data_pred, re_formula=NA) %>%
+  group_by(vot_cond, block, trial, .draw) %>%
+  arrange((.value - 0.5)^2) %>%         # sort by distance from 0.5
+  filter(row_number() == 1)             # take the closest to 0.5
+
 
 ```
 
@@ -397,10 +407,7 @@ perfect_learning_bound <-
 
 # estimate uncertainty of fixed effects boundaries:
 exp1_bounds_fixef <-
-  tidybayes::linpred_draws(b_logit_exp1, data_pred, re_formula=NA) %>%
-  group_by(vot_cond, block, trial, .draw) %>%
-  arrange((.value - 0.5)^2) %>%         # sort by distance from 0.5
-  filter(row_number() == 1) %>%         # take the closest to 0.5
+  exp1_bounds_fixef_samples %>%
   group_by(vot_cond, block, trial) %>%
   summarise(low=quantile(vot, 0.025), high=quantile(vot, 0.975), mean=mean(vot))
 
