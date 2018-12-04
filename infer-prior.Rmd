@@ -426,7 +426,7 @@ expt1_bounds_bysub %>%
   ggplot(aes(x=vot_cond, y=vot, fill=vot_cond, color=vot_cond)) +
   geom_violin(alpha=0.5, color=NA) +
   ## geom_beeswarm(cex=2) +
-  geom_pointrange(data = exp1_bounds_fixef %>% filter(block==3),
+  geom_pointrange(data = expt1_bounds_fixef %>% filter(block==3),
                   aes(y=mean, ymin=low, ymax=high),
                   color="white", show.legend=FALSE) +
   geom_hline(yintercept=no_learning_bound, color="black", linetype=2) +
