@@ -330,25 +330,39 @@ expt1_class_bysub <-
   bind_cols(data_pred_subj)
 
 # get x-intercept (category boundary):
+#' Find x intercept with linear interpolation of two nearest points
+#'
+#' Respects grouping
+#'
+#' @param d a tibble
+#' @param x (unquoted) column with the x coordinates
+#' @param y (unquoted) column with the y coordinates
+#' @param ytarget (default=0.5) y value to find x intercept at
+find_bound <- function(d, x, y, ytarget=0.5) {
+  x <- enquo(x)
+  x_name <- quo_name(x)
+  y <- enquo(y)
+  d %>%
+    arrange((!!y - ytarget)^2) %>%
+    filter(row_number() <= 2) %>%
+    summarise(!!x_name := (ytarget - first(!!y)) * diff(!!x)/diff(!!y) + first(!!x))
+}
+
+
 expt1_bounds <-
   expt1_class %>%
-  group_by(bvotCond, block) %>%
-  arrange((Estimate - 0.5)^2) %>%
-  filter(row_number() <= 2) %>% #arrange(bvotCond,block)
-  # now have two closest points (vot, Estimate)
-  summarise(vot = (0.5 - Estimate[1]) * diff(vot)/diff(Estimate) + vot[1])
-  
+  group_by(vot_cond, trial, block) %>%
+  find_bound(x=vot, y=Estimate)
+
 expt1_bounds_bysub <-
   expt1_class_bysub %>%
-  group_by(subject, block) %>%
-  filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5)))
+  group_by(vot_cond, subject, trial, block) %>%
+  find_bound(x=vot, y=Estimate)
 
-exp1_bounds_fixef_samples <-
+expt1_bounds_fixef_samples <-
   tidybayes::linpred_draws(b_logit_exp1, data_pred, re_formula=NA) %>%
   group_by(vot_cond, block, trial, .draw) %>%
-  arrange((.value - 0.5)^2) %>%         # sort by distance from 0.5
-  filter(row_number() == 1)             # take the closest to 0.5
-
+  find_bound(x=vot, y=.value)
 
 ```
 
@@ -361,11 +375,6 @@ perfect_learning <- exposure_stats %>%
 
 no_learning <- prior_lhood %>%
   lhood_to_classification()
-
-prior_bound <- no_learning %>%
-  arrange(abs(prob_p - 0.5)) %>%
-  filter(row_number() ==1) %>%
-  pull(vot)
 
 vot_limits <- data_exp1 %>% pull(vot) %>% range()
 
@@ -406,14 +415,12 @@ perfect_learning_bound <-
   filter(row_number() == 1)
 
 # estimate uncertainty of fixed effects boundaries:
-exp1_bounds_fixef <-
-  exp1_bounds_fixef_samples %>%
+expt1_bounds_fixef <-
+  expt1_bounds_fixef_samples %>%
   group_by(vot_cond, block, trial) %>%
   summarise(low=quantile(vot, 0.025), high=quantile(vot, 0.975), mean=mean(vot))
 
 expt1_bounds_bysub %>%
-  group_by(subject, block) %>%
-  filter(abs(Estimate - 0.5) == min(abs(Estimate - 0.5))) %>%
   filter(block==3) %>%
   ggplot(aes(x=vot_cond, y=vot, fill=vot_cond, color=vot_cond)) +
   geom_violin(alpha=0.5, color=NA) +
@@ -421,7 +428,7 @@ expt1_bounds_bysub %>%
   geom_pointrange(data = exp1_bounds_fixef %>% filter(block==3),
                   aes(y=mean, ymin=low, ymax=high),
                   color="white", show.legend=FALSE) +
-  geom_hline(yintercept=prior_bound, color="black", linetype=2) +
+  geom_hline(yintercept=no_learning_bound, color="black", linetype=2) +
   geom_segment(aes(x=as.numeric(vot_cond)-.5, # exposure boundaries_exp1
                    xend=as.numeric(vot_cond)+.5,
                    y=vot,
