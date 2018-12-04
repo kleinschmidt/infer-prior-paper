@@ -504,7 +504,7 @@ _subject_-level distributions do overlap (as shown by the colored violins).
 
 The second question is how _completely_ listeners learned the distributions they
 were exposed to.  Visual inspections of the categorization functions
-[@fig:exp1-results] and the category boundaries [@fig:exp1-boundaries] suggests
+[@fig:exp1-results] and the category boundaries [@fig:expt1-boundaries] suggests
 that listeners category boundaries (at 83% through the exposure) do _not_
 perfectly correspond to the ideal category boundary for the VOT distributions
 they were exposed to (thick dashed colored lines).  Specifically, listeners seem
