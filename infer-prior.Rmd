@@ -256,11 +256,12 @@ parameters were held constant, and modeled on natural tokens of the endpoints
 ## Results
 
 In order to assess distributional learning, each subject's classification
-function is compared to two baselines: the category boundary for a _typical
-talker_'s VOT distributions [based on @Kronrod2016], and the category boundary
-based solely on the exposure talker's distributions.  I refer to the typical
-talker's boundary as the "no learning" baseline, and the exposure talker's
-boundary as the "complete learning" baseline.
+function is compared to two baselines, corresponding to _no learning_ and
+_complete learning_.  The _no learning_ baseline is derived from the category
+boundary for a _typical talker_'s VOT distributions [based on @Kronrod2016], and
+the category boundary based solely on the exposure talker's distributions.  I
+refer to the typical talker's boundary as the "no learning" baseline, and the
+exposure talker's boundary as the "complete learning" baseline.
 
 Each subject's classification function was estimated with a Bayesian multilevel
 logistic regression, using the `brms` package [@Burkner2017] for `R`
