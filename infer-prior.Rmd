@@ -455,6 +455,9 @@ expt1_bounds_bysub %>%
 
 ```{r bound-diff-p-vals}
 
+# compute Bayesian p-values for differences between boundaries between
+# neighboring VOT conditions.
+
 expt1_bounds_fixef_diffs <-
   expt1_bounds_fixef_samples %>%
   group_by(.draw, block) %>%
@@ -480,6 +483,25 @@ ex1_pval_str <-
   daver::p_val_to_less_than()
 
 ```
+
+```{r bound-undershoot}
+
+# summaries of boundary undershoot
+expt1_boundary_undershoot <-
+  perfect_learning_bound %>%
+  select(vot_cond, ideal_bound=vot) %>%
+  right_join(expt1_bounds_fixef, by="vot_cond") %>%
+  filter(block == 3) %>%
+  mutate_at(vars(low, high, mean),
+            funs(abs=(.-ideal_bound)*sign(no_learning_bound-ideal_bound),
+                 perc=round(100 *
+                              (.-no_learning_bound) /
+                              (ideal_bound-no_learning_bound)))) %>%
+  select(-ideal_bound, block, trial)
+  
+
+```
+
 
 The first question is whether listeners learned anything at all from exposure to
 these VOT distributions.  One way to answer this is to look at the _category
@@ -509,10 +531,18 @@ that listeners category boundaries (at 83% through the exposure) do _not_
 perfectly correspond to the ideal category boundary for the VOT distributions
 they were exposed to (thick dashed colored lines).  Specifically, listeners seem
 to _undershoot_ the ideal category boundary, and their categorizations functions
-appear to be a compromise between that boundary and the boundary corresponding
-to a typical talker of American English (thin black colored lines).
+lie between the ideal boundary for the exposure talker and the boundary
+corresponding to a typical talker of American English (thin black colored
+lines).
+
+The undershoot is largest in absolute terms for the most shifted distributions,
+with 
 
 ## Discussion
+
+These results indicate that while listeners _do_ show changes in their
+categorization functions when exposed to different (bimodal) VOT distributions,
+this learning is 
 
 
 # Experiment 2
