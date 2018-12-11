@@ -397,7 +397,7 @@ ggplot(expt1_class_bysub, aes(x=vot, color=vot_cond)) +
 
 ```
 
-```{r expt1-boundaries, fig.cap="Category boundaries for each subject and for each condition.  Violins show the distribution of subjects' boundaries, and the white points show the group-level boundary (with 95% Bayesian confidence intervals)"}
+```{r expt1-boundaries, fig.cap="Category boundaries by condition.  Violins show the distribution of subjects' boundaries (random effects), and the white points show the group-level boundary (fixed effects, with 95% Bayesian confidence intervals)"}
 
 no_learning_bound <-
   no_learning %>%
