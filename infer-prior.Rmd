@@ -542,10 +542,47 @@ with
 
 ## Discussion
 
-These results indicate that while listeners _do_ show changes in their
-categorization functions when exposed to different (bimodal) VOT distributions,
-this learning is 
+These results indicate two things.  First, like many other studies [@cite], I
+found evidence for distributional learning: listeners _do_ change how they
+categorize sounds as voiced or unvoiced due to exposure to different VOT
+distributions.  Second, this learning is not _complete_, in the sense that
+listeners' voiced-unvoiced boundary does not exactly match the boundary implied
+by the bimodal distribution they were exposed to.  Like the findings of
+@Sumner2013 and @Idemaru2011, this second result suggests that distributional
+learning is _constrained_ somehow.  In the following experiments, I investigate
+two possible sources of these constraints.
 
+```{r prop-in-wrong-cat}
+
+data_exp1 %>%
+  group_by(vot_cond, trueCat) %>%
+  summarise(wrong=mean(ifelse(trueCat == 'b',
+                              vot > no_learning_bound,
+                              vot < no_learning_bound)))
+
+```
+
+
+First, it is possible that the primary constraint here is that listeners are
+being asked to do _unsupervised_ distributional learning.  That is, they are
+free to interpret each VOT they hear as either a /b/ or a /p/, since both
+options are available for a response.  For distributions that are highly
+shifted, most tokens will fall into one of the two pre-existing distributions
+(see @Fig:vot-dists-exp1): in the condition with the highest positive shift
+(30ms /b/, 70ms /p/), 73% of all tokens from the lower cluster would be
+classified as /p/ according to a typical talker's distributions.  Thus, what I
+intended listeners to treat as two separate clusters of VOTs---one for /b/ and
+one for /p/---they may instead have interpreted as one large cluster in extreme
+conditions, lacking any labels to tell them otherwise.  I address this
+possibility in Experiment 2, by providing labels on a portion of trials.
+
+A second possibility is that listeners are constrained by their prior experience
+with other talkers.  The fact that listeners' category boundaries tend to lie
+between those of a typical talker and the experimental exposure talker suggests
+that this is not implausible.  To assess this possibility more rigorously, after
+Experiment 2 I use a Bayesian belief-updating model of distributional learning
+to investigate whether the pattern of distributional learning across conditions
+is consistent with belief updating starting from common prior beliefs.
 
 # Experiment 2
 
