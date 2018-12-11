@@ -1,11 +1,12 @@
 ---
-Title: What Constrains distributional learning in adults?
+Title: What constrains distributional learning in adults?
 Author: Dave Kleinschmidt
 bibliography: /home/dave/Zotero/library.bib
 output:
     html_document:
         code_folding: hide
         dev: png
+        fig_retina: 3
         keep_md: true
         md_extensions: +implicit_figures
         pandoc_args:
