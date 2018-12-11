@@ -392,7 +392,8 @@ ggplot(expt1_class_bysub, aes(x=vot, color=vot_cond)) +
   labs(x="VOT (ms)",
        y="Probability /p/ response",
        title="Experiment 1: Classification functions",
-       subtitle="Fitted with mixed effects logistic regression, predictions for final third of trials")
+       subtitle="Fitted with mixed effects logistic regression, predictions for final third of trials") +
+  lims(x = c(-10, 70))
 
 ```
 
