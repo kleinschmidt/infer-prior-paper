@@ -586,6 +586,30 @@ is consistent with belief updating starting from common prior beliefs.
 
 # Experiment 2
 
+## Methods
+
+### Procedure
+
+The procedure was identical to that of Experiment 1, with one change.  Half of
+the trials were _unlabeled_ as in Experiment 1: the response options were the
+/b/ and /p/ ends of the continuum for that trial's word were present (e.g.,
+"beach" and "peach").  The other half the trials were _labeled_: if the word was
+drawn from a "beach" to "peach" continuum and the VOT was sampled from the lower
+VOT cluster, than the response options could be "beach" and either "peak" or
+"peas".  That is, the only response that was compatible with the _rest_ of the
+word had an onset consistent with the VOT cluster that that trial was drawn
+from.
+
+The only other different with Experiment 1 was that the -10ms, 30ms condition
+was not included.  These two experiments together served as pilot studies for
+another study, and ........................................
+
+### Subjects
+
+## Results
+
+## Discussion
+
 # Model
 
 # Experiment 3
