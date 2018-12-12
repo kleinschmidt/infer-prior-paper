@@ -588,7 +588,64 @@ is consistent with belief updating starting from common prior beliefs.
 
 ## Methods
 
+```{r exp2-data, dependson=c()}
+
+data_exp2 <-
+  supunsup::supunsup_clean %>%
+  filter(supCond %in% c("supervised", "mixed")) %>%
+  mutate(trueCat = respCategory,
+         trueCatNum = as.numeric(trueCat),
+         respCatNum = as.numeric(respCat))
+
+conditions_exp2 <-
+  data_exp2 %>%
+  group_by(bvotCond, supCond, trueCat) %>%
+  summarise(mean_vot = mean(vot)) %>%
+  spread(trueCat, mean_vot) %>%
+  transmute(vot_cond = paste(b, p, sep=', '),
+            ideal_boundary = (b+p)/2) %>%
+  ungroup() %>%
+  mutate(vot_cond = factor(vot_cond, levels=levels(conditions_exp1$vot_cond)))
+
+n_subj_exp2 <- length(unique(data_exp2$subject))
+
+excluded_exp2 <- supunsup::supunsup_excluded %>%
+  inner_join(conditions_exp2) %>%
+  group_by(subject, supCond, bvotCond, vot_cond) %>% 
+  summarise() %>% 
+  left_join(supunsup::excludes, by="subject") %>%
+  select(subject, bvotCond, exclude80PercentAcc, rank)
+
+n_excluded_2 <- nrow(excluded_exp2)
+n_subj_repeat_2 <- sum(!is.na(excluded_exp2$rank))
+n_subj_bad_2 <- sum(!is.na(excluded_exp2$exclude80PercentAcc))
+n_both_2 <- n_subj_repeat_2 + n_subj_bad_2 - n_excluded_2 
+
+n_total_2 <- n_subj_exp2 + n_excluded_2
+
+n_excl_cond_2 <- excluded_exp2 %>%
+  group_by(bvotCond) %>%
+  tally() %>%
+  arrange(n)
+
+```
+
 ### Procedure
+
+```{r exp2-label-dists, fig.cap='Distribution of labeled and unlabeled trials in the "mixed" and "supervised" conditions of Experiment 2'}
+
+data_exp2 %>%
+  group_by(supCond) %>%
+  filter(bvotCond == 0) %>%
+  filter(subject == first(subject)) %>%
+  group_by(supCond, labeled, vot) %>%
+  tally() %>% 
+  ggplot(aes(x=vot, y=n, fill=labeled)) +
+  geom_bar(stat="identity") +
+  facet_grid(.~supCond) +
+  scale_fill_manual(values=c("black", "gray"))
+
+```
 
 The procedure was identical to that of Experiment 1, with one change.  Half of
 the trials were _unlabeled_ as in Experiment 1: the response options were the
@@ -600,14 +657,39 @@ VOT cluster, than the response options could be "beach" and either "peak" or
 word had an onset consistent with the VOT cluster that that trial was drawn
 from.
 
-The only other different with Experiment 1 was that the -10ms, 30ms condition
-was not included.  These two experiments together served as pilot studies for
-another study, and ........................................
+Two different semi-supervised conditions were run which differed in how labeled
+and unlabeled trials were distributed across VOTs (@Fig:exp2-label-dists).  No
+differences were found between behavior in these conditions so they are analyzed
+analyzed together.
+
+<!-- TODO: this should go in a footnote in the introduction -->
+The only other difference with Experiment 1 was that the -10ms, 30ms condition
+was not included.  This is because these two experiments were originally run
+concurrently as a pilot for an imaging study.  The original goal of the
+supervised conditions of Experiment 2 was to see if distributional learning
+could be accelerated by including some labeled trials.  The -10ms, 30ms
+condition of Experiment 1 was run after analyzing data from Experiments 1 and 2
+together.
 
 ### Subjects
 
+I recruited `r n_total_2 ` subjects via Amazon's Mechanical Turk.  As in
+Experiment 1, subjects were paid $2.00 for participation.  Exclusion criteria
+were the same as Experiment 1, and data from `r n_excluded_2` subjects were
+excluded from analysis: `r n_subj_repeat_2` for repeated participation
+(including subjects who had participated in Experiment 1), `r n_subj_bad_2` for
+inaccurate categorization of unambiguous VOTs, with `r n_both_2` excluded for
+both criteria.  This left data from `r n_subj_exp2` remaining for analysis.
+
 ## Results
 
+```{r exp2-regression-data, dependson=c("exp2-data")}
+
+```
+
+```{r exp2-regression, dependson=c("exp2-regression-data")}
+
+```
 ## Discussion
 
 # Model
