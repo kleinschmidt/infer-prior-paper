@@ -660,7 +660,11 @@ from.
 Two different semi-supervised conditions were run which differed in how labeled
 and unlabeled trials were distributed across VOTs (@Fig:exp2-label-dists).  No
 differences were found between behavior in these conditions so they are analyzed
-analyzed together.
+analyzed together.[^supconds]
+
+[^supconds]: The two conditions are listed separately in the
+    [`supunsup`](https://github.com/kleinschmidt/phonetic-sup-unsup) R data
+    package.
 
 <!-- TODO: this should go in a footnote in the introduction -->
 The only other difference with Experiment 1 was that the -10ms, 30ms condition
