@@ -605,7 +605,8 @@ conditions_exp2 <-
   transmute(vot_cond = paste(b, p, sep=', '),
             ideal_boundary = (b+p)/2) %>%
   ungroup() %>%
-  mutate(vot_cond = factor(vot_cond, levels=levels(conditions_exp1$vot_cond)))
+  mutate(vot_cond = factor(vot_cond, levels=levels(conditions_exp1$vot_cond)),
+         supervised = fct_recode(supCond, supervised="mixed"))
 
 n_subj_exp2 <- length(unique(data_exp2$subject))
 
@@ -689,11 +690,115 @@ both criteria.  This left data from `r n_subj_exp2` remaining for analysis.
 
 ```{r exp2-regression-data, dependson=c("exp2-data")}
 
+data_exp2_mod <- supunsup::supunsup_clean %>%
+  filter(labeled == "unlabeled", bvotCond != "-10") %>%
+  select(subject, supCond, labeled, bvotCond, trial, vot, respP) %>%
+  mutate(vot_s = (vot - mean(vot)) / sd(vot),
+         trial_s = (trial - mean(trial)) / sd(trial),
+         supervised = fct_recode(supCond, supervised="mixed"))
+
 ```
 
 ```{r exp2-regression, dependson=c("exp2-regression-data")}
 
+f_noint <- respP ~ 0 + bvotCond * supervised * vot_s * trial_s +
+  (1 + vot_s | subject)
+
+## b_logit_exp2 <- brm(f_noint,
+##                data = d2,
+##                family = bernoulli(),
+##                chains=4,
+##                iter=1000)
+
+## saveRDS(b_logit_exp2, "models/brm_logistic_sup_v_unsup.rds")
+b_logit_exp2 <- readRDS("models/brm_logistic_sup_v_unsup.rds")
+
+exp2_blocks <-
+  data_exp2_mod %>%
+  group_by(block=ntile(trial, 3)) %>%
+  summarise_at(vars(trial, trial_s), mean)
+
+# overall fit (fixed effects):
+data_pred_exp2 <-
+  cross_df(list(vot_s = seq(min(data_exp2_mod$vot_s),
+                            max(data_exp2_mod$vot_s),
+                            length.out=100),
+                bvotCond = unique(data_exp2_mod$bvotCond),
+                supervised = unique(data_exp2_mod$supervised),
+                block = 1:3)) %>%
+  left_join(exp2_blocks, by="block") %>%
+  left_join(conditions_exp1, by="bvotCond") %>%
+  mutate(vot = vot_s * sd(data_exp2_mod$vot) + mean(data_exp2_mod$vot),
+         bvotCond = fct_drop(bvotCond),
+         vot_cond = fct_drop(vot_cond))
+
+
+data_pred_subj_exp2 <-
+  data_exp2_mod %>%
+  group_by(subject, supervised, bvotCond) %>%
+  summarise() %>%
+  left_join(data_pred_exp2)
+
+expt2_class_bysub <-
+  fitted(b_logit_exp2, newdata=data_pred_subj_exp2) %>%
+  as_tibble() %>%
+  bind_cols(data_pred_subj_exp2)
+
+expt2_bounds_bysub <-
+  expt2_class_bysub %>%
+  group_by(vot_cond, supervised, subject, trial, block) %>%
+  find_bound(x=vot, y=Estimate)
+
+expt2_bounds_fixef_samples <-
+  tidybayes::linpred_draws(b_logit_exp2, data_pred_exp2, re_formula=NA) %>%
+  group_by(vot_cond, supervised, block, trial, .draw) %>%
+  find_bound(x=vot, y=.value)
+
 ```
+
+
+```{r expt2-bounds, fig.cap='Category boundaries from Experiment 2'}
+
+expt2_bounds_bysub %>%
+  filter(block==3) %>%
+  ggplot(aes(x=vot_cond, y=vot, fill=vot_cond, color=vot_cond)) +
+  geom_violin(data= . %>% filter(supervised=="unsupervised"), alpha=0.5, color=NA)+
+  geom_violin(data= . %>% filter(supervised=="supervised"), alpha=0)+
+  ## geom_beeswarm(cex=2) +
+  ## geom_pointrange(data = expt2_bounds_fixef %>% filter(block==3),
+  ##                 aes(y=mean, ymin=low, ymax=high),
+  ##                 color="white", show.legend=FALSE) +
+  ## geom_hline(yintercept=no_learning_bound, color="black", linetype=2) +
+  ## geom_segment(aes(x=as.numeric(vot_cond)-.5, # exposure boundaries_exp1
+  ##                  xend=as.numeric(vot_cond)+.5,
+  ##                  y=vot,
+  ##                  yend=vot,
+  ##                  color=vot_cond),
+  ##              linetype = 2, size = 1,
+  ##              data = perfect_learning_bound) +
+  ## geom_text(data=perfect_learning_bound %>% filter(vot_cond=="20, 60"),
+  ##           aes(y=vot, color=vot_cond),
+  ##           ## x=3.5, y=41, 
+  ##           label="Complete learning\n(Exposure talker)",
+  ##           hjust = 0, vjust = 0,
+  ##           nudge_x = -0.5, nudge_y = 1) +
+  ## geom_text(data=perfect_learning_bound %>% filter(vot_cond=="20, 60"),
+  ##           aes(color=vot_cond, x = as.numeric(vot_cond)-0.5),
+  ##           y=no_learning_bound - 1, color='black',
+  ##           ## x=3.5, y=41, 
+  ##           label="No learning\n(Typical talker)",
+  ##           hjust = 1, vjust = 0,
+  ##           ) +
+  ## labs(title="Experiment 1: Category boundaries",
+  ##      subtitle="Compared with no learning and complete learning",
+  ##      y = "boundary VOT (ms)",
+  ##      x = "Exposure condition (/b/, /p/ mean VOT)") +
+  theme(legend.position="none") +
+  coord_flip()
+
+
+```
+
 ## Discussion
 
 # Model
