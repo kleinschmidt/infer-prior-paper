@@ -448,7 +448,7 @@ expt1_bounds_bysub %>%
             ) +
   labs(title="Experiment 1: Category boundaries",
        subtitle="Compared with no learning and complete learning",
-       y = "boundary VOT (ms)",
+       y = "Boundary VOT (ms)",
        x = "Exposure condition (/b/, /p/ mean VOT)") +
   theme(legend.position="none") +
   coord_flip()
@@ -754,52 +754,113 @@ expt2_bounds_fixef_samples <-
   group_by(vot_cond, supervised, block, trial, .draw) %>%
   find_bound(x=vot, y=.value)
 
+expt2_bounds_fixef <-
+  expt2_bounds_fixef_samples %>%
+  group_by(vot_cond, supervised, block, trial) %>%
+  summarise(low=quantile(vot, 0.025), high=quantile(vot, 0.975), mean=mean(vot))
+
+```
+
+```{r expt2-label-consistent}
+label_consistent <- data_exp2 %>%
+  filter(labeled == "labeled") %>%
+  summarise(p = round(100*mean(respCat == trueCat))) %>%
+  pull(p)
+
+label_range <- data_exp2 %>%
+  filter(labeled == "labeled") %>%
+  group_by(subject) %>%
+  summarise(p = round(100*mean(respCat == trueCat))) %>%
+  pull(p) %>%
+  range()
+
 ```
 
 
-```{r expt2-bounds, fig.cap='Category boundaries from Experiment 2'}
+```{r expt2-bounds-sup-diff}
+
+expt2_bounds_fixef_samples %>%
+  group_by(vot_cond, block, trial) %>%
+  spread(supervised, vot) %>%
+  mutate(vot_diff = unsupervised - supervised) %>%
+  summarise(mean = mean(vot_diff),
+            low = quantile(vot_diff, 0.025),
+            high = quantile(vot_diff, 0.975))
+
+
+```
+
+```{r expt2-bounds, fig.cap='Providing 50% labeled trials during distributional learning makes no difference in listener\'s category boundaries (Experiment 2, solid voilins/points) compared to purely unsupervised learning (Experiment 1, outlined violins/points, re-plotted from @fig:expt1-boundaries).  For ease of comparison with results from Experiment 1, the same axis limits are used as @fig:expt1-boundaries; this lead to exclusion from the figure of five listeners with boundaries greater than 50ms (2 in the 20ms /b/ condition, 3 in the 30ms /b/ condition).  All subjects are included in the regression model from which the fixed effects boundaries are estimated (points/lines).'}
 
 expt2_bounds_bysub %>%
   filter(block==3) %>%
   ggplot(aes(x=vot_cond, y=vot, fill=vot_cond, color=vot_cond)) +
-  geom_violin(data= . %>% filter(supervised=="unsupervised"), alpha=0.5, color=NA)+
-  geom_violin(data= . %>% filter(supervised=="supervised"), alpha=0)+
-  ## geom_beeswarm(cex=2) +
-  ## geom_pointrange(data = expt2_bounds_fixef %>% filter(block==3),
-  ##                 aes(y=mean, ymin=low, ymax=high),
-  ##                 color="white", show.legend=FALSE) +
-  ## geom_hline(yintercept=no_learning_bound, color="black", linetype=2) +
-  ## geom_segment(aes(x=as.numeric(vot_cond)-.5, # exposure boundaries_exp1
-  ##                  xend=as.numeric(vot_cond)+.5,
-  ##                  y=vot,
-  ##                  yend=vot,
-  ##                  color=vot_cond),
-  ##              linetype = 2, size = 1,
-  ##              data = perfect_learning_bound) +
-  ## geom_text(data=perfect_learning_bound %>% filter(vot_cond=="20, 60"),
-  ##           aes(y=vot, color=vot_cond),
-  ##           ## x=3.5, y=41, 
-  ##           label="Complete learning\n(Exposure talker)",
-  ##           hjust = 0, vjust = 0,
-  ##           nudge_x = -0.5, nudge_y = 1) +
-  ## geom_text(data=perfect_learning_bound %>% filter(vot_cond=="20, 60"),
-  ##           aes(color=vot_cond, x = as.numeric(vot_cond)-0.5),
-  ##           y=no_learning_bound - 1, color='black',
-  ##           ## x=3.5, y=41, 
-  ##           label="No learning\n(Typical talker)",
-  ##           hjust = 1, vjust = 0,
-  ##           ) +
-  ## labs(title="Experiment 1: Category boundaries",
-  ##      subtitle="Compared with no learning and complete learning",
-  ##      y = "boundary VOT (ms)",
-  ##      x = "Exposure condition (/b/, /p/ mean VOT)") +
+  geom_violin(data= . %>% filter(supervised=="unsupervised"), alpha=0)+
+  geom_violin(data= . %>% filter(supervised=="supervised"), alpha=0.5, color=NA)+
+  geom_pointrange(data = expt2_bounds_fixef %>% filter(block==3),
+                  aes(y=mean, ymin=low, ymax=high, shape=supervised),
+                  position=position_dodge2(width = .2),
+                  color="white", show.legend=FALSE) +
   theme(legend.position="none") +
+  scale_shape_manual(values = c(16, 1)) +
+  lims(y=c(10,50)) +
+  labs(title="Experiment 2: Semi-supervised adaptation",
+       subtitle="Compared with unsupervised (Experiment 1)",
+       y = "Boundary VOT (ms)",
+       x = "Exposure condition (/b/, /p/ mean VOT)") +
   coord_flip()
-
 
 ```
 
+First, listeners were highly sensitive to the labels on labeled trials,
+responding consistent with the label `r label_consistent`% of the time (range
+across subjects of `r label_range[1]`--`r label_range[2]`%).
+
+Second, as wipth Experiment 1 I assessed listeners' distributional learning via
+category boundaries estimated with a Bayesian logistic mixed-effects model.
+This model included data from _both_ Experiments 1 and 2 in order to directly
+compare assess potential effects of supervised learning on the strength and time
+course of learning.  This model included fixed effects for supervision
+condition, all fixed effects from the Experiment 1 model, and all interactions
+thereof.  The random effects structure was identical to Experment 1.  Because
+listeners' responses were so systematically determined by the label on labeled
+trials, _only_ unlabeled trials were included in the model (all trials from
+Experiment 1, and half of the trial from Experiment 2).
+
+Figure -@fig:expt2-bounds shows the by-subject and overall category boundaries
+for semi-supervised (shaded violins/points) and unsupervised (outlined
+violins/points) distributional learning.  As in @Fig:expt1-bounds, the
+boundaries estimated from the model for a trial 5/6 of the way to the end of the
+experiment, and the points and lines show the group-level (fixed effects)
+estimates and 95% credible intervals.  The intervals for unsupervised and
+semi-supervised overlap for all VOT conditions, indicating that the inclusion of
+labeled trials makes no reliable difference in distributional learning, at least
+at the trial where these boundaries are estimated.
+
+Similarly, the 95% credible intervals for all fixed effects coefficients
+involving the supervision condition include 0, suggesting that the presence of
+labeled trials makes no difference in the baseline, strength, or time course of
+distributional learning.
+
+The condition that comes the closest to showing any effect is the 30ms /b/, 70ms
+/p/ VOT, which is the most extreme shift relative to standard VOT distributions.
+However, the fixed effect boundaries in this condition may have been biased by
+the presence of three outlier subjects with unreliable responses which leads to
+very shallow classification functions and very high estimated boundaries
+(greater than 50ms).  These subjects weren't so unreliable as to be excluded by
+the pre-set exclusion criteria so they are included in the analysis here for the
+sake of completeness.  Even so, there is still no "significant" effect of
+supervision in any regression coefficient _or_ the estimated boundary (all
+Bayesian $p>0.05$, and the single-subject boundary distribution for this
+condition (violins in @Fig:expt2-bounds) are very similar.
+
 ## Discussion
+
+The results of Experiment 2 suggest that the unsupervised nature of
+distributional leanring is _not_ the primary source of the limitations observed
+in Experiment 1.  Surprisingly, the average (fixed effects) category boundaries
+observed from distributional learning with 50% labeled trials are statistically
+indistinguishable from , as are the the
 
 # Model
 
