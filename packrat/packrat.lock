@@ -1,6 +1,6 @@
 PackratFormat: 1.4
 PackratVersion: 0.5.0
-RVersion: 3.5.1
+RVersion: 3.5.2
 Repos: CRAN=http://cran.rstudio.com
 
 Package: BH
@@ -12,6 +12,11 @@ Package: Brobdingnag
 Source: CRAN
 Version: 1.2-6
 Hash: 543ab76a3f45b3befa35b301e0fa6b13
+
+Package: Cairo
+Source: CRAN
+Version: 1.5-9
+Hash: 6acb4ad0cff51c9f8148e344db173f70
 
 Package: DBI
 Source: CRAN
@@ -124,11 +129,6 @@ GithubRepo: beliefupdatr
 GithubUsername: kleinschmidt
 GithubRef: master
 GithubSha1: 61743a3d80b6770e60ac1bfe18b1240502b2f772
-RemoteHost: https://api.github.com
-RemoteRepo: beliefupdatr
-RemoteUsername: kleinschmidt
-RemoteRef: master
-RemoteSha: 61743a3d80b6770e60ac1bfe18b1240502b2f772
 
 Package: bindr
 Source: CRAN
@@ -236,11 +236,6 @@ GithubRepo: daver
 GithubUsername: kleinschmidt
 GithubRef: master
 GithubSha1: 501c8dfbf77af49ff512beae7d09e582dd8adc94
-RemoteHost: https://api.github.com
-RemoteRepo: daver
-RemoteUsername: kleinschmidt
-RemoteRef: master
-RemoteSha: 501c8dfbf77af49ff512beae7d09e582dd8adc94
 
 Package: dbplyr
 Source: CRAN
@@ -687,11 +682,6 @@ GithubRepo: phonetic-sup-unsup
 GithubUsername: kleinschmidt
 GithubRef: master
 GithubSha1: 5c51177e61d7be67942a0657d6ce22b60956aab4
-RemoteHost: https://api.github.com
-RemoteRepo: phonetic-sup-unsup
-RemoteUsername: kleinschmidt
-RemoteRef: master
-RemoteSha: 5c51177e61d7be67942a0657d6ce22b60956aab4
 
 Package: svUnit
 Source: CRAN
@@ -770,11 +760,6 @@ GithubRepo: votcorpora
 GithubUsername: kleinschmidt
 GithubRef: master
 GithubSha1: 9bba9a510e46a6fa2be15704b9deb4e1a11b2867
-RemoteHost: https://api.github.com
-RemoteRepo: votcorpora
-RemoteUsername: kleinschmidt
-RemoteRef: master
-RemoteSha: 9bba9a510e46a6fa2be15704b9deb4e1a11b2867
 
 Package: whisker
 Source: CRAN
