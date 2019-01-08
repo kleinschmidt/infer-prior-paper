@@ -814,22 +814,24 @@ expt2_bounds_bysub %>%
 
 First, listeners were highly sensitive to the labels on labeled trials,
 responding consistent with the label `r label_consistent`% of the time (range
-across subjects of `r label_range[1]`--`r label_range[2]`%).
+across subjects of `r label_range[1]`--`r label_range[2]`%).  That is, listeners
+used labels to guide their responses on that trial.
 
-Second, as wipth Experiment 1 I assessed listeners' distributional learning via
-category boundaries estimated with a Bayesian logistic mixed-effects model.
-This model included data from _both_ Experiments 1 and 2 in order to directly
-compare assess potential effects of supervised learning on the strength and time
-course of learning.  This model included fixed effects for supervision
-condition, all fixed effects from the Experiment 1 model, and all interactions
-thereof.  The random effects structure was identical to Experment 1.  Because
-listeners' responses were so systematically determined by the label on labeled
-trials, _only_ unlabeled trials were included in the model (all trials from
-Experiment 1, and half of the trial from Experiment 2).
+Second, did listeners use labels to guide or accelerate their _learning_?  As
+with Experiment 1 I assessed listeners' distributional learning via category
+boundaries estimated with a Bayesian logistic mixed-effects model.  This model
+included data from _both_ Experiments 1 and 2 in order to directly assess
+effects of supervised learning on the strength and time course of learning.
+This model included fixed effects for supervision condition, all fixed effects
+from the Experiment 1 model, and all interactions thereof.  The random effects
+structure was identical to Experment 1.  Because listeners' responses were so
+systematically determined by the label on labeled trials, _only_ unlabeled
+trials were included in the model (all trials from Experiment 1, and half of the
+trial from Experiment 2).
 
 Figure -@fig:expt2-bounds shows the by-subject and overall category boundaries
 for semi-supervised (shaded violins/points) and unsupervised (outlined
-violins/points) distributional learning.  As in @Fig:expt1-bounds, the
+violins/points) distributional learning.  As in @Fig:expt1-boundaries, the
 boundaries estimated from the model for a trial 5/6 of the way to the end of the
 experiment, and the points and lines show the group-level (fixed effects)
 estimates and 95% credible intervals.  The intervals for unsupervised and
@@ -849,18 +851,26 @@ the presence of three outlier subjects with unreliable responses which leads to
 very shallow classification functions and very high estimated boundaries
 (greater than 50ms).  These subjects weren't so unreliable as to be excluded by
 the pre-set exclusion criteria so they are included in the analysis here for the
-sake of completeness.  Even so, there is still no "significant" effect of
-supervision in any regression coefficient _or_ the estimated boundary (all
-Bayesian $p>0.05$, and the single-subject boundary distribution for this
-condition (violins in @Fig:expt2-bounds) are very similar.
+sake of completeness.  Even so, there is still no significant (Bayesian
+$p<0.05$) effect of supervision in any regression coefficient _or_ the estimated
+boundary, and the single-subject boundary distribution for this condition
+(violins in @Fig:expt2-bounds) are very similar.
 
 ## Discussion
 
-The results of Experiment 2 suggest that the unsupervised nature of
-distributional leanring is _not_ the primary source of the limitations observed
-in Experiment 1.  Surprisingly, the average (fixed effects) category boundaries
-observed from distributional learning with 50% labeled trials are statistically
-indistinguishable from , as are the the
+The results of Experiment 2 suggest that labeling individual VOTs as /b/ or /p/
+does very little to affect listeners' distributional learning.  Both at the
+condition level (fixed effect boundaries) and the subject level (distribution of
+subjects' boundaries), distributional learning leads to the same shift in
+category boundaries regardless of whether all trials are unlabeld (Experiment 1)
+or half labeled (Experiment 2).  This in turn suggests that the discrepancy
+between listeners learned boundaries and the boundary implied by the exposure
+distribution is _not_ due to uncertainty about the whether any particular VOT
+was intended to be a /b/ or a /p/.
+
+This is somewhat surprising, given that in the extremely shifted 30ms /b/, 70ms
+/p/ condition most of the tokens from the /b/ distribution would normally be
+classified as /p/ under a typical talker's generative model.
 
 # Model
 
