@@ -84,7 +84,7 @@ library(beliefupdatr)
 
 # Introduction
 
-# Experiment 1
+# Experiment 1: Distributional learning of voicing from VOT
 
 ```{r data-exp1}
 
@@ -584,7 +584,7 @@ Experiment 2 I use a Bayesian belief-updating model of distributional learning
 to investigate whether the pattern of distributional learning across conditions
 is consistent with belief updating starting from common prior beliefs.
 
-# Experiment 2
+# Experiment 2: Semi-supervised learning
 
 ## Methods
 
@@ -872,6 +872,33 @@ This is somewhat surprising, given that in the extremely shifted 30ms /b/, 70ms
 /p/ condition most of the tokens from the /b/ distribution would normally be
 classified as /p/ under a typical talker's generative model.
 
+
 # Model
+
+The results of Experiment 2 rule out one possible explanation for the
+constraints on distributional learning observed
+
+One way to interpret the findings of Experiment 2 is that listeners manage to
+identify the statistical structure of the two VOT clusters _without_ labels
+telling them which cluster each VOT belongs to.  If they _didn't_, then
+providing labels would add extra information which should change their
+distributional learning, and this didn't happen.
+
+## Methods
+
+
+
+### Assumptions
+
+I make a number of simplifying assumptions for the sake of tractability.  First,
+and most importantly, I treat the learning as _supervised_, and provide the
+model with the mean and standard deviation of the two VOT distributions.  This
+substantially simplifies the complexity of the learning problem: in order to
+model _unsupervised_ learning, a Bayesian model needs to average predicted
+behavior over distributional learning given each possible way that all the
+tokens could be jointly classified, weighted by the probability of that
+classification.  In an experiment with 200 trials, each of which could be either
+/b/ or /p/, this ammounts to more than $10^60$ possibilities, an impossibly
+large number of possibilities to consider.  
 
 # Experiment 3
