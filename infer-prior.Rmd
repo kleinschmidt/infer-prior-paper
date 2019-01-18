@@ -28,6 +28,7 @@ opts_chunk$set(warning = FALSE,
                message = FALSE,
                error = FALSE,
                cache=TRUE,
+               results = "hide",
                echo=opts_knit$get("rmarkdown.pandoc.to") != 'latex')
 
 options(digits=2)
@@ -83,6 +84,10 @@ library(beliefupdatr)
 
 
 # Introduction
+
+((( in contrast to 'standard' distributional learning paradigms which compare
+identification or discrimination after exposure to unimodal or bimodal
+distributions of acoustic-phonetic cues, .... )))
 
 # Experiment 1: Distributional learning of voicing from VOT
 
@@ -866,39 +871,92 @@ category boundaries regardless of whether all trials are unlabeld (Experiment 1)
 or half labeled (Experiment 2).  This in turn suggests that the discrepancy
 between listeners learned boundaries and the boundary implied by the exposure
 distribution is _not_ due to uncertainty about the whether any particular VOT
-was intended to be a /b/ or a /p/.
+was intended to be a /b/ or a /p/.  This is somewhat surprising, given that in
+the extremely shifted 30ms /b/, 70ms /p/ condition most of the tokens from the
+/b/ distribution would normally be classified as /p/ under a typical talker's
+generative model.
 
-This is somewhat surprising, given that in the extremely shifted 30ms /b/, 70ms
-/p/ condition most of the tokens from the /b/ distribution would normally be
-classified as /p/ under a typical talker's generative model.
+One possible interpretation of this result is that the way that label
+information was provided made the labels somehow unavailable to update
+listeners' beliefs about how phonetic categories are acoustically realized.
+This is not particularly plausible, for two reasons.  The first is that a wide
+variety of labeling information has been shown to be effective in phonetic
+recalibration, including lexical [@Kraljic2005; @Norris2003],
+visual/articulatory [@Bertelson2003], and orthographic [@Keetels2016a] labels.
+The second is that listeners were highly sensitive to the labeling information
+in generating their responses _on labeled trials_, it was only on _unlabeled_
+trials where the presence of labels on other trials seems to make no difference.
+
+Another possibility is that even without labels, listeners are able to pick up
+on the distributions they are exposed to, and so labeling some of the trials as
+a clue to which distribution they come from doesn't provide any additional
+information.  If this is the case, how can the discrepancy between the
+boundaries implied by those distributions and the boundaries listeners actually
+learned?  Experiment 3 addresses this question via computational modeling.
+
+# Experiment 3---Computational modeling
+
+Experiments 1 and 2 together present a puzzle: on the one hand, distributional
+learning appears to be "incomplete", with listeners using category boundaries
+that are reliably different from the boundaries implied by the VOT distributions
+they were exposed to.  On the other hand, providing listeners extra
+information---in the form of category labels for half the VOTs they heard---did
+not have any effect on distributional learning.  This suggests that listeners
+_know_ the distributions that the exposure talker produces, but they just don't
+_believe_ them.  Circumstantial evidence to this effect comes from the fact that
+the category boundaries that listeners _do_ use appear to be a compromise
+between the category boundaries derived from the VOT distributions for the
+exposure talker and those produced by a typical talker of American English.
+
+In this experiment I use a computational model to explore the possibility that
+listeners start at some common starting point and update their beliefs based on
+experience with the current talker.  Specifically, I use a model based on the
+ideal adapter framework [@Kleinschmidt2015b], which is based on the idea that
+listeners maintain uncertain beliefs about the distribution of cues
+corresponding to each phonetic category.  Crucially, according to the ideal
+adapter, when listeners encounter an unfamiliar talker, they initially entertain
+a set of prior beliefs about the phonetic cue distributions that an unfamiliar
+talker is likely to produce, which takes into account the variability across
+talkers that they have previously experience, and any available socio-indexical
+information that may be informative about this talker's cue distributions
+[@Kleinschmidt2019].  After direct experience with that talker, a listener will
+_update_ their beliefs about that talker's cue distributions, bringing them into
+better alignment with the cue distributions that the talker has actually
+produced.
+
+As a result, at any given point a listener's beliefs about that talker's cue
+distributions will be a _compromise_ between what they expected a priori, and
+the distributions they have actually encountered.  When a listener has limited
+experience with that particular talker, or especially strong, specific prior
+expectations, this compromise will be especially obvious.  One prediction of the
+ideal adapter is that listeners' prior expectations should be calibrated to the
+level (and type) of talker variability they have actually encountered.  Because
+there's relatively little variability across talkers in VOT distributions for
+word-initial stops [@Kleinschmidt2019], this is exactly such a case where
+listeners might be expected to bring strong prior expectations and hence show a
+clear compromise between those prior expectations and the distributions that
+they encounter in these experiments.
 
 
-# Model
-
-The results of Experiment 2 rule out one possible explanation for the
-constraints on distributional learning observed
-
-One way to interpret the findings of Experiment 2 is that listeners manage to
-identify the statistical structure of the two VOT clusters _without_ labels
-telling them which cluster each VOT belongs to.  If they _didn't_, then
-providing labels would add extra information which should change their
-distributional learning, and this didn't happen.
 
 ## Methods
 
-
+I use a Bayesian belief updating model, where listeners begin the experiment
+with a shared set of prior beliefs about the mean and variance of the VOT
+distributions for /b/ and /p/, and update these beliefs according to Bayes rule
+based on the VOTs they hear in the experiment.
 
 ### Assumptions
 
 I make a number of simplifying assumptions for the sake of tractability.  First,
-and most importantly, I treat the learning as _supervised_, and provide the
-model with the mean and standard deviation of the two VOT distributions.  This
-substantially simplifies the complexity of the learning problem: in order to
-model _unsupervised_ learning, a Bayesian model needs to average predicted
-behavior over distributional learning given each possible way that all the
-tokens could be jointly classified, weighted by the probability of that
-classification.  In an experiment with 200 trials, each of which could be either
-/b/ or /p/, this ammounts to more than $10^60$ possibilities, an impossibly
-large number of possibilities to consider.  
+and most importantly, I provide the model with the mean and standard deviation
+of the two VOT distributions.  This substantially simplifies the complexity of
+the learning problem: in order to model _unsupervised_ learning, a Bayesian
+model needs to average predicted behavior over distributional learning given
+each possible way that all the tokens could be jointly classified, weighted by
+the probability of that classification.  In an experiment with 200 trials, each
+of which could be either /b/ or /p/, this ammounts to more than $10^60$
+possibilities, an impossibly large number of possibilities to consider.  Even
+the approximations that are available are not 
 
-# Experiment 3
+# Experiment 4
