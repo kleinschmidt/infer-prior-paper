@@ -946,17 +946,87 @@ with a shared set of prior beliefs about the mean and variance of the VOT
 distributions for /b/ and /p/, and update these beliefs according to Bayes rule
 based on the VOTs they hear in the experiment.
 
+Specifically, a listener's uncertain beliefs about the mean and variance of each
+category (/b/ and /p/) are represented as Normal-Inverse Chi squared
+distribution.  At the beginning of the experiment, every listener has the same
+prior beliefs, expressed in the model as parameters for the _expected_ mean and
+variance ($\mu_{0}$ and $\sigma^2_0$), and for the _strength_ of these beliefs
+($\kappa_0$ for the mean and $\nu_0$ for the variance).  These confidence
+parameters are "pseudocounts", in that they are equivalent to assuming that the
+listener's expectations about the category mean is based on $\kappa_0$ prior
+observations from that category, and likewise for the variance and $\nu_0$.
+This prior distribution is a _conjugate prior_ because after observing $n$ data
+points with sample mean $\bar x$ and variance $s^2$, the posterior distribution
+is also a Normal-Inverse Chi squared, with parameters
+
+$$
+\begin{align}
+\kappa_n &= \kappa_0 + n \\
+\nu_n &= \nu_0 + n \\
+\mu_n &= \frac{\kappa_0\mu_0 + n\bar x}{\kappa_0 + n} \\
+\sigma^2_n &= \frac{1}{\nu_n}\left(\nu_0 \sigma^2_0 + ns^2 +
+  \frac{n\kappa_0}{\kappa_0 + n}(\mu_0 - \bar x)^2\right)
+\end{align}
+$$
+
+These parameter updates have an intuitive interpretation [@Kleinschmidt2015]:
+the confidence parameters are increased by the number of observations $n$ (which
+is why they are called "pseudocounts"), while the new expected mean and variance
+are weigthed averages of the prior expectations and the observed values, with
+the weights determined by the pseudocounts and actual count,
+respectively.[^var-mean]
+
+[^var-mean]: For the variance update, there is an additional term that captures
+    the possibility that a mismatch between the expected and observed mean could
+    be due to a higher than expected variance.
+
+Given updated beliefs about the mean and variance of each category the
+probability of any particular VOT $x$ being /b/ vs. /p/ can be calculated by the
+marginal likelihood of $x$ under the /b/ and /p/ distributions [see
+@Kleinschmidt2015 for more details].  The marginal likelihood is essentially a
+weighted average of the likelihood under all possible means and variance for
+each category, weighted by how probable each mean/variance is based on the VOTs
+observed from each category so far and the prior beliefs.  These marginal
+likelihoods are then converted to a probability of responding /p/ or /b/ using
+Bayes' rule.
+
 ### Assumptions
 
-I make a number of simplifying assumptions for the sake of tractability.  First,
-and most importantly, I provide the model with the mean and standard deviation
-of the two VOT distributions.  This substantially simplifies the complexity of
-the learning problem: in order to model _unsupervised_ learning, a Bayesian
-model needs to average predicted behavior over distributional learning given
-each possible way that all the tokens could be jointly classified, weighted by
-the probability of that classification.  In an experiment with 200 trials, each
-of which could be either /b/ or /p/, this ammounts to more than $10^60$
-possibilities, an impossibly large number of possibilities to consider.  Even
-the approximations that are available are not 
+In actually implementing this model, I make a number of simplifying assumptions
+for the sake of tractability.  First, and most importantly, I provide the model
+with the mean and standard deviation of the two VOT distributions.  This
+substantially simplifies the complexity of the learning problem: in order to
+model _unsupervised_ learning, a Bayesian model needs to average predicted
+behavior over distributional learning given each possible way that all the
+tokens could be jointly classified, weighted by the probability of that
+classification.  In an experiment with 200 trials, each of which could be either
+/b/ or /p/, this ammounts to more than $10^{60}$ possibilities, an impossibly
+large number to consider.  There are approximations for unsupervised or
+semi-supervised belief updating, but they substantially increase the
+computational complexity and exploring them is left for future work.
+
+Second, the use of a conjugate Normal Inverse Chi-squared prior is also an
+important simplification, as it means that the belief updating can be computed
+analytically.  Combined with the first assumption, this means that the updated
+beliefs can be computed directly from the prior parameters and the observed
+count, mean, and variance of each category.
+
+### Model fitting procedure
+
+The free parameters of this model were the prior expected mean and variance of
+/b/ and /p/, and the mean and variance prior pseudocounts (which were assumed to
+be the same for /b/ and /p/ because pilot simulations suggested it was not
+possible to reliably identify both).  I also included a guessing rate parameter,
+which captured the fact that many listeners never reach floor or ceiling and
+thus may be guessing on a proportion of trials.
+
+The model was fit to data from Experiment 1 (unsupervised distributional
+learning) using Stan [@Carpenter2017].  The trials were divided up into six
+blocks of equal length (37 trials).  Responses in each block in each
+distribution condition were predicted based on updated beliefs at the halfway
+point of the block, using the sufficient statistics of that distribution
+condition.
+
+## Results
 
 # Experiment 4
