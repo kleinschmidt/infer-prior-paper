@@ -92,6 +92,24 @@
 ** Schweinhart, Shafto, and Essock 2017
    Adapt to orientation distributions, basically the same finding as Idemaru and
    Holt (2011).
+** Language learning review anon
+   Focused I think on learning _non-native_ contrasts via DL...
+   """
+   The literature suggests that adults, too, can track the probability
+   distributions of sounds in the ambient language (Maye & Gerken, 2001;
+   Hayes-Harb, 2007; Clayards, Tanenhaus, Aslin, & Jacobs, 2008; Goudbeek,
+   Cutler, & Smits, 2008; Escudero, Benders, & Wanrooij, 2011). For instance,
+   Maye and Gerken (2001) showed that listeners exposed to a bimodal
+   distribution along the voice-onset time continuum between [d] and [d̥ ]
+   (i.e. prevoiced and voiceless unaspirated alveolar plosives) subsequently
+   discriminated this non-native contrast better than listeners exposed to a
+   unimodal distribution on the same continuum. However, a number of recent
+   studies failed to find the expected distributional training effects (Wanrooij
+   et al., 2014a; Wanrooij, de Vos, & Boersma, 2015; partly Ong, Burnham, &
+   Escudero, 2015). In principle, adults are sensitive to distributional
+   statistics across modalities (Love, 2003; Garrido, Tang, Taylor, Rowe, &
+   Mattingley, 2016)
+   """
 * DONE decide which data goes in this paper
   One of the issues I keep coming back to is the question of *which data to
   discuss in this paper*.  A priori, my strong preferences is *all of it*.
