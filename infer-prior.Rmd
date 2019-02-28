@@ -188,7 +188,7 @@ data_exp1 %>%
 
 ## Methods
 
-### Subjects {#sec:subjects}
+### Participants {#sec:participants}
 
 ```{r participants-exp1}
 
@@ -215,17 +215,17 @@ n_excl_cond <- excluded %>%
 
 ```
 
-`r n_total` subjects were recruited via Amazon's Mechanical Turk. Subjects were
-paid \$2.00 for participation, which took about 20 minutes. We excluded subjects
+`r n_total` participants were recruited via Amazon's Mechanical Turk. Participants were
+paid \$2.00 for participation, which took about 20 minutes. We excluded participants
 who participated more than once ($n=`r n_subj_repeat`$) or who failed to
 classify VOTs reliably ($n=`r n_subj_bad`$; $n=`r n_both`$ for both reasons).
 We defined reliable classification as accuracy of at least 80% at 0 and 70ms
 VOT. Because some conditions had few stimuli with these VOTs, we extrapolated
-subjects' responses using a logistic generalized linear model (GLM).  Excluded
-subjects were roughly equally distributed across conditions (maximum of 
+participants' responses using a logistic generalized linear model (GLM).  Excluded
+participants were roughly equally distributed across conditions (maximum of 
 `r last(n_excl_cond$n)` in `r last(n_excl_cond$bvotCond)`ms /b/ VOT condition,
 and minimum of `r first(n_excl_cond$n)` in `r first(n_excl_cond$bvotCond)`ms /b/
-VOT condition). After these exclusions, data from `r n_subj` subjects remained
+VOT condition). After these exclusions, data from `r n_subj` participants remained
 for analysis.
 
 ### Procedure
@@ -237,10 +237,10 @@ for analysis.
 The procedure is based on @Clayards2008. Figure -@fig:beach-peach shows an
 example trial display.  On each trial, two response option images appeared,
 which corresponded to one of three /b/-/p/ minimal pairs (beach/peach,
-bees/peas, or beak/peak).  Subjects started each trial by clicking on a button
+bees/peas, or beak/peak).  Participants started each trial by clicking on a button
 between the two pictures, which played the corresponding minimal pair word audio
-stimulus. Subjects then clicked on the picture to indicate whether they heard
-the /b/ or /p/ member of the minimal pair. Subjects performed 222 of these
+stimulus. Participants then clicked on the picture to indicate whether they heard
+the /b/ or /p/ member of the minimal pair. Participants performed 222 of these
 trials, evenly divided between the three minimal pairs, in random order.
 
 Each trial's word was synthesized with a voice onset time (VOT) that was
@@ -273,20 +273,20 @@ Each subject's classification function was estimated with a Bayesian multilevel
 logistic regression, using the `brms` package [@Burkner2017] for `R`
 [@RCoreTeam2017].  This approach simultaneously estimates the group-level
 effects of the experimental manipulation (VOT shift condition) on the /b/-/p/
-category boundary location and sharpness, and each individual subjects' boundary
+category boundary location and sharpness, and each individual participants' boundary
 locations and slopes.  A multilevel approach like this has the benefit of
 properly accounting for and balancing the joint uncertainty about the group- and
 individual-level effects [@Gelman2007].[^shrinkage]
 
 [^shrinkage]: One effect of using a multilevel approach is that the estimate of
     each subject's boundary is "shrunk" towards the group-level estimate.  This
-    reflects the assumption that subjects are drawn from the same population,
+    reflects the assumption that participants are drawn from the same population,
     and hence the data from one subject in a group are informative about other
-    subjects in that group (and vice versa).  The amount of this shrinkage
+    participants in that group (and vice versa).  The amount of this shrinkage
     depends on the amount of data available from each individual subject, and
     the consistency of the individual subject estimates.  In this case, each
     subject contributes sufficient data to make shrinkage mild, and an
-    alternative analysis that estimates each subjects' boundary with a separate
+    alternative analysis that estimates each participants' boundary with a separate
     logistic GLM produces qualitatively similar effects.
 
 ```{r exp1-regression, dependson=c("data-exp1")}
@@ -402,7 +402,7 @@ ggplot(expt1_class_bysub, aes(x=vot, color=vot_cond)) +
 
 ```
 
-```{r expt1-boundaries, fig.cap="Category boundaries by condition.  Violins show the distribution of subjects' boundaries (random effects), and the white points show the group-level boundary (fixed effects, with 95% Bayesian confidence intervals)"}
+```{r expt1-boundaries, fig.cap="Category boundaries by condition.  Violins show the distribution of participants' boundaries (random effects), and the white points show the group-level boundary (fixed effects, with 95% Bayesian confidence intervals)"}
 
 no_learning_bound <-
   no_learning %>%
@@ -685,13 +685,13 @@ could be accelerated by including some labeled trials.  The -10ms, 30ms
 condition of Experiment 1 was run after analyzing data from Experiments 1 and 2
 together.
 
-### Subjects
+### Participants
 
-I recruited `r n_total_2 ` subjects via Amazon's Mechanical Turk.  As in
-Experiment 1, subjects were paid $2.00 for participation.  Exclusion criteria
-were the same as Experiment 1, and data from `r n_excluded_2` subjects were
+I recruited `r n_total_2 ` participants via Amazon's Mechanical Turk.  As in
+Experiment 1, participants were paid $2.00 for participation.  Exclusion criteria
+were the same as Experiment 1, and data from `r n_excluded_2` participants were
 excluded from analysis: `r n_subj_repeat_2` for repeated participation
-(including subjects who had participated in Experiment 1), `r n_subj_bad_2` for
+(including participants who had participated in Experiment 1), `r n_subj_bad_2` for
 inaccurate categorization of unambiguous VOTs, with `r n_both_2` excluded for
 both criteria.  This left data from `r n_subj_exp2` remaining for analysis.
 
@@ -799,7 +799,7 @@ expt2_bounds_fixef_samples %>%
 
 ```
 
-```{r expt2-bounds, fig.cap='Providing 50% labeled trials during distributional learning makes no difference in listener\'s category boundaries (Experiment 2, solid voilins/points) compared to purely unsupervised learning (Experiment 1, outlined violins/points, re-plotted from @fig:expt1-boundaries).  For ease of comparison with results from Experiment 1, the same axis limits are used as @fig:expt1-boundaries; this lead to exclusion from the figure of five listeners with boundaries greater than 50ms (2 in the 20ms /b/ condition, 3 in the 30ms /b/ condition).  All subjects are included in the regression model from which the fixed effects boundaries are estimated (points/lines).'}
+```{r expt2-bounds, fig.cap='Providing 50% labeled trials during distributional learning makes no difference in listener\'s category boundaries (Experiment 2, solid voilins/points) compared to purely unsupervised learning (Experiment 1, outlined violins/points, re-plotted from @fig:expt1-boundaries).  For ease of comparison with results from Experiment 1, the same axis limits are used as @fig:expt1-boundaries; this lead to exclusion from the figure of five listeners with boundaries greater than 50ms (2 in the 20ms /b/ condition, 3 in the 30ms /b/ condition).  All participants are included in the regression model from which the fixed effects boundaries are estimated (points/lines).'}
 
 expt2_bounds_bysub %>%
   filter(block==3) %>%
@@ -823,7 +823,7 @@ expt2_bounds_bysub %>%
 
 First, listeners were highly sensitive to the labels on labeled trials,
 responding consistent with the label `r label_consistent`% of the time (range
-across subjects of `r label_range[1]`--`r label_range[2]`%).  That is, listeners
+across participants of `r label_range[1]`--`r label_range[2]`%).  That is, listeners
 used labels to guide their responses on that trial.
 
 Second, did listeners use labels to guide or accelerate their _learning_?  As
@@ -856,9 +856,9 @@ distributional learning.
 The condition that comes the closest to showing any effect is the 30ms /b/, 70ms
 /p/ VOT, which is the most extreme shift relative to standard VOT distributions.
 However, the fixed effect boundaries in this condition may have been biased by
-the presence of three outlier subjects with unreliable responses which leads to
+the presence of three outlier participants with unreliable responses which leads to
 very shallow classification functions and very high estimated boundaries
-(greater than 50ms).  These subjects weren't so unreliable as to be excluded by
+(greater than 50ms).  These participants weren't so unreliable as to be excluded by
 the pre-set exclusion criteria so they are included in the analysis here for the
 sake of completeness.  Even so, there is still no significant (Bayesian
 $p<0.05$) effect of supervision in any regression coefficient _or_ the estimated
@@ -870,7 +870,7 @@ boundary, and the single-subject boundary distribution for this condition
 The results of Experiment 2 suggest that labeling individual VOTs as /b/ or /p/
 does very little to affect listeners' distributional learning.  Both at the
 condition level (fixed effect boundaries) and the subject level (distribution of
-subjects' boundaries), distributional learning leads to the same shift in
+participants' boundaries), distributional learning leads to the same shift in
 category boundaries regardless of whether all trials are unlabeld (Experiment 1)
 or half labeled (Experiment 2).  This in turn suggests that the discrepancy
 between listeners learned boundaries and the boundary implied by the exposure
