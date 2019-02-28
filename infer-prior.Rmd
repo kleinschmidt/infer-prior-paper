@@ -1111,8 +1111,7 @@ prior_class_funs <-
 
 ```
 
-```{r mod-vs-behav-class-funs, dependson=c("mod-class-funs")
-
+```{r mod-vs-behav-class-funs, dependson=c("mod-class-funs")}
 
 data_exp1 %>%
   filter(ntile(trial, 6) == 6) %>%
