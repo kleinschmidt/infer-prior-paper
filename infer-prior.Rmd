@@ -589,7 +589,11 @@ Experiment 2 I use a Bayesian belief-updating model of distributional learning
 to investigate whether the pattern of distributional learning across conditions
 is consistent with belief updating starting from common prior beliefs.
 
-# Experiment 2: Semi-supervised learning
+# Experiment 2: Semi-supervised distributional learning
+
+In this experiment, some trials are presented with _label_ information, which
+indicates _which_ member of the /b/-/p/ minimal pair the speaker intended to
+produce.
 
 ## Methods
 
