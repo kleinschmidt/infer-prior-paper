@@ -1033,4 +1033,118 @@ condition.
 
 ## Results
 
+```{r infer-prior}
+
+## options(mc.cores = parallel::detectCores())
+## fit_inc <- infer_prior_beliefs(data_exp1,
+##                                cue = "vot",
+##                                category = "trueCat",
+##                                response = "respCat",
+##                                condition = "vot_cond",
+##                                ranefs = "subject",
+##                                n_blocks = 6,
+##                                chains = 4,
+##                                iter = 2000)
+## saveRDS(fit_inc, "models/fit_inc.rds")
+
+fit_inc <- readRDS("models/fit_inc.rds")
+
+categories <-
+  data_frame(cat_num = 1:2,
+             category = c('b', 'p'))
+
+prior_samples_df <-
+  fit_inc %>%
+  spread_draws(nu_0, kappa_0, mu_0[cat_num], sigma_0[cat_num]) %>%
+  left_join(categories)
+
+## create a data_frame with samples for updated parameters
+updated_samples_df <-
+  fit_inc %>%
+  spread_draws(c(kappa_n, nu_n, mu_n, sigma_n)[block_num, cat_num, cond_num],
+               lapse_rate[block_num]) %>%
+  left_join(categories) %>%
+  left_join(mutate(conditions_exp1, cond_num = as.numeric(bvotCond)))
+
+## create a data_frame for lapsing rate samples
+lapse_rate_samples <-
+  fit_inc %>%
+  spread_draws(lapse_rate[block_num])
+```
+
+```{r mod-class-funs, dependson=c("infer-prior")}
+
+mod_class_funs <- 
+  updated_samples_df %>%
+  group_by(.draw) %>%
+  nest() %>%
+  sample_n(200) %>%
+  unnest() %>%
+  mutate(mean=mu_n, sd=sigma_n) %>%
+  select(.draw, block_num, bvotCond, vot_cond, category, mean, sd) %>%
+  group_by(.draw, bvotCond, vot_cond, block_num) %>%
+  do(stats_to_lhood(., noise_sd=0)) %>%
+  lhood_to_classification() %>%
+  left_join(lapse_rate_samples) %>%
+  mutate(prob_p = (1-lapse_rate)*prob_p + lapse_rate/2) %>%
+  group_by(bvotCond, vot_cond, block_num, vot) %>%
+  select(bvotCond, block_num, vot, prob_p) %>%
+  summarise(prob_p_low = quantile(prob_p, 0.025),
+            prob_p_high = quantile(prob_p, 0.975),
+            prob_p = mean(prob_p))
+
+prior_class_funs <-
+  prior_samples_df %>%
+  group_by(.draw) %>%
+  nest() %>%
+  sample_n(200) %>%
+  unnest() %>%
+  mutate(mean=mu_0, sd=sigma_0) %>%
+  select(.draw, category, mean, sd) %>%
+  group_by(.draw, category) %>%
+  do(stats_to_lhood(., noise_sd=0)) %>%
+  lhood_to_classification() %>%
+  group_by(vot) %>%
+  summarise(prob_p_low = quantile(prob_p, 0.025),
+            prob_p_high = quantile(prob_p, 0.975),
+            prob_p = mean(prob_p))
+
+```
+
+```{r mod-vs-behav-class-funs, dependson=c("mod-class-funs")
+
+
+data_exp1 %>%
+  filter(ntile(trial, 6) == 6) %>%
+  group_by(subject, vot, vot_cond) %>%
+  summarise(respP = mean(respP)) %>%
+  ggplot() +
+  geom_pointrange(aes(x=vot, y=respP, color=vot_cond),
+                  stat="summary", fun.data="mean_cl_boot") +
+  geom_ribbon(data=filter(mod_class_funs, block_num==6),
+              aes(x=vot, ymin=prob_p_low, ymax=prob_p_high, fill=vot_cond),
+              alpha=0.5) +
+  geom_line(data = prior_class_funs,
+            aes(x=vot, y=prob_p),
+            color="black", linetype=2) +
+  facet_grid(.~vot_cond)
+
+# all blocks:
+## data_exp1 %>%
+##   mutate(block_num = ntile(trial, 6)) %>%
+##   group_by(subject, vot, vot_cond, block_num) %>%
+##   summarise(respP = mean(respP)) %>%
+##   ggplot() +
+##   geom_pointrange(aes(x=vot, y=respP, color=vot_cond),
+##                   stat="summary", fun.data="mean_cl_boot") +
+##   geom_ribbon(data=mod_class_funs,
+##               aes(x=vot, ymin=prob_p_low, ymax=prob_p_high, fill=vot_cond),
+##               alpha=0.5) +
+##   geom_line(data = prior_class_funs,
+##             aes(x=vot, y=prob_p),
+##             color="black", linetype=2) +
+##   facet_grid(block_num~vot_cond)
+
+```
+
 # Experiment 4
