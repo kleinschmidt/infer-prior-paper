@@ -1211,7 +1211,19 @@ modeled_boundaries <-
 
 ```
 
-```{r plot-modeled-category-boundaries, fig.width=6.2, fig.height=3.8, fig.cap="Belief updating model's change in category boundary in each VOT condition over trials"
+```{r}
+
+bounds_6tile_exp1 <-
+  data_exp1 %>%
+  select(subject, vot_cond, trial, vot, respP) %>%
+  mutate(block_num = ntile(trial, 6)) %>%
+  group_by(vot_cond, block_num, vot) %>%
+  summarise(respP = mean(respP)) %>%
+  find_bound(vot, respP)
+
+```
+
+```{r plot-modeled-category-boundaries, fig.width=6.2, fig.height=3.8, fig.cap="Belief updating model's change in category boundary in each VOT condition over trials"}
 
 ggplot(modeled_boundaries, aes(x=block_num, y=mean)) +
   # geom_line(aes(color=vot_cond)) +
@@ -1223,7 +1235,11 @@ ggplot(modeled_boundaries, aes(x=block_num, y=mean)) +
        y = "Model /b/-/p/ boundary (ms VOT)",
        title = "Model learning curves",
        subtitle = "Change in /b/-/p/ category boundary with learning") +
-  theme(legend.position = "hide")
+  theme(legend.position = "hide") +
+  geom_point(data = bounds_6tile_exp1,
+             aes(x=block_num, y=vot, color=vot_cond)) +
+  geom_line(data = bounds_6tile_exp1,
+             aes(x=block_num, y=vot, color=vot_cond))
 
 ```
 
