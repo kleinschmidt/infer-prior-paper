@@ -553,7 +553,7 @@ categorize sounds as voiced or unvoiced due to exposure to different VOT
 distributions.  Second, this learning is not _complete_, in the sense that
 listeners' voiced-unvoiced boundary does not exactly match the boundary implied
 by the bimodal distribution they were exposed to.  Like the findings of
-@Sumner2013 and @Idemaru2011, this second result suggests that distributional
+@Sumner2011 and @Idemaru2011, this second result suggests that distributional
 learning is _constrained_ somehow.  In the following experiments, I investigate
 two possible sources of these constraints.
 
@@ -642,9 +642,10 @@ n_excl_cond_2 <- excluded_exp2 %>%
 
 ### Procedure
 
-```{r exp2-label-dists, fig.cap='Distribution of labeled and unlabeled trials in the "mixed" and "supervised" conditions of Experiment 2'}
+```{r exp2-label-dists, fig.width=9, fig.height=4.5, fig.cap='Distribution of labeled and unlabeled trials in Experiment 2.  These conditions have the same number of labeled and unlabeled trials, but differ in how they are assigned to VOTs.  In the "mixed" condition, most VOTs occurred in a mixture of labeled and un-labeled trials.  In the "separated" condition, each VOT always occurred as either labeled or unlabeled.  Because no difference was found between learning in these conditions, they are analyzed together.'}
 
 data_exp2 %>%
+  mutate(supCond = fct_recode(supCond, separated="supervised")) %>%
   group_by(supCond) %>%
   filter(bvotCond == 0) %>%
   filter(subject == first(subject)) %>%
@@ -653,7 +654,12 @@ data_exp2 %>%
   ggplot(aes(x=vot, y=n, fill=labeled)) +
   geom_bar(stat="identity") +
   facet_grid(.~supCond) +
-  scale_fill_manual(values=c("black", "gray"))
+  scale_fill_manual(values=c("black", "gray")) +
+  scale_x_continuous(breaks = c(0, 40), labels = c("/b/ mean", "/p/ mean")) +
+  labs(x = "",
+       y = "Count",
+       title = "Experiment 2: semi-supervised learning",
+       subtitle = "Distribution of labeled trials in two semi-supervised learning conditions")
 
 ```
 
