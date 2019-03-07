@@ -1134,7 +1134,7 @@ data_exp1 %>%
                   stat="summary", fun.data="mean_cl_boot") +
   facet_grid(.~vot_cond) +
   labs(title = "Belief updating model",
-       subtitle = "Compared with behavioral responses from Experiment 1",
+       subtitle = "Classification function versus behavioral data for final 6th of trials in Experiment 1",
        x = "VOT (ms)",
        y = "Probability /p/ response")
 
@@ -1179,6 +1179,51 @@ data_exp1 %>%
             color="black", linetype=2) +
   facet_grid(block_num~vot_cond)
 
+
+```
+
+Figure -@fig:mod-vs-behav-class-funs shows the belief-updating model's predicted
+classification functions in the final sixth of trials in the experiment.
+Qualitatively, the model provides a good fit to the overall classification
+functions for each VOT condition, and the estimated boundaries align well with
+the observed boundaries in each case.  It also provides a good fit to the time
+course of learning, capturing changes in the category boundaries in each
+condition over the experiment.
+
+```{r modeled-category-boundaries}
+
+modeled_boundaries <-
+  updated_samples_df %>%
+  group_by(.draw) %>%
+  nest() %>%
+  sample_n(200) %>%
+  unnest() %>%
+  mutate(mean=mu_n, sd=sigma_n) %>%
+  select(.draw, block_num, bvotCond, vot_cond, category, mean, sd) %>%
+  group_by(.draw, bvotCond, vot_cond, block_num) %>%
+  do(stats_to_lhood(., xlim=c(0, 50), noise_sd=0)) %>%
+  lhood_to_classification() %>%
+  left_join(lapse_rate_samples) %>%
+  mutate(prob_p = (1-lapse_rate)*prob_p + lapse_rate/2) %>%
+  find_bound(vot, prob_p) %>%
+  group_by(bvotCond, vot_cond, block_num) %>%
+  summarise_at(vars(vot), funs(mean, low=quantile(., 0.025), high=quantile(., 0.975)))
+
+```
+
+```{r plot-modeled-category-boundaries, fig.width=6.2, fig.height=3.8, fig.cap="Belief updating model's change in category boundary in each VOT condition over trials"
+
+ggplot(modeled_boundaries, aes(x=block_num, y=mean)) +
+  # geom_line(aes(color=vot_cond)) +
+  geom_ribbon(aes(ymin=low, ymax=high, fill=vot_cond), alpha=0.5) +
+  scale_x_continuous(breaks = 1:6, limits = c(NA, 6.5)) +
+  geom_text(data = . %>% filter(block_num == 6), aes(label = vot_cond, color=vot_cond),
+            hjust=0, nudge_x=0.05) +
+  labs(x = "Block (each is one sixth of trials)",
+       y = "Model /b/-/p/ boundary (ms VOT)",
+       title = "Model learning curves",
+       subtitle = "Change in /b/-/p/ category boundary with learning") +
+  theme(legend.position = "hide")
 
 ```
 
