@@ -1242,6 +1242,21 @@ ggplot(modeled_boundaries, aes(x=block_num, y=mean)) +
              aes(x=block_num, y=vot, color=vot_cond)) +
   geom_line(data = bounds_6tile_exp1,
              aes(x=block_num, y=vot, color=vot_cond))
+  ## geom_point(data = expt1_bounds_s,
+  ##            aes(x=block, y=vot, color=vot_cond)) +
+  ## geom_line(data = expt1_bounds_s,
+  ##           aes(x=block, y=vot, color=vot_cond))
+
+
+# alternative figure: same style as boundary plots from experiments
+## ggplot(modeled_boundaries_samples,
+##        aes(x = vot_cond, y = vot, fill=vot_cond, alpha = block_num,
+##            group=interaction(block_num, vot_cond))) +
+##   geom_violin(position="identity", color=NA) +
+##   geom_violin(data = expt1_bounds_fixef_samples,
+##               aes(alpha=2*block, color=vot_cond, group=interaction(block, vot_cond)),
+##               fill=NA, position="identity") +
+##   coord_flip()
 
 ```
 
