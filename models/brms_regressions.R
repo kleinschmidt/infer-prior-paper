@@ -176,3 +176,48 @@ saveRDS(b_logit_s_exp1, "models/brm_logistic_smooth_exp1.rds")
 
 
 plot(marginal_smooths(b_logit_s_exp1))
+
+
+
+# from manuscript:
+
+exp1_blocks <-
+  data_exp1_mod %>%
+  group_by(block=ntile(trial, 6)) %>%
+  summarise_at(vars(trial, trial_s), mean)
+# overall fit (fixed effects):
+data_pred <-
+  cross_df(list(vot_s = seq(min(data_exp1_mod$vot_s),
+                            max(data_exp1_mod$vot_s),
+                            length.out=100),
+                bvotCond = unique(data_exp1_mod$bvotCond),
+                block = 1:6)) %>%
+  left_join(exp1_blocks, by="block") %>%
+  mutate(vot = vot_s * sd(data_exp1_mod$vot) + mean(data_exp1_mod$vot)) %>%
+  left_join(conditions_exp1, by="bvotCond")
+
+expt1_s_class <-
+  fitted(b_logit_s_exp1, newdata=data_pred, re_formula=NA) %>%
+  as_tibble() %>%
+  bind_cols(data_pred)
+
+# by-subject fit (fixed+random effects):
+data_pred_subj <-
+  data_exp1_mod %>%
+  group_by(subject, bvotCond) %>%
+  summarise() %>%
+  left_join(data_pred, by="bvotCond")
+
+expt1_s_class_bysub <-
+  fitted(b_logit_s_exp1, newdata=data_pred_subj) %>%
+  as_tibble() %>%
+  bind_cols(data_pred_subj)
+
+
+
+expt1_bounds_s <- expt1_s_class %>% group_by(vot_cond, trial, block) %>% find_bound(x=vot, y=Estimate)
+
+ggplot(expt1_bounds_s, aes(x=trial, y=vot, color=vot_cond)) +
+  geom_point() +
+  geom_line() +
+  geom_line(data = expt1_bounds, linetype=2)
