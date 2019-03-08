@@ -1192,7 +1192,7 @@ condition over the experiment.
 
 ```{r modeled-category-boundaries}
 
-modeled_boundaries <-
+modeled_boundaries_samples <-
   updated_samples_df %>%
   group_by(.draw) %>%
   nest() %>%
@@ -1205,7 +1205,9 @@ modeled_boundaries <-
   lhood_to_classification() %>%
   left_join(lapse_rate_samples) %>%
   mutate(prob_p = (1-lapse_rate)*prob_p + lapse_rate/2) %>%
-  find_bound(vot, prob_p) %>%
+  find_bound(vot, prob_p)
+
+modeled_boundaries <- modeled_bounaries_samples %>%
   group_by(bvotCond, vot_cond, block_num) %>%
   summarise_at(vars(vot), funs(mean, low=quantile(., 0.025), high=quantile(., 0.975)))
 
@@ -1223,7 +1225,7 @@ bounds_6tile_exp1 <-
 
 ```
 
-```{r plot-modeled-category-boundaries, fig.width=6.2, fig.height=3.8, fig.cap="Belief updating model's change in category boundary in each VOT condition over trials"}
+```{r plot-modeled-category-boundaries, fig.width=6.8, fig.height=5.3, fig.cap="Belief updating model's change in category boundary in each VOT condition over trials"}
 
 ggplot(modeled_boundaries, aes(x=block_num, y=mean)) +
   # geom_line(aes(color=vot_cond)) +
