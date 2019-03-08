@@ -156,3 +156,23 @@ f_noint <- respP ~ 0 + bvotCond * supervised * vot_s * trial_s +
 b_logit_sup_v_unsup <- readRDS("brm_logistic_sup_v_unsup.rds")
 
 
+################################################################################
+# non-linear trial effects
+
+data_exp1_mod <-
+  data_exp1 %>%
+  select(subject, bvotCond, trial, vot, respP) %>%
+  mutate(vot_s = (vot - mean(vot)) / sd(vot),
+         trial_s = (trial - mean(trial)) / sd(trial))
+
+
+b_logit_s_exp1 <- brm(
+  bf(respP ~ 1 + bvotCond * vot_s + s(trial_s, by=bvotCond) + (1 + vot_s | subject)),
+  data = data_exp1_mod, family=bernoulli(),
+  chains=4, iter=100
+)
+
+saveRDS(b_logit_s_exp1, "models/brm_logistic_smooth_exp1.rds")
+
+
+plot(marginal_smooths(b_logit_s_exp1))
