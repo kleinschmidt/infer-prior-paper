@@ -1031,11 +1031,24 @@ which captured the fact that many listeners never reach floor or ceiling and
 thus may be guessing on a proportion of trials.
 
 The model was fit to data from Experiment 1 (unsupervised distributional
-learning) using Stan [@Carpenter2017].  The trials were divided up into six
-blocks of equal length (37 trials).  Responses in each block in each
+learning) using a custom Stan model [@Carpenter2017].  The trials were divided
+up into six blocks of equal length (37 trials).  Responses in each block in each
 distribution condition were predicted based on updated beliefs at the halfway
 point of the block, using the sufficient statistics of that distribution
 condition.
+
+No "random effects" (hierarchical effects by subject) were included.  This is a
+difficult choice to make.  On the one hand, there likely _are_ differences in
+listeners' prior expectations and learning rates, and ignoring these ignores
+important variability in the data.  On the other hand, including such random
+effects by subjects introduces many additional degrees of freedom into the
+model, and increases the number of data patterns it could fit.  This is
+especially dangerous in this particular case since each listener only
+encountered a single set of distributions, and so random effects for _subjects_
+effectively introduces unconstrained flexibility in how the model captures
+differences between _distributions_.  So, I opted not to include random effects
+in the belief updating model, so as to make as rigorous as possible a test of
+its ability to capture differences in distributional learning found above.
 
 ## Results
 
