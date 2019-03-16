@@ -1260,4 +1260,20 @@ ggplot(modeled_boundaries, aes(x=block_num, y=mean)) +
 
 ```
 
+```{r lapse-rate-by-block, fig.width=5.8, fig.height=3.9, fig.caption="Lapse (guess) rate inferred in the belief updating model for each 1/6th of trials in Experiment 1.  The inferred lapse rate starts rather high (nearly 12%) but decreases to around 5% after the first 1/6 of trials (1--37)"}
+
+lapse_rate_samples %>%
+  summarise_at(vars(lapse_rate),
+               funs(mean, low=quantile(., 0.025), high=quantile(., 0.975))) %>%
+  left_join(exp1_blocks, by=c("block_num"="block")) %>%
+  ggplot(aes(x=trial, y=mean, ymin=low, ymax=high)) +
+  geom_pointrange() +
+  labs(y="Guessing rate",
+       title="Inferred guessing rate for belief updating model",
+       subtitle="Means and 95% credible intervals") +
+  lims(y=c(0, NA),
+       x=c(0, NA))
+
+```
+
 # Experiment 4
