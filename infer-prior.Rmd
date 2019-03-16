@@ -1342,6 +1342,37 @@ ggplot(modeled_boundaries, aes(x=trial, y=mean)) +
 
 ```
 
+### Learning curves
+
+Next, how well does the belief-updating model capture the learning curve, or
+change in category boundaries with further experience?  This is not
+straightforward to answer, because assessing _listeners'_ learning curves is not
+straightforward.  In analyzing the results from Experiment 1, I used a logistic
+regression with a linear effect of trial, which roughly correponds to linear
+changes in the /b/-/p/ boundaries over the course of the experiment.  However,
+the boundary changes predicted by the belief updating model are non-linear, as
+are (in all likelihood) listeners' actual learning curves.  It's possible to
+crudely estimate the boundary by simply finding the VOT value where the
+empirical classification function crosses 50% /p/ responses in each sixth of the
+trials, but this is highly noisy.  
+
+A further complication arises from the fact that the belief-updating model
+incorporates a "lapse rate", which itself changes over blocks
+(@Fig:lapse-rate-by-block).  This is because when developing the model, I
+noticed that listeners were far more likely to make errors on unambiguous VOTs
+early in the experiment, but continued to make such errors throughout, albeit at
+a lower rate.  This is reflected in the inferred lapse rate: for the first sixth
+of trials (1-37), the inferred lapse rate is nearly 12%, while for the remainder
+of the experiment it is closer to 5%.
+
+
+
+In order to assess how well the belief updating model captures the actual
+learning curves
+
+
+
+
 ```{r lapse-rate-by-block, fig.width=5.8, fig.height=3.9, fig.caption="Lapse (guess) rate inferred in the belief updating model for each 1/6th of trials in Experiment 1.  The inferred lapse rate starts rather high (nearly 12%) but decreases to around 5% after the first 1/6 of trials (1--37)"}
 
 lapse_rate_samples %>%
@@ -1357,5 +1388,17 @@ lapse_rate_samples %>%
        x=c(0, NA))
 
 ```
+
+## Discussion
+
+* learning may flatten off and assymptote with more exposure, reflecting
+  discounting of less recent trials (Dave and Emily's paper, Giraud paper, ).
+  This is still _compatible_ with belief updating, it just suggests that
+  listeners are assuming a different implicit generative model, which allows for
+  the fact that a talker's distributions may drift, or change slowly, making
+  recent observations more informative about the _current_ distributions than
+  are observations from many minutes, hours, days, etc. ago.
+
+
 
 # Experiment 4
