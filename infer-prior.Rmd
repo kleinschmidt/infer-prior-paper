@@ -1250,9 +1250,42 @@ modeled_boundaries_samples <-
   mutate(prob_p = (1-lapse_rate)*prob_p + lapse_rate/2) %>%
   find_bound(vot, prob_p)
 
+exp1_blocks6 <-
+  data_exp1_mod %>%
+  mutate(block_num = ntile(trial, 6)) %>%
+  group_by(block_num) %>%
+  summarise(trial = mean(trial), trial_s = mean(trial_s))
+
+
 modeled_boundaries <- modeled_boundaries_samples %>%
   group_by(bvotCond, vot_cond, block_num) %>%
-  summarise_at(vars(vot), funs(mean, low=quantile(., 0.025), high=quantile(., 0.975)))
+  summarise_at(vars(vot), funs(mean, low=quantile(., 0.025), high=quantile(., 0.975))) %>%
+  left_join(exp1_blocks6, by="block_num")
+
+```
+
+```{r}
+
+## re-compute expt1 bounds course with 6-tiles instead of 3-tiles
+
+data_pred6 <-
+  cross_df(list(vot_s = (seq(0, 50, by=3) - mean(data_exp1_mod$vot)) / sd(data_exp1_mod$vot),
+                bvotCond = unique(data_exp1_mod$bvotCond),
+                block_num = 1:6)) %>%
+  left_join(exp1_blocks6, by="block_num") %>%
+  mutate(vot = vot_s * sd(data_exp1_mod$vot) + mean(data_exp1_mod$vot)) %>%
+  left_join(conditions_exp1, by="bvotCond")
+
+expt1_bounds_fixef_samples6 <-
+  tidybayes::linpred_draws(b_logit_exp1, data_pred6, re_formula=NA) %>%
+  group_by(vot_cond, block_num, trial, .draw) %>%
+  find_bound(x=vot, y=.value)
+
+expt1_bounds_fixef6 <-
+  expt1_bounds_fixef_samples6 %>%
+  group_by(vot_cond, block_num, trial) %>%
+  summarise(low=quantile(vot, 0.025), high=quantile(vot, 0.975), mean=mean(vot))
+
 
 ```
 
@@ -1264,31 +1297,37 @@ bounds_6tile_exp1 <-
   mutate(block_num = ntile(trial, 6)) %>%
   group_by(vot_cond, block_num, vot) %>%
   summarise(respP = mean(respP)) %>%
-  find_bound(vot, respP)
+  find_bound(vot, respP) %>%
+  left_join(exp1_blocks6, by="block_num")
+  
 
 ```
 
 ```{r plot-modeled-category-boundaries, fig.width=6.8, fig.height=5.3, fig.cap="Belief updating model's change in category boundary in each VOT condition over trials"}
 
-ggplot(modeled_boundaries, aes(x=block_num, y=mean)) +
+ggplot(modeled_boundaries, aes(x=trial, y=mean)) +
   # geom_line(aes(color=vot_cond)) +
   geom_ribbon(aes(ymin=low, ymax=high, fill=vot_cond), alpha=0.5) +
-  scale_x_continuous(breaks = 1:6, limits = c(NA, 6.5)) +
   geom_text(data = . %>% filter(block_num == 6), aes(label = vot_cond, color=vot_cond),
-            hjust=0, nudge_x=0.05) +
-  labs(x = "Block (each is one sixth of trials)",
-       y = "Model /b/-/p/ boundary (ms VOT)",
-       title = "Model learning curves",
+            hjust=0, nudge_x=6) +
+  labs(x = "Trial",
+       y = "/b/-/p/ boundary (ms VOT)",
+       title = "Model predicted and actual learning curves",
        subtitle = "Change in /b/-/p/ category boundary with learning") +
+  lims(x = c(NA, 222* 1.01)) +
   theme(legend.position = "hide") +
   geom_point(data = bounds_6tile_exp1,
-             aes(x=block_num, y=vot, color=vot_cond)) +
+             aes(y=vot, color=vot_cond)) +
   geom_line(data = bounds_6tile_exp1,
-             aes(x=block_num, y=vot, color=vot_cond))
+            aes(y=vot, color=vot_cond))
+  ## geom_pointrange(data = expt1_bounds_fixef6,
+  ##                 aes(y=mean, ymin=low, ymax=high, color=vot_cond)) +
+  ## geom_line(data = expt1_bounds_fixef6,
+  ##           aes(y=mean, color=vot_cond))
   ## geom_point(data = expt1_bounds_s,
-  ##            aes(x=block, y=vot, color=vot_cond)) +
+  ##            aes(y=vot, color=vot_cond)) +
   ## geom_line(data = expt1_bounds_s,
-  ##           aes(x=block, y=vot, color=vot_cond))
+  ##           aes(y=vot, color=vot_cond))
 
 
 # alternative figure: same style as boundary plots from experiments
