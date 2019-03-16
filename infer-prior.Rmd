@@ -1207,7 +1207,7 @@ modeled_boundaries_samples <-
   mutate(prob_p = (1-lapse_rate)*prob_p + lapse_rate/2) %>%
   find_bound(vot, prob_p)
 
-modeled_boundaries <- modeled_bounaries_samples %>%
+modeled_boundaries <- modeled_boundaries_samples %>%
   group_by(bvotCond, vot_cond, block_num) %>%
   summarise_at(vars(vot), funs(mean, low=quantile(., 0.025), high=quantile(., 0.975)))
 
