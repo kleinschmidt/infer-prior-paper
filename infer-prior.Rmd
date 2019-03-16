@@ -1052,6 +1052,16 @@ its ability to capture differences in distributional learning found above.
 
 ## Results
 
+The belief updating model can be evaluated in a number of ways.  First, I
+discuss the _outcome_ of distributional learning predicted by the model: does
+the model capture the classification functions that listeners use at the end of
+the experiment?  Second, I look at the _time course_ of the learning that the
+model takes: does it capture the how classification functions _change_ with
+increasing exposure to the experimental distributions?  Third, and finally, I
+will examine whether the shared prior beliefs---the starting point for belief
+updating in the model---match the distributions produced by a typical talker of
+American English.
+
 ```{r infer-prior}
 
 ## options(mc.cores = parallel::detectCores())
@@ -1195,13 +1205,33 @@ data_exp1 %>%
 
 ```
 
+### Outcome of learning
+
+First, does the belief updating model successfully capture the overall pattern
+of incomplete distributional learning by the end of the experiment?  This serves
+as a check whether the overall pattern of distributional learning is compatible
+with an "ideal adpater" belief updating process, where every listener starts
+with the same, shared prior expectations about an unfamiliar talker's VOT
+distributions for /b/ and /p/.
+
 Figure -@fig:mod-vs-behav-class-funs shows the belief-updating model's predicted
-classification functions in the final sixth of trials in the experiment.
-Qualitatively, the model provides a good fit to the overall classification
-functions for each VOT condition, and the estimated boundaries align well with
-the observed boundaries in each case.  It also provides a good fit to the time
-course of learning, capturing changes in the category boundaries in each
-condition over the experiment.
+classification functions in the final sixth of trials (186--222) in the
+experiment, along with the average probability of /p/ response (plus
+bootstrapped 95% CI over listeners).  Qualitatively, the model provides a good
+fit to the overall classification functions for each VOT condition, and the
+estimated boundaries align well with the observed boundaries in each case.
+<!-- TOO: maybe move this to discussion?? -->
+This suggests that the pattern of incomplete distributional learning found in
+Experiment 1 is _compatible_ with a belief updating model.  This is not terribly
+surprising, since the category boundaries listeners were using by the end of the
+experiment appeared to reflect a compromise between a typical talker and the
+experimental talker's distributions, and a Bayesian belief-updating model
+formalizes exactly this kind of compromise in a statistical framework.  However,
+the ability of the model to _quantitatively_ capture the pattern of
+distributional learning with a single set of starting beliefs serves as an
+existence proof, putting this explanation of the constrained distributional
+learning observed above in Experiment 1 on firmer footing.
+
 
 ```{r modeled-category-boundaries}
 
