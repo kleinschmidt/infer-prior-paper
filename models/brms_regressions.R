@@ -214,10 +214,31 @@ expt1_s_class_bysub <-
   bind_cols(data_pred_subj)
 
 
+# plot class function by subject:
+ggplot(expt1_s_class_bysub, aes(x=vot, y=Estimate, color=vot_cond, group=subject)) +
+  geom_line(alpha=0.2) +
+  facet_grid(block ~ vot_cond)
+
+# there's some CRAZY variance in the slopes by subject.  I think this might be a
+# consequence of not having any interaction between the trial splines and the
+# slope...
+
 
 expt1_bounds_s <- expt1_s_class %>% group_by(vot_cond, trial, block) %>% find_bound(x=vot, y=Estimate)
 
+expt1_bounds_bysub_s <-
+  expt1_s_class_bysub %>%
+  group_by(vot_cond, subject, trial, block) %>%
+  find_bound(x=vot, y=Estimate)
+
+# plot boundaries by condition, vs. boundaries from linear effect of trial
 ggplot(expt1_bounds_s, aes(x=trial, y=vot, color=vot_cond)) +
   geom_point() +
   geom_line() +
   geom_line(data = expt1_bounds, linetype=2)
+
+# these look quite similar, except for the beginning?  which might have
+# something to do with the lapse rate and/or shallower boundaries not being
+# accomodated by the trial effect.  and the trajectory of the boundaries from
+# the linear fits look like a reasonable linear interpolation of the boundaries
+# from the spline so...not unreasonable.
