@@ -970,7 +970,6 @@ This prior distribution is a _conjugate prior_ because after observing $n$ data
 points with sample mean $\bar x$ and variance $s^2$, the posterior distribution
 is also a Normal-Inverse Chi squared, with parameters
 
-$$
 \begin{align}
 \kappa_n &= \kappa_0 + n \\
 \nu_n &= \nu_0 + n \\
@@ -978,7 +977,6 @@ $$
 \sigma^2_n &= \frac{1}{\nu_n}\left(\nu_0 \sigma^2_0 + ns^2 +
   \frac{n\kappa_0}{\kappa_0 + n}(\mu_0 - \bar x)^2\right)
 \end{align}
-$$
 
 These parameter updates have an intuitive interpretation [@Kleinschmidt2015]:
 the confidence parameters are increased by the number of observations $n$ (which
@@ -1385,7 +1383,7 @@ for comparison with the belief updating model.
 lapse_rate_samples %>%
   summarise_at(vars(lapse_rate),
                funs(mean, low=quantile(., 0.025), high=quantile(., 0.975))) %>%
-  left_join(exp1_blocks, by=c("block_num"="block")) %>%
+  left_join(exp1_blocks6, by="block_num") %>%
   ggplot(aes(x=trial, y=mean, ymin=low, ymax=high)) +
   geom_pointrange() +
   labs(y="Guessing rate",
