@@ -1370,7 +1370,7 @@ the boundary for the early trials, where listeners make many random or guessing
 responses, even on unambiguous VOTs.  In the belief updating model, this is
 captured by the "lapse rate" or the proportion of trials on which the simulated
 subjects simply guess randomly, which is allowed to vary over trials
-(@Fig:lapse-rate-by-block).  The inferred lapse rate is nearly 12% in the first
+(Figure -@fig:lapse-rate-by-block).  The inferred lapse rate is nearly 12% in the first
 sixth of trials (1-37), which is much greater the while for the remainder of the
 experiment it is closer to 5%.  Models that don't take into such guessing into
 account are subject to mis-estimate the boundary (location or slope), and so for
@@ -1378,7 +1378,7 @@ this reason I chose the more interpetable---if somewhat noisier---direct
 estimate of the boundary over the estimates from either of the regression models
 for comparison with the belief updating model.
 
-```{r lapse-rate-by-block, fig.width=5.8, fig.height=3.9, fig.caption="Lapse (guess) rate inferred in the belief updating model for each 1/6th of trials in Experiment 1.  The inferred lapse rate starts rather high (nearly 12%) but decreases to around 5% after the first 1/6 of trials (1--37)"}
+```{r lapse-rate-by-block, fig.width=5.8, fig.height=3.9, fig.cap="Lapse (guess) rate inferred in the belief updating model for each 1/6th of trials in Experiment 1.  The inferred lapse rate starts rather high (nearly 12%) but decreases to around 5% after the first 1/6 of trials (1--37)"}
 
 lapse_rate_samples %>%
   summarise_at(vars(lapse_rate),
