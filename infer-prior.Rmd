@@ -1394,6 +1394,59 @@ lapse_rate_samples %>%
 
 ```
 
+### Inferred prior beliefs
+
+Finally, what are the prior beliefs that the model infers listeners are bringing
+to this task?  There are two relevant aspects of the inferred prior beliefs: the
+_content_ of those beliefs, and their _strength_.  The strength corresponds to how
+confident the modeled listener is in their prior beliefs, which is represented
+in the model in the prior confidence pseudocounts for the means ($\kappa_0$) and
+variance ($\nu_0$).  These parameters correspond to the number of observations
+required to get to a point where the listener's updated beliefs in equal parts
+informed by their prior expectations and recent experience.
+
+```{r confidence-params}
+
+confidence_summaries <-
+  prior_samples_df %>%
+  filter(category=="b") %>%
+  ungroup() %>%
+  summarise_at(vars(kappa_0, nu_0), funs(mean, low=quantile(., 0.025), high=quantile(., 0.975)))
+
+
+
+
+
+prior_samples_df %>%
+  ggplot(aes(x=kappa_0, y=nu_0)) +
+  #geom_density2d() +
+  geom_point(alpha=0.1)
+
+
+
+```
+
+Based on the data from Experiment 1, listeners are highly confident in their
+prior beliefs.  The prior pseudocount for the means was
+`r confidence_summaries$kappa_0_mean` (95% credible interval of
+$[`r confidence_summaries['kappa_0_low']`,
+`r confidence_summaries['kappa_0_high']`]$).
+
+
+
+```{r inferred-beliefs}
+
+prior_samples_df %>%
+  gather(param, value, mu_0, sigma_0) %>%
+  ggplot(aes(x=value)) +
+  geom_density() +
+  facet_grid(param ~ category, scales="free")
+
+prior_samples_df %>% ggplot(aes(x=kappa_0, y=mu_0, color=category)) + geom_point(alpha=0.1)
+  
+
+```
+
 ## Discussion
 
 * learning may flatten off and assymptote with more exposure, reflecting
