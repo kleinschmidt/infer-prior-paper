@@ -308,6 +308,7 @@ exp1_blocks <-
   data_exp1_mod %>%
   group_by(block=ntile(trial, 3)) %>%
   summarise_at(vars(trial, trial_s), mean)
+
 # overall fit (fixed effects):
 data_pred <-
   cross_df(list(vot_s = seq(min(data_exp1_mod$vot_s),
@@ -1345,33 +1346,39 @@ ggplot(modeled_boundaries, aes(x=trial, y=mean)) +
 ### Learning curves
 
 Next, how well does the belief-updating model capture the learning curve, or
-change in category boundaries with further experience?  This is not
-straightforward to answer, because assessing _listeners'_ learning curves is not
-straightforward.  In analyzing the results from Experiment 1, I used a logistic
-regression with a linear effect of trial, which roughly correponds to linear
-changes in the /b/-/p/ boundaries over the course of the experiment.  However,
-the boundary changes predicted by the belief updating model are non-linear, as
-are (in all likelihood) listeners' actual learning curves.  It's possible to
-crudely estimate the boundary by simply finding the VOT value where the
-empirical classification function crosses 50% /p/ responses in each sixth of the
-trials, but this is highly noisy.  
+change in category boundaries with further experience?  Figure
+-@fig:plot-modeled-category-boundaries shows the belief-updating predicted
+learning curves, compared with the empircal boundaries (points/lines) estimated
+for each condition in each sixth of the experiment (blocks of 37 trials).  The
+belief updating model qualitatively captures the change in category boundaries,
+both within each condition and across conditions.  Boundaries start off quite
+similar at the beginning of the experiment, and gradually diverge as listeners
+gain more exposure to the particular VOT distributions of their condition.
 
-A further complication arises from the fact that the belief-updating model
-incorporates a "lapse rate", which itself changes over blocks
-(@Fig:lapse-rate-by-block).  This is because when developing the model, I
-noticed that listeners were far more likely to make errors on unambiguous VOTs
-early in the experiment, but continued to make such errors throughout, albeit at
-a lower rate.  This is reflected in the inferred lapse rate: for the first sixth
-of trials (1-37), the inferred lapse rate is nearly 12%, while for the remainder
-of the experiment it is closer to 5%.
+The choice of how to compute behavior boundaries for comparison is not
+straightforward.  I chose to show boundaries estimated directly from the data in
+each sixth of the experiment (e.g., the VOT where the average proportion-/p/
+response curve crosses 50% in each condition), rather than a boundary calculated
+from the regression model reported in Experiment 1 (which includes a linear
+change in intercept, or /p/ bias, over trials, as well as a linear change in the
+slope of the VOT boundary), or a more complex regression model using a spline
+term in each condition to capture non-linear changes in the offset (but not the
+slope).  This is because these models and the direct estimates all agree
+qualitatively on where the boundaries are later in the experiment, when
+listeners make very few errors or random responses.
 
-
-
-In order to assess how well the belief updating model captures the actual
-learning curves
-
-
-
+Where they disagree (with each other, and with the belief udpating model) is in
+the boundary for the early trials, where listeners make many random or guessing
+responses, even on unambiguous VOTs.  In the belief updating model, this is
+captured by the "lapse rate" or the proportion of trials on which the simulated
+subjects simply guess randomly, which is allowed to vary over trials
+(@Fig:lapse-rate-by-block).  The inferred lapse rate is nearly 12% in the first
+sixth of trials (1-37), which is much greater the while for the remainder of the
+experiment it is closer to 5%.  Models that don't take into such guessing into
+account are subject to mis-estimate the boundary (location or slope), and so for
+this reason I chose the more interpetable---if somewhat noisier---direct
+estimate of the boundary over the estimates from either of the regression models
+for comparison with the belief updating model.
 
 ```{r lapse-rate-by-block, fig.width=5.8, fig.height=3.9, fig.caption="Lapse (guess) rate inferred in the belief updating model for each 1/6th of trials in Experiment 1.  The inferred lapse rate starts rather high (nearly 12%) but decreases to around 5% after the first 1/6 of trials (1--37)"}
 
