@@ -238,34 +238,88 @@
 
 * notes/snippets
 
-  One of the basic facts about human language is that a neurotypical human
-  infant can learn any of the many and varied languages spoken on Earth.  That
-  is, the language system is incredibly flexible during development.  However,
-  at a certain point people lose the ability to learn other languages to
-  native-like proficiency.  Nevertheless, recent research has shown that adults
-  still remain the ability to learn new variants of their _native_ language.
-  That is, the language system seems to remain plastic at least into adulthood,
-  even if the form of this plasticity changes.
+** Another intro
+   One of the basic facts about human language is that a neurotypical human
+   infant can learn any of the many and varied languages spoken on Earth.  That
+   is, the language system is incredibly flexible during development.  However,
+   at a certain point people lose the ability to learn other languages to
+   native-like proficiency.  Nevertheless, recent research has shown that adults
+   still remain the ability to learn new variants of their _native_ language.
+   That is, the language system seems to remain plastic at least into adulthood,
+   even if the form of this plasticity changes.
   
-  One of the most remarkable forms of plasticity in adult speech perception is
-  /distributional learning/.  Listeners adjust their representations of phonetic
-  categories with mere exposure to distributions of acoustic stimuli.  This
-  occurs without explicit instruction or labels.
+   One of the most remarkable forms of plasticity in adult speech perception is
+   /distributional learning/.  Listeners adjust their representations of phonetic
+   categories with mere exposure to distributions of acoustic stimuli.  This
+   occurs without explicit instruction or labels.
 
-  Suggests that listeners are closely attuned to the statistical patterns in
-  their language environment, and pick up on changes in these contingencies to
-  more effectively recover a talker's intended message from noisy, variable, and
-  ambiguous acoustic signals.
+   Suggests that listeners are closely attuned to the statistical patterns in
+   their language environment, and pick up on changes in these contingencies to
+   more effectively recover a talker's intended message from noisy, variable, and
+   ambiguous acoustic signals.
 
-  A comprehensive understanding of distributional learning requires that we
-  understand not only how and when it does happen but also how and when it does
-  _not_ happen, or is only incomplete.  That goal of this paper is to
-  systematically probe the limits of distributional learning for speech in one
-  phonetic system: word-initial stop voicing in American English.
-
-
-  This paper addresses the /limits/ of distributional learning in adults.  What
-  sort of speech statistics can adult speakers of American English /not/ learn?
+   A comprehensive understanding of distributional learning requires that we
+   understand not only how and when it does happen but also how and when it does
+   _not_ happen, or is only incomplete.  That goal of this paper is to
+   systematically probe the limits of distributional learning for speech in one
+   phonetic system: word-initial stop voicing in American English.
 
 
-  
+   This paper addresses the /limits/ of distributional learning in adults.  What
+   sort of speech statistics can adult speakers of American English /not/ learn?
+
+** Framing
+   What are all the things in play here?
+
+*** acquisition: lots of flexibility there!
+    babies can learn any language, and they do it without labeled data.
+
+*** remarkable flexibility in adult language
+    adapt to unfamiliar talkers/accents with very little exposure.  accent
+    adaptation (increase in comprehension accuracy and speed).  recalibration:
+    rapid changes in category boundaries with a few labeled examplars
+
+    
+*** distributional learning
+    both adults and infants are sensitive to the distributional properties of
+    speech [@Maye2000; @Maye2002]
+
+    e.g. bimodal input distribution, better able to discriminate [@Maye2000;
+    @Pajak2014; @Perfors2010].
+
+    in adults, sensitive to changes in the underlying distributions of phonetic
+    cues associated with phonetic categories.  vowels, stop consonants, 
+
+*** clear constraints on what adults can learn
+    Despite this flexibility, there are clear constraints on what adults can
+    learn.  Listeners struggle to learn new categories that are not present in
+    their native language.  For instance, Japanese listeners struggle to
+    discriminate the English /r/-/l/ contrast, which corresponds a single
+    category in their native language [@Goto1971; @Myawaki1975].  While
+    perception of this contrast can be improved somewhat by training, the amount
+    of training is extensive and these listeners seldom achieve native levels of
+    performance [@Bradlow1997]
+
+    e.g. japanese r-l [@Goto1971; @Myawaki1975; @Bradlow1997], prevoicing (Melissa BB)?
+
+*** goals: systematically probe constraints on distributional learning 
+    The goal of this paper is to systematically probe the constraints on
+    distributional learning in English-speaking adults.
+
+**** preview
+     Developmental trajectory may better be thought of as a *change* in the kind
+     of flexibility that listeners have, rather than a *loss* of plasticity.
+
+*** need to balance stability and flexibility
+    if you are too stable, can't deal with changes (e.g., unfamiliar talkers and
+    accents).  but if you're too flexible, then you end up overly sensitive to
+    meaningless variation that doesn't predict what's going to happen in the
+    future.
+
+    I think this is better for the *discussion*: why are these constraints
+    there?  For the introduction we want at most to gesture towards this
+    story...
+
+** for discussion
+   are these results anti-bayesian?  no...learning is inference, guided by prior
+   experience.
