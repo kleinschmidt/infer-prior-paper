@@ -288,7 +288,11 @@
     
 *** distributional learning
     both acquisition and adaptation have been theorized to be forms of
-    distributional learning.
+    distributional learning.  A number of different computational models of
+    acquisition show that many phonetic categories can be learned simply by
+    distributional learning [], although in many cases this may require
+    considering that phonetic categories occur in lingustic context to be fully
+    effective [@Feldman2013; @Hitczenko2018]
 
     both adults and infants are sensitive to the distributional properties of
     speech [@Maye2000; @Maye2002]
