@@ -91,6 +91,11 @@ distributions of acoustic-phonetic cues, .... )))
 
 # Experiment 1: Distributional learning of voicing from VOT
 
+In order to probe the possible constraints on distributional learning,
+Experiment 1 measures listener's distributional learning of a range of bimodal
+distributions of voice-onset time (VOT).  These distributions vary in how
+similar they are to a typical American English talker.
+
 ```{r data-exp1}
 
 data_exp1 <- supunsup::supunsup_clean %>%
