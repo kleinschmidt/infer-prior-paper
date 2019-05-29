@@ -274,13 +274,22 @@
 *** acquisition: lots of flexibility there!
     babies can learn any language, and they do it without labeled data.
 
-*** remarkable flexibility in adult language
-    adapt to unfamiliar talkers/accents with very little exposure.  accent
-    adaptation (increase in comprehension accuracy and speed).  recalibration:
-    rapid changes in category boundaries with a few labeled examplars
+    ...gradually lose some of that flexibility.  harder to learn new phonetic
+    categories, lose the ability to discriminate non-native phonetic contrasts.
 
+*** remarkable flexibility in adult language
+    however, more recent work has shown that adult listeners nevertheless
+    maintain a great deal of flexibility /within/ their native language.
+    
+    adapt to unfamiliar talkers/accents with very little exposure.  accent
+    adaptation (increase in comprehension accuracy and speed) CITE.
+    recalibration: rapid changes in category boundaries with a few labeled
+    examplars
     
 *** distributional learning
+    both acquisition and adaptation have been theorized to be forms of
+    distributional learning.
+
     both adults and infants are sensitive to the distributional properties of
     speech [@Maye2000; @Maye2002]
 
@@ -288,8 +297,14 @@
     @Pajak2014; @Perfors2010].
 
     in adults, sensitive to changes in the underlying distributions of phonetic
-    cues associated with phonetic categories.  vowels, stop consonants, 
+    cues associated with phonetic categories.  vowels, stop consonants,
+    (fricatives?).  pick up on both the /mean/ and /variance/ of distributions.
 
+    Even recalibration can be treated as a form of distributional learning,
+    where listeners update their beliefs about the underlying distributions of
+    cues based on labeled examples from phonetic categories [@Kleinschmidt2015;
+    @Kleinschmidt2016].
+    
 *** clear constraints on what adults can learn
     Despite this flexibility, there are clear constraints on what adults can
     learn.  Listeners struggle to learn new categories that are not present in
@@ -303,9 +318,39 @@
     e.g. japanese r-l [@Goto1971; @Myawaki1975; @Bradlow1997], prevoicing (Melissa BB)?
 
 *** goals: systematically probe constraints on distributional learning 
-    The goal of this paper is to systematically probe the constraints on
-    distributional learning in English-speaking adults.
+    from the lens of distributional learningp, the major difference between
+    acquisition and adaptation is that distributional learning in adulthoot
+    is---in many cases---/constrained/, while it is relatively /unconstrained/
+    during acquisition.  However, we lack a clear understanding of the nature
+    and source of those constraints.  
 
+    There are some clues: (( paragraph from diss chapter on @Idemaru2011 and
+    @Sumner2011? ))
+
+    The goal of this paper is to systematically probe the constraints on
+    distributional learning in English-speaking adults.  Experiment 1 tests the
+    ability of American English listeners to change their classification of word
+    initial stop voicing based on experience with a range of distributions of
+    voice-onset time (VOT).  I find that distributional learning is more
+    complete when the experimental distributions are more similar to those of a
+    typical American English talker, suggesting that prior experience with other
+    talkers may constrain distributional learning.  Experiment 2 tests another
+    possible constraint on distributional learning, which is the absence of
+    /labels/, which could lead to uncertainty about whether the bimodal
+    distribution really corresponds to the standard English categories of voiced
+    and voiceless stops of /b/ and /p/.  Surprisingly, telling listeners whether
+    a particular VOT was intended to be a voiced /b/ or a voiceless /p/ on half
+    of the trials has no effect on the speed or completeness of distributional
+    learning.  Experiment 3 uses a Bayesian belief-updating model to test
+    whether the constraints observed in Experiment 1 can be explained as belief
+    updating starting from a common set of prior beliefs that is shared by all
+    of the subjects.
+
+    Together, these results show that distributional learning in adults /is/
+    constrained, and these constraints are at least consistent with belief
+    updating starting from a set of prior beliefs about the VOT distributions
+    that a typical talker of American English will produce.
+    
 **** preview
      Developmental trajectory may better be thought of as a *change* in the kind
      of flexibility that listeners have, rather than a *loss* of plasticity.
