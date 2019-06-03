@@ -274,17 +274,34 @@
 *** TODO flesh out text here and paste into intro
 
 *** acquisition: lots of flexibility there!
-    babies can learn any language, and they do it without labeled data.
-
-    ...gradually lose some of that flexibility.  harder to learn new phonetic
-    categories, lose the ability to discriminate non-native phonetic contrasts.
-
-**** TODO citations for acquisition
-     no labeled data, loss of flexibility (narrowing)
+    A basic fact of human language is that any typically developing human infant
+    can learn any human language.  Human languages vary dramatically at every
+    level, including the basic sound systems they use, and the human language
+    faculty must be flexible enough to deal with this substantial
+    cross-linguistic variability.  The first stages of language acquistion are
+    characterized by initial flexibility, which declines over development.  As
+    infants become better at discriminating linguistically important sounds in
+    their native language, they simultaneously /lose/ the ability to
+    discriminate sounds that are important for other languages but not their
+    native language [@Best1995; @Kuhl1992; @Werker1984].
 
 *** remarkable flexibility in adult language
-    however, more recent work has shown that adult listeners nevertheless
-    maintain a great deal of flexibility /within/ their native language.
+    However, adult listeners still need to deal with substantial variability
+    /within/ their native language, as talkers differ in how they realize the
+    phonetic categories of the language using acoustic cues [e.g. @Allen2003;
+    @Newman2001; @Clopper2005].  Accordingly, adult listeners flexibly adapt to
+    unfamiliar talkers in a wide variety of contexts.  At one extreme,
+    perception of heavily accented non-native talkers becomes faster and more
+    accurate with just a few minutes of exposure [@Clarke-Davidson2004;
+    @Bradlow2008; @Baese-berk2013].  At the other extreme, listeners recalibrate
+    representations of individual phonetic categories based on subtle changes in
+    single segments in otherwise unaccented talkers [@Kraljic2006; @Norris2003;
+    @Bertelson2003].
+
+
+
+to broad shifts in multiple phonetic
+    categories [@Maye2008a; @Babel2019; @Weatherholtz2015] or
     
     adapt to unfamiliar talkers/accents with very little exposure.  accent
     adaptation (increase in comprehension accuracy and speed) CITE.
@@ -292,6 +309,9 @@
     examplars
     
 *** distributional learning
+    The flexibility exhibited during acquisition /and/ adult adaptation has been
+    hypothesized to reflect /distributional learning/, 
+
     both acquisition and adaptation have been theorized to be forms of
     distributional learning.  A number of different computational models of
     acquisition show that many phonetic categories can be learned simply by
@@ -315,17 +335,24 @@
     @Kleinschmidt2016].
     
 *** clear constraints on what adults can learn
+    If both acquisition and adaptation can be treated as forms of distributional
+    learning, what distinguishes them?  For one, it seems that distributional
+    learning in adults is /constrained/.
+
     Despite this flexibility, there are clear constraints on what adults can
     learn.  Listeners struggle to learn new categories that are not present in
     their native language.  For instance, Japanese listeners struggle to
     discriminate the English /r/-/l/ contrast, which corresponds a single
-    category in their native language [@Goto1971; @Myawaki1975].  While
-    perception of this contrast can be improved somewhat by training, the amount
-    of training is extensive and these listeners seldom achieve native levels of
-    performance [@Bradlow1997]
+    category in their native language [@Goto1971; @Myawaki1975].  Long-term
+    naturalistic exposure is not sufficient to achieve good discrimination of
+    this contrast, even after convserational competence has been achieved
+    [@Takagi1995].  While perception of this contrast can be improved somewhat
+    by training, it requries extensive training and these listeners seldom
+    achieve native-like levels of performance [@Bradlow1997].
 
-    e.g. japanese r-l [@Goto1971; @Myawaki1975; @Bradlow1997], prevoicing
-    (Melissa BB)?
+    [@Idermaru2011]
+
+    [@Sumner2003]
 
 *** goals: systematically probe constraints on distributional learning 
     from the lens of distributional learningp, the major difference between
