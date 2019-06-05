@@ -1,6 +1,6 @@
 
 * todos
-** follow-up modeling analyses
+** DONE follow-up modeling analyses
 
 *** DONE re-analyse results with incremental model
 
@@ -57,7 +57,7 @@
      difference.  Is it actually important?  Just a basic instability in the
      model?
     
-** TODO analyze results with (lapsing) Bayesian logistic regression
+** DONE analyze results with Bayesian logistic regression
 
    that way I can get good estimates of the boundary uncertainty both at the
    subject level and across conditions/experiments.  Especially important to
@@ -73,20 +73,32 @@
 
 *** DONE plot subject curves and overall curves
     [[file:models/brms_regressions.R::expt1_bounds%20%25>%25][plot at block 3]]
-*** TODO fit brms logistic regression to experiment 3
+** TODO (maybe) fix lapsing logistic regression to expts 1, 2, and 3
+   Use mixture distribution in brm.
+** TODO edit intro
+** TODO modeling ("experiment" 3)
+*** TODO Results: write up inferred beliefs.
+*** TODO discussion of this experiment
+** TODO experiment 4:
+*** TODO get data in and plot
+*** TODO run BRM analysis
+*** TODO generate predictions from model for data
+*** TODO write up:
+**** TODO intro, results, dicusssion
+** TODO write discussion
 
-*** TODO (maybe) fix lapsing logistic regression to expts 1, 2, and 3
-   
 * more literature to consider
 
-** TODO L2 learning
+** DONE L2 learning
 
    Baese Berk stuff?  (I think some of that is on dist learning of prevoiced VOT
    categories)
 
+   Japanese r-l
+
 ** TODO Diehl papers
 ** TODO Holt follow-ups to Idemaru and Holt 2011
-** Chladkova et al. 2017: unsupervised "recalibration"
+** DONE Chladkova et al. 2017: unsupervised "recalibration"
 
    Do lexically driven re-tuning with non-words.  Shifted i/e and good e/i.
 ** Schweinhart, Shafto, and Essock 2017
@@ -110,6 +122,8 @@
    statistics across modalities (Love, 2003; Garrido, Tang, Taylor, Rowe, &
    Mattingley, 2016)
    """
+
+   I've incorporated some of these refs...
 * DONE decide which data goes in this paper
   One of the issues I keep coming back to is the question of *which data to
   discuss in this paper*.  A priori, my strong preferences is *all of it*.
@@ -268,10 +282,10 @@
    This paper addresses the /limits/ of distributional learning in adults.  What
    sort of speech statistics can adult speakers of American English /not/ learn?
 
-** Framing
+** DONE Intro AGAIN
    What are all the things in play here?
 
-*** TODO flesh out text here and paste into intro
+*** DONE flesh out text here and paste into intro
 
 *** acquisition: lots of flexibility there!
     A basic fact of human language is that any typically developing human infant
@@ -436,6 +450,10 @@
      Developmental trajectory may better be thought of as a *change* in the kind
      of flexibility that listeners have, rather than a *loss* of plasticity.
 
+** for discussion
+   are these results anti-bayesian?  no...learning is inference, guided by prior
+   experience.
+
 *** need to balance stability and flexibility
     if you are too stable, can't deal with changes (e.g., unfamiliar talkers and
     accents).  but if you're too flexible, then you end up overly sensitive to
@@ -446,6 +464,5 @@
     there?  For the introduction we want at most to gesture towards this
     story...
 
-** for discussion
-   are these results anti-bayesian?  no...learning is inference, guided by prior
-   experience.
+*** cline between language learning and adaptation
+    cite @Pajak2016: hierarchical inference under uncertainty.
