@@ -279,11 +279,14 @@
     level, including the basic sound systems they use, and the human language
     faculty must be flexible enough to deal with this substantial
     cross-linguistic variability.  The first stages of language acquistion are
-    characterized by initial flexibility, which declines over development.  As
-    infants become better at discriminating linguistically important sounds in
-    their native language, they simultaneously /lose/ the ability to
-    discriminate sounds that are important for other languages but not their
-    native language [@Best1995; @Kuhl1992; @Werker1984].
+    characterized by initial flexibility, which declines over development as the
+    particulars of the native language are acquired.  For instance, as infants
+    become better at discriminating linguistically important sounds in their
+    native language, they simultaneously /lose/ the ability to discriminate
+    sounds that are important for other languages but not their native language
+    [@Best1995; @Kuhl1992; @Werker1984].  Ultimately, people become sufficiently
+    inflexible over development that they generally struggle to learn another
+    language in adulthood [@Hartshorne2018].
 
 *** remarkable flexibility in adult language
     However, adult listeners still need to deal with substantial variability
@@ -309,18 +312,32 @@ to broad shifts in multiple phonetic
     examplars
     
 *** distributional learning
-    The flexibility exhibited during acquisition /and/ adult adaptation has been
-    hypothesized to reflect /distributional learning/, 
+    Both acquisition and adaptation have been theorized to be forms of
+    distributional learning.  First, computational modeling shows that
+    both acquisition [@McMurray2010; @Vallabha2007; @Feldman2013; but see
+    @Hitczenko2018] and rapid adaptation [@Kleinschmidt2015b] can be treated as
+    forms of distributional learning.  At some level, acquisition simply /is/ a
+    problem of distributional learning, in the sense that ((( computational
+    level analysis??  it IS a problem of distributional learning )))
 
-    both acquisition and adaptation have been theorized to be forms of
-    distributional learning.  A number of different computational models of
-    acquisition show that many phonetic categories can be learned simply by
-    distributional learning [], although in many cases this may require
-    considering that phonetic categories occur in lingustic context to be fully
-    effective [@Feldman2013; @Hitczenko2018]
+    Second, both adults and infants are sensitive to the distributional
+    properties of speech [@Maye2000; @Maye2002; @Feldman2013b]
 
-    both adults and infants are sensitive to the distributional properties of
-    speech [@Maye2000; @Maye2002]
+
+
+ that
+    both the number and acoustic-phonetic properties of many languages' phonetic
+    categories can be learned from un-labeled observations of acoustic cues
+    simply by distributional learning algorithms which extract the number and
+    locations of clusters [].  On the other hand, rapid adaptation to already acquired
+    categories can also be modeled as distributional learning, where a
+    listener's beliefs about the current talker's cue distributions are adjusted
+    incrementally to bring them into better alignment with the cues they have
+    recently observed [@Kleinschmidt2015b; @
+
+
+    For acquisition, 
+
 
     e.g. bimodal input distribution, better able to discriminate [@Maye2000;
     @Pajak2014; @Perfors2010].
@@ -353,6 +370,13 @@ to broad shifts in multiple phonetic
     [@Idermaru2011]
 
     [@Sumner2003]
+
+*** where do these constraints come from?
+    if both acquisition and adaptation are forms of distributional learning,
+    what's the difference between them?  maybe it's labels.  maybe it's priors
+    (experience that leads you to expect to encounter particular kinds of
+    distributions).
+
 
 *** goals: systematically probe constraints on distributional learning 
     from the lens of distributional learningp, the major difference between
