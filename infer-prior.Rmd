@@ -1,7 +1,7 @@
 ---
 Title: What constrains distributional learning in adults?
 Author: Dave Kleinschmidt
-bibliography: /home/dave/Zotero/library.bib
+bibliography: /home/dave/Documents/papers/zotero.bib
 output:
     html_document:
         code_folding: hide
@@ -114,7 +114,7 @@ unaccented talkers [@Kraljic2006; @Norris2003; @Bertelson2003].
 
 Both acquisition and adaptation have been theorized to be forms of
 distributional learning. First, computational modeling shows that both
-acquisition [@McMurray2010; @Vallabha2007; @Feldman2013; but see
+acquisition [@McMurray2009; @Vallabha2007; @Feldman2013; but see
 @Hitczenko2018] and rapid adaptation [@Kleinschmidt2015b] can be treated
 as forms of distributional learning. At some level, acquisition simply
 *is* a problem of distributional learning, in the sense that
@@ -127,7 +127,7 @@ properties of speech. One set of findings shows that listeners (both
 infants and adults) become more sensitive after exposure to a bimodal
 distribution of an acoustic cue (like length, voice-onset time, vowel
 formant frequencies, etc.) compared with exposure to a unimodal
-distribution [e.g. @Escudero2011; Goudbeek2008;
+distribution [e.g. @Escudero2011; @Goudbeek2008;
 @Maye2000; @Maye2002; @Feldman2013b]. Another set of findings shows that
 adult listeners can adapt to changes in the means and/or variances of
 the cue distributions for known phonetic categories [e.g.,
@@ -136,7 +136,7 @@ What both of these sets of findings have in common is that listeners
 pick up on the distributions of cues without any explicit instruction
 about the itended category label associated with each token. For
 example, @Clayards2008 had listeners listen to /b/-/p/ minimal
-pair words (e.g., \"beach/peach\") with different voice-onset times
+pair words (e.g., "beach/peach") with different voice-onset times
 (VOT), and click on a matching picture to indicate which member of the
 minimal pair they heard. On every trial, the VOT was drawn from one of
 two bimodal distributions, which had clusters with the same means but
@@ -179,7 +179,7 @@ is consistent with the idea that listeners are rationally integrating
 multiple cues to voicing, weighing them based on how informative they
 are [@Ernst2004; @Clayards2008; @Bejjanki2011]. However, listeners in a
 third condition who were exposed to a talker who produced an
-\*anti\*correlated distribution did _not_ follow the
+*anti*correlated distribution did _not_ follow the
 predictions of rational cue integration. Despite the fact that f0 was
 just as informative for this accent as for the positively correlated
 accent, listeners _ignored_ f0 as a cue to voicing. This
@@ -216,14 +216,14 @@ makes the distributional problem of adaptation at least semi-supervised.
 Second, when adapting to an unfamiliar talker, adults have a great deal
 of prior experience with *other* talkers which they could use to narrow
 down the possible distributions they ought to expect
-[@Kleinschmidt2015]. Both of these factors might contribute to
+[@Kleinschmidt2015b]. Both of these factors might contribute to
 constraints on adult distributional learning. For the first, if adult
 adaptation typically operates in a *supervised* setting, the fully
 unsupervised setting of a typical distributional learning experiment
 might not provide enough information, leading to reduced learning. For
 the second, if the distributions encountered in an experiment fall far
 enough outside the range of what a listener expects based on their prior
-experience, they may struggle to adapt [@Kleinschmidt2015].
+experience, they may struggle to adapt [@Kleinschmidt2015b].
 
 The goal of this paper is to systematically probe the constraints on
 distributional learning in American English-speaking adults. Experiment
@@ -714,8 +714,9 @@ with
 
 ## Discussion
 
-These results indicate two things.  First, like many other studies [@cite], I
-found evidence for distributional learning: listeners _do_ change how they
+These results indicate two things.  First, like many other studies
+[e.g. @Chladkova2017; @Clayards2008; @Theodore2015; @Theodore2019; @Colby2018],
+I found evidence for distributional learning: listeners _do_ change how they
 categorize sounds as voiced or unvoiced due to exposure to different VOT
 distributions.  Second, this learning is not _complete_, in the sense that
 listeners' voiced-unvoiced boundary does not exactly match the boundary implied
@@ -1144,7 +1145,7 @@ is also a Normal-Inverse Chi squared, with parameters
   \frac{n\kappa_0}{\kappa_0 + n}(\mu_0 - \bar x)^2\right)
 \end{align}
 
-These parameter updates have an intuitive interpretation [@Kleinschmidt2015]:
+These parameter updates have an intuitive interpretation [@Kleinschmidt2015b]:
 the confidence parameters are increased by the number of observations $n$ (which
 is why they are called "pseudocounts"), while the new expected mean and variance
 are weigthed averages of the prior expectations and the observed values, with
@@ -1158,7 +1159,7 @@ respectively.[^var-mean]
 Given updated beliefs about the mean and variance of each category the
 probability of any particular VOT $x$ being /b/ vs. /p/ can be calculated by the
 marginal likelihood of $x$ under the /b/ and /p/ distributions [see
-@Kleinschmidt2015 for more details].  The marginal likelihood is essentially a
+@Kleinschmidt2015b for more details].  The marginal likelihood is essentially a
 weighted average of the likelihood under all possible means and variance for
 each category, weighted by how probable each mean/variance is based on the VOTs
 observed from each category so far and the prior beliefs.  These marginal
