@@ -1469,7 +1469,7 @@ bounds_6tile_exp1 <-
 
 ```
 
-```{r plot-modeled-category-boundaries, fig.width=6.8, fig.height=5.3, fig.cap="Belief updating model's change in category boundary in each VOT condition over trials"}
+```{r plot-modeled-category-boundaries, fig.width=6.8, fig.height=5.3, fig.cap="Belief updating model's learning curves (ribbons, 95% credible intervals) compared with empirical category boundary, defined as the VOT where subjects' responses (linearly interpolated) are 50% /p/, 50% /b/.  Both model and empirical boundaries are estimated for each sixth of trials (blocks of 37 out of 222)."}
 
 ggplot(modeled_boundaries, aes(x=trial, y=mean)) +
   # geom_line(aes(color=vot_cond)) +
@@ -1520,30 +1520,31 @@ both within each condition and across conditions.  Boundaries start off quite
 similar at the beginning of the experiment, and gradually diverge as listeners
 gain more exposure to the particular VOT distributions of their condition.
 
-The choice of how to compute behavior boundaries for comparison is not
-straightforward.  I chose to show boundaries estimated directly from the data in
-each sixth of the experiment (e.g., the VOT where the average proportion-/p/
-response curve crosses 50% in each condition), rather than a boundary calculated
-from the regression model reported in Experiment 1 (which includes a linear
-change in intercept, or /p/ bias, over trials, as well as a linear change in the
-slope of the VOT boundary), or a more complex regression model using a spline
-term in each condition to capture non-linear changes in the offset (but not the
-slope).  This is because these models and the direct estimates all agree
-qualitatively on where the boundaries are later in the experiment, when
-listeners make very few errors or random responses.
+Comparing these modeled learning curves with the behavioral data directly is not
+straightforward.  Figure -@fig:plot-modeled-category-boundaries shows one
+estimate of the changing category boundaries, estimated directly from the data
+in each sixth of the experiment (e.g., the VOT where the average proportion-/p/
+response curve crosses 50% in each condition).  Other reasonable possibilities
+include a boundary calculated from the regression model reported in Experiment 1
+(which includes a linear change in intercept, or /p/ bias, over trials, as well
+as a linear change in the slope of the VOT boundary), or a more complex
+regression model using a spline term in each condition to capture non-linear
+changes in the offset (but not the slope).
 
-Where they disagree (with each other, and with the belief udpating model) is in
-the boundary for the early trials, where listeners make many random or guessing
-responses, even on unambiguous VOTs.  In the belief updating model, this is
-captured by the "lapse rate" or the proportion of trials on which the simulated
-subjects simply guess randomly, which is allowed to vary over trials
-(Figure -@fig:lapse-rate-by-block).  The inferred lapse rate is nearly 12% in the first
-sixth of trials (1-37), which is much greater the while for the remainder of the
-experiment it is closer to 5%.  Models that don't take into such guessing into
-account are subject to mis-estimate the boundary (location or slope), and so for
-this reason I chose the more interpetable---if somewhat noisier---direct
-estimate of the boundary over the estimates from either of the regression models
-for comparison with the belief updating model.
+All of these methods agree qualitatively on where the boundaries are _later_ in
+the experiment, when listeners make very few errors or random responses.  Where
+they disagree (with each other, and with the belief udpating model) is in the
+estimated boundaries for the early trials, where listeners make many random or
+guessing responses, even on unambiguous VOTs.  In the belief updating model,
+this is captured by the "lapse rate" or the proportion of trials on which the
+simulated subjects simply guess randomly, which is allowed to vary over trials
+(Figure -@fig:lapse-rate-by-block).  The inferred lapse rate is nearly 12% in
+the first sixth of trials (1-37), while for the remainder of the experiment it
+is closer to 5%.  Models that don't take into such guessing into account are
+subject to mis-estimate the boundary [location and slope @Clayards2008;
+@Wichmann2001], and so for this reason I chose the more interpetable---if
+somewhat noisier---direct estimate of the boundary over the estimates from
+either of the regression models for comparison with the belief updating model.
 
 ```{r lapse-rate-by-block, fig.width=5.8, fig.height=3.9, fig.cap="Lapse (guess) rate inferred in the belief updating model for each 1/6th of trials in Experiment 1.  The inferred lapse rate starts rather high (nearly 12%) but decreases to around 5% after the first 1/6 of trials (1--37)"}
 
