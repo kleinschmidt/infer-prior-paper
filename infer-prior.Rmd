@@ -71,6 +71,7 @@ library(tidybayes)
 library(cowplot)
 theme_set(cowplot::theme_cowplot() +
             theme(plot.title=element_text(hjust=0)))
+library(latex2exp)
 
 ## devtools::install_github('kleinschmidt/daver')
 library(daver)
@@ -1573,7 +1574,7 @@ variance ($\nu_0$).  These parameters correspond to the number of observations
 required to get to a point where the listener's updated beliefs in equal parts
 informed by their prior expectations and recent experience.
 
-```{r confidence-params}
+```{r confidence-params, fig.width=5.6, fig.height=4.4, fig.caption="Sampled values of prior confidence parameters from belief updating model fit to Experiment 1.  Upper left shows values where $\kappa_0 < \nu_0$ (\"shifting\"), and lower right shows values where $\nu_0 < \kappa_0$ (\"expanding\").  Red stars show approximate MAP values for each kind of solution (individual sample with the highest posterior)."}
 
 confidence_summaries <-
   prior_samples_df %>%
@@ -1584,10 +1585,20 @@ confidence_summaries <-
 
 p_shift <- round(with(prior_samples_df, mean(nu_0 > kappa_0)), 2)
 
+confidence_maps <- tidybayes::spread_draws(fit_inc, kappa_0, nu_0, lp__) %>%
+  group_by(kappa_0 > nu_0) %>%
+  arrange(desc(lp__)) %>%
+  filter(row_number() == 1)
+
 prior_samples_df %>%
   ggplot(aes(x=kappa_0, y=nu_0)) +
   #geom_density2d() +
-  geom_point(alpha=0.1)
+  geom_point(alpha=0.05) +
+  scale_y_log10(TeX("Pseudocount for mean ($\\kappa_0$)")) +
+  scale_x_log10(TeX("Pseudocount for variance ($\\nu_0$)")) +
+  coord_equal() +
+  geom_abline() +
+  geom_point(data = confidence_maps, size=10, shape="*", color="red")
 
 ```
 
