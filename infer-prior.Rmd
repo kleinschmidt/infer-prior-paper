@@ -1574,7 +1574,7 @@ variance ($\nu_0$).  These parameters correspond to the number of observations
 required to get to a point where the listener's updated beliefs in equal parts
 informed by their prior expectations and recent experience.
 
-```{r confidence-params, fig.width=5.6, fig.height=4.4, fig.caption="Sampled values of prior confidence parameters from belief updating model fit to Experiment 1.  Upper left shows values where $\kappa_0 < \nu_0$ (\"shifting\"), and lower right shows values where $\nu_0 < \kappa_0$ (\"expanding\").  Red stars show approximate MAP values for each kind of solution (individual sample with the highest posterior)."}
+```{r confidence-params, fig.width=5.6, fig.height=4.4, fig.cap="Sampled values of prior confidence parameters from belief updating model fit to Experiment 1.  Upper left shows values where $\\kappa_0 < \\nu_0$ (\"shifting\"), and lower right shows values where $\\nu_0 < \\kappa_0$ (\"expanding\").  Red stars show approximate MAP values for each kind of solution (individual sample with the highest posterior)."}
 
 confidence_summaries <-
   prior_samples_df %>%
@@ -1676,8 +1676,9 @@ such a prior the uncertainty about the mean is proportional to the
 variance.[^normal-prior] <!-- TODO: finish this thought -->
 
 [^normal-prior]: Specifically, the prior distribution of the mean $\mu$ is
-    _conditional_ on the variance, $\mu | \siɡma^2 \sim \mathrm{Normal}(\mu_0,
-    \sigma^2 / \kappa_0$.
+    _conditional_ on the variance, 
+    $\mu | \sigma^2 \sim \mathrm{Normal}(\mu_0, \sigma^2 / \kappa_0)$.
+
 
 
 * learning may flatten off and assymptote with more exposure, reflecting
