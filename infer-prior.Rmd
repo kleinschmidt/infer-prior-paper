@@ -1581,24 +1581,29 @@ confidence_summaries <-
   ungroup() %>%
   summarise_at(vars(kappa_0, nu_0), funs(mean, low=quantile(., 0.025), high=quantile(., 0.975)))
 
-
-
-
+p_shift <- round(with(prior_samples_df, mean(nu_0 > kappa_0)), 2)
 
 prior_samples_df %>%
   ggplot(aes(x=kappa_0, y=nu_0)) +
   #geom_density2d() +
   geom_point(alpha=0.1)
 
-
-
 ```
 
 Based on the data from Experiment 1, listeners are highly confident in their
-prior beliefs.  The prior pseudocount for the means was
-`r confidence_summaries$kappa_0_mean` (95% credible interval of
+prior beliefs.  The expected prior pseudocount for the means was
+$\kappa_0 = `r confidence_summaries$kappa_0_mean`$ (95% credible interval of
 $[`r confidence_summaries['kappa_0_low']`,
-`r confidence_summaries['kappa_0_high']`]$).
+`r confidence_summaries['kappa_0_high']`]$) and for the variances
+$\nu_0 = `confidence_summaries$nu_0_mean`$ (95% credible interval of 
+$[`r confidence_summaries[nu_0_low']`,
+`r confidence_summaries[nu_0_high']`]$)
+As in previous work with similar belief updating models, the posterior
+distribution of these parameters was multimodal, where one mode puts more
+confidence in the means ($\kappa_0 > \nu_0$) and adapts mostly by updating
+beliefs in the variance, while the other puts more in the variances ($\nu_0 >
+\kappa_0$) and adapts by shifting.  The "shifting" solution is preferred, with a
+Bayesian $p$ value of `r p_shift`
 
 
 
