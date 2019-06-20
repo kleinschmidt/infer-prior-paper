@@ -1579,7 +1579,8 @@ confidence_summaries <-
   prior_samples_df %>%
   filter(category=="b") %>%
   ungroup() %>%
-  summarise_at(vars(kappa_0, nu_0), funs(mean, low=quantile(., 0.025), high=quantile(., 0.975)))
+  summarise_at(vars(kappa_0, nu_0), funs(mean, low=quantile(., 0.025), high=quantile(., 0.975))) %>%
+  mutate_all(funs(formatC(signif(., digits=2), digits=2, format="fg", preserve.width="none")))
 
 p_shift <- round(with(prior_samples_df, mean(nu_0 > kappa_0)), 2)
 
