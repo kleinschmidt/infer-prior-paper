@@ -280,7 +280,7 @@ prior_samples_long_all %>%
 #' 
 
 ################################################################################
-# all from experiment 2 (both labeled and un-labeled
+# all from experiment 2 (both labeled and un-labeled)
 
 data_exp2 <-
   supunsup::supunsup_clean %>%
@@ -308,7 +308,9 @@ fit_inc_exp2 <- infer_prior_beliefs(data_exp2,
                                     response = "respCat",
                                     condition = "vot_cond",
                                     ranefs = "subject",
+                                    test_df = filter(data_exp2, labeled == "unlabeled"),
                                     n_blocks = 6,
                                     chains = 4,
                                     iter = 2000)
+
 saveRDS(fit_inc_exp2, "fit_inc_exp2.rds")
