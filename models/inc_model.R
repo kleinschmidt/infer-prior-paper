@@ -7,6 +7,7 @@ library(purrrlyr)
 library(stringr)
 library(lme4)
 library(ggplot2)
+library(forcats)
 
 library(rstan)
 library(tidybayes)
@@ -296,7 +297,7 @@ conditions_exp2 <-
   transmute(vot_cond = paste(b, p, sep=', '),
             ideal_boundary = (b+p)/2) %>%
   ungroup() %>%
-  mutate(vot_cond = factor(vot_cond, levels=levels(conditions_exp1$vot_cond)),
+  mutate(vot_cond = factor(vot_cond),
          supervised = fct_recode(supCond, supervised="mixed"))
 
 data_exp2 %<>% inner_join(conditions_exp2)
@@ -310,5 +311,4 @@ fit_inc_exp2 <- infer_prior_beliefs(data_exp2,
                                     n_blocks = 6,
                                     chains = 4,
                                     iter = 2000)
-
 saveRDS(fit_inc_exp2, "fit_inc_exp2.rds")
