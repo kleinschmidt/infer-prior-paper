@@ -1,6 +1,6 @@
 PackratFormat: 1.4
 PackratVersion: 0.5.0
-RVersion: 3.5.2
+RVersion: 3.6.0
 Repos: CRAN=http://cran.rstudio.com
 
 Package: BH
@@ -433,6 +433,12 @@ Source: CRAN
 Version: 0.7.4
 Hash: d7daed66a028a24628150c3ca05f3239
 Requires: BH, Rcpp, rlang
+
+Package: latex2exp
+Source: CRAN
+Version: 0.4.0
+Hash: ba3213bf775f6d3dbe18ee7d1ff7b047
+Requires: magrittr, stringr
 
 Package: latticeExtra
 Source: CRAN
