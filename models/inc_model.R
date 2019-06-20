@@ -277,3 +277,38 @@ prior_samples_long_all %>%
 #' See a very similar thing when we include all the data from the supervised
 #' conditions too: dropping the -10 shift leads to 
 #' 
+
+################################################################################
+# all from experiment 2 (both labeled and un-labeled
+
+data_exp2 <-
+  supunsup::supunsup_clean %>%
+  filter(supCond %in% c("supervised", "mixed")) %>%
+  mutate(trueCat = respCategory,
+         trueCatNum = as.numeric(trueCat),
+         respCatNum = as.numeric(respCat))
+
+conditions_exp2 <-
+  data_exp2 %>%
+  group_by(bvotCond, supCond, trueCat) %>%
+  summarise(mean_vot = mean(vot)) %>%
+  spread(trueCat, mean_vot) %>%
+  transmute(vot_cond = paste(b, p, sep=', '),
+            ideal_boundary = (b+p)/2) %>%
+  ungroup() %>%
+  mutate(vot_cond = factor(vot_cond, levels=levels(conditions_exp1$vot_cond)),
+         supervised = fct_recode(supCond, supervised="mixed"))
+
+data_exp2 %<>% inner_join(conditions_exp2)
+
+fit_inc_exp2 <- infer_prior_beliefs(data_exp2,
+                                    cue = "vot",
+                                    category = "trueCat",
+                                    response = "respCat",
+                                    condition = "vot_cond",
+                                    ranefs = "subject",
+                                    n_blocks = 6,
+                                    chains = 4,
+                                    iter = 2000)
+
+saveRDS(fit_inc_exp2, "fit_inc_exp2.rds")
