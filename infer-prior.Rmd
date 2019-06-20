@@ -1595,10 +1595,32 @@ Based on the data from Experiment 1, listeners are highly confident in their
 prior beliefs.  The expected prior pseudocount for the means was
 $\kappa_0 = `r confidence_summaries$kappa_0_mean`$ (95% credible interval of
 $[`r confidence_summaries['kappa_0_low']`,
-`r confidence_summaries['kappa_0_high']`]$) and for the variances
-$\nu_0 = `confidence_summaries$nu_0_mean`$ (95% credible interval of 
-$[`r confidence_summaries[nu_0_low']`,
-`r confidence_summaries[nu_0_high']`]$)
+`r confidence_summaries['kappa_0_high']`]$).  This is nearly twice the number of
+trials in the experiment from each cluster (111 each, for a total of 222),
+meaning that by the end of the experiment the model's beliefs about the mean
+VOTs for /b/ and /p/ are still primarily determined by the prior beliefs.
+
+Similarly, the expected prior pseudocount for the variances 
+$\nu_0 = `r confidence_summaries$nu_0_mean`$ (95% credible interval of 
+$[`r confidence_summaries["nu_0_low"]`,
+`r confidence_summaries["nu_0_high"]`]$), which is much larger than the number
+of trials from each cluster.
+
+Together, these parameters suggest that listeners' prior beliefs about the VOT
+distributions associated with /b/ and /p/ are strong, and moreover that their
+beliefs in the _variance_ of VOTs is stronger than their beliefs in the
+_means_.  In turn, this suggests that the distributional learning observed in
+Experiment 1 is driven mostly by changes in listeners' beliefs about the
+underlying means, with only small contributions from changes in the variance
+(e.g., a relaxation in their standards for what counts as a good /b/ or /p/).
+
+
+The fact that the prior confidence in
+the mean ($\kappa_0$) is lower than the variance ($\nu_0$) indicates that
+listeners distributional learning is better described by a _shift_ in the
+underlying distributions 
+
+
 As in previous work with similar belief updating models, the posterior
 distribution of these parameters was multimodal, where one mode puts more
 confidence in the means ($\kappa_0 > \nu_0$) and adapts mostly by updating
@@ -1621,7 +1643,22 @@ prior_samples_df %>% ggplot(aes(x=kappa_0, y=mu_0, color=category)) + geom_point
 
 ```
 
+
+
 ## Discussion
+
+
+
+However, there are a few important caveats to these conclusions.  First and most
+importantly, they are contingent on the choice of the prior distribution.  For
+mathematical convenience, this model uses a Normal-Inverse $\chi^2$
+distribution.  This is a standard choice a conjugate prior for a normal
+distribution when there is uncertainty in the mean and variance [@Gelman2003].
+The use of a conjugate prior makes this modeling computationally tractable and
+leads to interpretable parameters [@Kleinschmidt2015].  It also imposes strong
+assumptions about the _relationship_ between the uncertainty that listeners have
+about the mean and variance
+
 
 * learning may flatten off and assymptote with more exposure, reflecting
   discounting of less recent trials (Dave and Emily's paper, Giraud paper, ).
