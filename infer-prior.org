@@ -57,6 +57,8 @@
      difference.  Is it actually important?  Just a basic instability in the
      model?
     
+*** TODO fit belief updating model to supervised
+    To be able to make the contrast with aba-ada recal.
 ** DONE analyze results with Bayesian logistic regression
 
    that way I can get good estimates of the boundary uncertainty both at the
