@@ -314,3 +314,68 @@ fit_inc_exp2 <- infer_prior_beliefs(data_exp2,
                                     iter = 2000)
 
 saveRDS(fit_inc_exp2, "fit_inc_exp2.rds")
+
+confidence_exp2 <- tidybayes::spread_draws(fit_inc_exp2, nu_0, kappa_0, lp__)
+
+ggplot(confidence_exp2, aes(x=kappa_0, y=nu_0)) +
+  geom_point(alpha=0.05) +
+  coord_equal() +
+  scale_x_log10() +
+  scale_y_log10() +
+  geom_abline()
+
+confidence_exp2 %>%
+  summarise(mean(kappa_0 < nu_0))
+
+#' Looks like the fit is a slightly faster learning rate (a bit more than 1× the
+#' number of trials.  Still shift but more equivocal... (p = 0.725)
+
+
+################################################################################
+# both expt 1 and
+
+data_exp12_all <-
+  supunsup::supunsup_clean %>%
+  mutate(trueCat = respCategory,
+         subjNum = as.numeric(factor(subject)),
+         trueCatNum = as.numeric(trueCat),
+         respCatNum = as.numeric(respCat))
+
+conditions_exp12_all <-
+  data_exp12_all %>%
+  group_by(bvotCond, supCond, trueCat) %>%
+  summarise(mean_vot = mean(vot)) %>%
+  spread(trueCat, mean_vot) %>%
+  transmute(vot_cond = paste(b, p, sep=', '),
+            ideal_boundary = (b+p)/2) %>%
+  ungroup() %>%
+  mutate(vot_cond = factor(vot_cond),
+         cond = paste(vot_cond, supCond))
+
+data_exp12_all %<>% inner_join(conditions_exp12_all)
+
+fit_exp12_all <-
+  infer_prior_beliefs(data_exp12_all,
+                      cue = "vot",
+                      category = "trueCat",
+                      response = "respCat",
+                      condition = "cond",
+                      ranefs = "subject",
+                      test_df = filter(data_exp12_all, labeled == "unlabeled"),
+                      n_blocks = 6,
+                      chains = 4,
+                      iter = 2000)
+
+saveRDS(fit_exp12_all, "fit_exp12_all.rds")
+
+confidence_exp12 <- tidybayes::spread_draws(fit_exp12_all, nu_0, kappa_0, lp__)
+
+ggplot(confidence_exp12, aes(x=kappa_0, y=nu_0)) +
+  geom_point(alpha=0.05) +
+  coord_equal() +
+  scale_x_log10() +
+  scale_y_log10() +
+  geom_abline()
+
+confidence_exp12 %>%
+  summarise(mean(kappa_0 < nu_0))
