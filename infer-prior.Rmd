@@ -1699,13 +1699,59 @@ similar variance, while /b/ has a similar mean but higher variance.
 
 The results of the belief updating modeling show that the pattern of constrained
 distributional learning from Experiment 1 can be explained as belief updating
-starting from a shared set of prior beliefs.  Furthermore, the model suggests
-that these prior beliefs are relatively strong, with listeners behaving as if
-they'd already observed $2-5\times$ more VOT samples than they would encounter
-in the experiment before it even started.  This is in stark contrast to the
-results of a similar belief updating model of recalibration
-[@Kleinschmidt2015b], which found that listeners have relatively _weak_ prior
-beliefs. <!-- TODO: why the discrepancy -->
+starting from a shared set of prior beliefs.  Furthermore, the starting point
+for this belief updating that is most consistent with the distributional
+learning behavior from Experiment 1 look reasonably similar to VOT distributions
+produced by a typical talker of American English.  The notable exception to this
+is that the belief updating model infers that the /b/ and /p/ distributions have
+similar variance, whereas in actual speech the /b/ distribution has much lower
+variance compared with /p/.  This likely reflects the fact that such variance
+asymmetry is hard to detect from purely _classification_ data.  @Kronrod2016
+used discrimination data in addition to classification data in order to estimate
+listeners' beliefs about the underlying variances of voiced and voiceless stops
+(in addition to the sensory uncertainty associated with VOT itself).  A further
+complication comes from the fact that the belief updating model assumes that
+there are exactly two clusters, one for voiced /b/ and the other for voiceless
+/p/.  In reality, word-initial voicing in American English is characterized by
+_three_ distinct clusters: aspirated (positive VOT) /p/, unaspirated (small or
+zero VOT) /b/, and prevoiced (negative VOT) /b/ [@Goldrick2013; @Lisker1964].
+This means that listeners are likely to classify negative VOTs as /b/ even
+though an "ideal listener" model that has a low-variance /b/ and high-variance
+/p/ would (counter-intuitively) classify those negative VOTs as /p/.  This fact,
+combined with the equal-variance clusters produced during experimental exposure,
+make it highly unlikely that the belief-updating model would infer the correct
+asymmetry in variance between /b/ and /p/.
+
+The belief updating model also suggests that these prior beliefs are relatively
+strong, with listeners updating their beliefs as if they were based on
+$2-5\times$ more VOT samples prior than they would encounter during the
+experiment itself.  This is in stark contrast to the results of a similar belief
+updating model of recalibration [@Kleinschmidt2015b], which found that listeners
+have relatively _weak_ prior beliefs.  That model was mathematically the
+same---updating Normal-Inverse $\chi^2$ prior beliefs about cue
+distributions---but found prior pseudocounts on the order of 10s of
+observations, rather than 100s like the current study.  Why this discrepancy?
+One possibility is that @Kleinschmidt2015b fit that model to data from a
+phonetic recalibration study, where listeners repeatedly hear stimuli chosen to
+be acoustically ambiguous between /aba/ and /ada/, paired with a label of some
+kind of label, like a visual cue to the articulation [@Bertelson2003;
+@Vroomen2007].  Experiment 2 found that providing labeling information did not
+appreciably change the speed or completeness of distributional learning, but
+it's possible that the targeting of specifically ambiguous stimuli rather than
+the wider range of stimuli used here could explain the difference [although the
+fact that exposure to prototypical stimuli leads to equally rapid belief
+updating suggests this is unlikely; @Kleinschmidt2015b].  Another posibility,
+proposed by @Kleinschmidt2015b, is that the strength of listeners' prior beliefs
+about a particular cue distribution is related to how much that particular
+distribution varies _across talkers_: when talker variability is low, an _ideal
+adapter_ will use strong prior beliefs and thus be relatively inflexible.  While
+there is _some_ talker variability in VOT distributions [@Chodroff2017;
+@Allen2003], there is much less variability than in vowel formant frequencies
+[@Kleinschmidt2019].  Steady-state vowel formant frequencies are not exactly the
+same as the formant _trajectories_ which are the primary cue for distinguishing
+voiced intervocalic stops, but there is still likely to be similar levels of
+talker variability in such spectral cues.
+
 
 
 
