@@ -1633,16 +1633,48 @@ in the variances ($\nu_0 > \kappa_0$) and adapts by shifting.  Nevertheless, the
 MCMC samples (Bayesian $p$ value of `r p_shift`).
 
 
-```{r inferred-beliefs}
 
-prior_samples_df %>%
-  gather(param, value, mu_0, sigma_0) %>%
-  ggplot(aes(x=value)) +
-  geom_density() +
-  facet_grid(param ~ category, scales="free")
+```{r inferred-beliefs, fig.width = 7.4, fig.height=5.3, fig.cap="Inferred prior beliefs from belief updating model, compared with prior beliefs estimated by @Kronrod2016."}
 
-prior_samples_df %>% ggplot(aes(x=kappa_0, y=mu_0, color=category)) + geom_point(alpha=0.1)
-  
+map_iter <- spread_draws(fit_inc, lp__) %>%
+  arrange(desc(lp__)) %>%
+  head(1)
+
+## prior_samples_df %>%
+##   gather(param, value, mu_0, sigma_0) %>%
+##   ggplot(aes(x=value)) +
+##   geom_density() +
+##   facet_grid(param ~ category, scales="free")
+
+## prior_samples_df %>%
+##   ggplot(aes(y=log(kappa_0), x=mu_0, color=category)) +
+##   geom_point(alpha=0.1) +
+##   geom_point(data = . %>% inner_join(map_iter, by=".draw"),
+##              size=6, shape="*", color="black")
+
+map_prior_stats <-
+  prior_samples_df %>%
+  ungroup() %>%
+  inner_join(map_iter, by=".draw") %>%
+  select(category, mean=mu_0, sd=sigma_0)
+
+map_prior_lhood <- 
+  map_prior_stats %>%
+  stats_to_lhood(noise_sd = 0)  
+
+bind_rows(mutate(map_prior_lhood, source = "Belief updating\nMAP estimate"),
+          mutate(prior_lhood, source = "Kronrod et al. (2016)")) %>%
+  ggplot(aes(x=vot, y=lhood, linetype=category, color=source)) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(-40, 120, by=20)) +
+  theme(axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.line.y = element_blank(),
+        legend.position=c(1,1),
+        legend.justification=c(1,1)
+        ) +
+  labs(title = "Inferred prior beliefs")
 
 ```
 
