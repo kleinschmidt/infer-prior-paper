@@ -1632,9 +1632,7 @@ in the variances ($\nu_0 > \kappa_0$) and adapts by shifting.  Nevertheless, the
 "shifting" solution is preferred, with $\nu_0 < \kappa_0$ in the majority of
 MCMC samples (Bayesian $p$ value of `r p_shift`).
 
-
-
-```{r inferred-beliefs, fig.width = 7.4, fig.height=5.3, fig.cap="Inferred prior beliefs from belief updating model, compared with prior beliefs estimated by @Kronrod2016."}
+```{r inferred-beliefs, fig.width = 7.4, fig.height=5.3, fig.cap="Inferred prior beliefs from belief updating model, compared with prior beliefs estimated by @Kronrod2016.  Inferred priors are derived using the maximum a posteriori (MAP) estimate of the expected prior mean and variance parameters $\\mu_0$, $\\sigma^2_0$."}
 
 map_iter <- spread_draws(fit_inc, lp__) %>%
   arrange(desc(lp__)) %>%
@@ -1658,9 +1656,20 @@ map_prior_stats <-
   inner_join(map_iter, by=".draw") %>%
   select(category, mean=mu_0, sd=sigma_0)
 
+
+
 map_prior_lhood <- 
   map_prior_stats %>%
   stats_to_lhood(noise_sd = 0)  
+
+prior_stats_by_talker %>% 
+  group_by(source, category, prevoiced) %>% 
+  summarise_at(vars(mu, sigma2), mean) %>% 
+  mutate(sigma = sqrt(sigma2)) %>% 
+  rename(mean=mu, sd=sigma) %>% 
+  group_by(source, category, prevoiced) %>%
+  stats_to_lhood()
+
 
 bind_rows(mutate(map_prior_lhood, source = "Belief updating\nMAP estimate"),
           mutate(prior_lhood, source = "Kronrod et al. (2016)")) %>%
@@ -1678,7 +1687,13 @@ bind_rows(mutate(map_prior_lhood, source = "Belief updating\nMAP estimate"),
 
 ```
 
-
+Figure -@fig:inferred-beliefs shows the prior expected VOT distributions for /b/
+and /p/ that are most likely (maximum a posteriori/MAP) given the distributional
+learning behavior.  The belief updating model recovers distributions that are
+similar but not identical to those estimated by @Kronrod2016 (based on
+classification and discrimination data, assuming that /b/ has a mean VOT of 0
+ms).  The inferred distribution for /p/ has a slightly lower mean but very
+similar variance, while /b/ has a similar mean but higher variance.
 
 ## Discussion
 
