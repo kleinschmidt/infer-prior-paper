@@ -1616,7 +1616,7 @@ $[`r confidence_summaries["nu_0_low"]`,
 `r confidence_summaries["nu_0_high"]`]$), which is much larger than the number
 of trials from each cluster.
 
-Together, these parameters suggest that listeners' have strong prior beliefs
+Together, these parameters suggest that listeners have strong prior beliefs
 about the VOT distributions associated with /b/ and /p/, and moreover that their
 beliefs in the _variance_ of VOTs is stronger than their beliefs in the _means_.
 In turn, this suggests that the distributional learning observed in Experiment 1
@@ -1626,11 +1626,11 @@ in their standards for what counts as a good /b/ or /p/).
 
 However, as in previous work with similar belief updating models
 [@Kleinschmidt2015b], the posterior distribution of these parameters was
-multimodal, where one mode puts more confidence in the means ($\kappa_0 >
-\nu_0$) and adapts mostly by updating beliefs in the variance, while the other
-puts more in the variances ($\nu_0 > \kappa_0$) and adapts by shifting.
-Nevertheless, the "shifting" solution is preferred, with $\nu_0 < \kappa_0$ in
-the majority of MCMC samples (Bayesian $p$ value of `r p_shift`).
+bimodal.  One mode that puts more confidence in the means ($\kappa_0 > \nu_0$)
+and adapts mostly by updating beliefs in the variance, while the other puts more
+in the variances ($\nu_0 > \kappa_0$) and adapts by shifting.  Nevertheless, the
+"shifting" solution is preferred, with $\nu_0 < \kappa_0$ in the majority of
+MCMC samples (Bayesian $p$ value of `r p_shift`).
 
 
 ```{r inferred-beliefs}
@@ -1654,9 +1654,9 @@ The results of the belief updating modeling show that the pattern of constrained
 distributional learning from Experiment 1 can be explained as belief updating
 starting from a shared set of prior beliefs.  Furthermore, the model suggests
 that these prior beliefs are relatively strong, with listeners behaving as if
-they'd already observed $2--5\times$ more VOT samples than they would encounter
+they'd already observed $2-5\times$ more VOT samples than they would encounter
 in the experiment before it even started.  This is in stark contrast to the
-results of a simplar belief updating model of recalibration
+results of a similar belief updating model of recalibration
 [@Kleinschmidt2015b], which found that listeners have relatively _weak_ prior
 beliefs. <!-- TODO: why the discrepancy -->
 
