@@ -2,6 +2,7 @@
 # bayesian logistic regression analyses
 
 library(tidyverse)
+library(magrittr)
 library(forcats)
 library(brms)
 library(tidybayes)
@@ -242,3 +243,83 @@ ggplot(expt1_bounds_s, aes(x=trial, y=vot, color=vot_cond)) +
 # accomodated by the trial effect.  and the trajectory of the boundaries from
 # the linear fits look like a reasonable linear interpolation of the boundaries
 # from the spline so...not unreasonable.
+
+################################################################################
+# expt. 4: separate means
+
+sepmeans <- supunsup::separatemeans_clean
+
+sepmeans_conds <-
+  sepmeans %>%
+  group_by(bvotCond, pvotCond) %>%
+  summarise() %>%
+  ungroup() %>%
+  arrange(bvotCond, pvotCond) %>%
+  mutate(vot_cond = paste(bvotCond, pvotCond, sep=', '),
+         vot_cond = factor(vot_cond, levels=vot_cond),
+         ideal_boundary = (pvotCond + bvotCond)/2)
+
+sepmeans %<>% inner_join(sepmeans_conds)
+
+sepmeans_test <- sepmeans %>%
+  filter(is_test) %>%
+  mutate(vot_s = (vot - mean(vot)) / sd(vot),
+         trial_s = (trial - mean(trial)) / sd(trial))
+
+
+f4 <- respP ~ 1 + vot_cond * vot_s * trial_s + (1 + vot_s | subject)
+
+## b_logit_exp4 <- brm(f4, data=sepmeans_test, family=bernoulli(), chains=4, iter=1000)
+## saveRDS(b_logit_exp4, "models/brm_logistic_expt4.rds")
+b_logit_exp4 <- readRDS("models/brm_logistic_expt4.rds")
+
+
+# mixture model for lapsing:
+mix = mixture(bernoulli(), bernoulli())
+b_logit_lapse_exp4 <-
+  brm(bf(respP ~ 1,
+         mu1 ~ 1 + vot_cond * vot_s * trial_s + (1 + vot_s | subject),
+         mu2 ~ 1),
+      family = mix,
+      data = sepmeans_test)
+
+
+exp4_blocks <-
+  sepmeans_test %>%
+  group_by(block=ntile(trial, 6)) %>%
+  summarise_at(vars(trial, trial_s), mean)
+
+# overall fit (fixed effects):
+sepmeans_pred <-
+  cross_df(list(vot_s = seq(min(sepmeans_test$vot_s),
+                            max(sepmeans_test$vot_s),
+                            length.out=100),
+                vot_cond = unique(sepmeans_test$vot_cond),
+                block = 1:6)) %>%
+  left_join(exp4_blocks, by="block") %>%
+  mutate(vot = vot_s * sd(sepmeans_test$vot) + mean(sepmeans_test$vot)) %>%
+  left_join(sepmeans_conds, by="vot_cond")
+
+expt4_bounds <-
+  fitted(b_logit_exp4, newdata=sepmeans_pred, re_formula=NA) %>%
+  as_tibble() %>%
+  bind_cols(sepmeans_pred)
+
+expt4_bounds %>%
+  ggplot(aes(x=vot, y=Estimate)) +
+  geom_line(aes(color=vot_cond)) +
+  geom_ribbon(aes(ymin=`Q2.5`, ymax=`Q97.5`, fill=vot_cond), alpha=0.1) +
+  facet_grid(~block)
+
+expt4_bounds_lapse <-
+  fitted(b_logit_lapse_exp4, newdata=sepmeans_pred, re_formula=NA) %>%
+  as_tibble() %>%
+  bind_cols(sepmeans_pred)
+  
+
+expt4_bounds_lapse %>%
+  ggplot(aes(x=vot, y=Estimate)) +
+  geom_line(aes(color=vot_cond)) +
+  geom_ribbon(aes(ymin=`Q2.5`, ymax=`Q97.5`, fill=vot_cond), alpha=0.1) +
+  geom_line(data = expt4_bounds, aes(color=vot_cond), linetype=3) +
+  facet_grid(~block)
