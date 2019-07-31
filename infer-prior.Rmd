@@ -1776,7 +1776,13 @@ leads to interpretable parameters [@Kleinschmidt2015b].  It also imposes strong
 assumptions about the _relationship_ between the uncertainty that listeners have
 about the mean and variance.  Of particular relevance to these results, under
 such a prior the uncertainty about the mean is proportional to the
-variance.[^normal-prior] <!-- TODO: finish this thought -->
+variance.[^normal-prior] This means that according to the model, a listener's
+expectations of how much talker variability there is in the _mean_ of a catgory
+is directly linked to how much _within_-talker variability they expect (e.g.,
+the category variance).  This (mathematically convenient) relationship need not
+hold in reality: it is logically possible that talkers might vary dramatically
+in the phonetic target that they nevertheless achieve very precisely (high
+between-talker variance and low within-talker variance), or 
 
 [^normal-prior]: Specifically, the prior distribution of the mean $\mu$ is
     _conditional_ on the variance, 
