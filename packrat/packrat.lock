@@ -1,6 +1,6 @@
 PackratFormat: 1.4
 PackratVersion: 0.5.0
-RVersion: 3.6.0
+RVersion: 3.6.1
 Repos: CRAN=http://cran.rstudio.com
 
 Package: BH
@@ -144,19 +144,19 @@ Hash: 90a5d0b7b42693a31b3322462f87ac4c
 
 Package: beliefupdatr
 Source: github
-Version: 0.1.3
-Hash: 6232ed69c492a9fcf50833b934099979
+Version: 0.1.4
+Hash: a1297b5b025d4e63a86fe406f22293f3
 Requires: BH, Rcpp, RcppEigen, StanHeaders, abind, assertthat, dplyr,
     purrr, reshape2, rlang, rstan, rstantools, tidyr, tidyverse
 GithubRepo: beliefupdatr
 GithubUsername: kleinschmidt
 GithubRef: master
-GithubSha1: 5e801a5fc207bbebf966232789964d3f33e6355e
+GithubSha1: 3ec8874fb2ce51b10ee4b5910f3a59fc1857487a
 RemoteHost: api.github.com
 RemoteRepo: beliefupdatr
 RemoteUsername: kleinschmidt
 RemoteRef: master
-RemoteSha: 5e801a5fc207bbebf966232789964d3f33e6355e
+RemoteSha: 3ec8874fb2ce51b10ee4b5910f3a59fc1857487a
 
 Package: bindr
 Source: CRAN
