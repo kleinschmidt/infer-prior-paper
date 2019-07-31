@@ -1594,8 +1594,8 @@ prior_samples_df %>%
   ggplot(aes(x=kappa_0, y=nu_0)) +
   #geom_density2d() +
   geom_point(alpha=0.05) +
-  scale_x_log10(TeX("Pseudocount for mean ($\\kappa_0$)")) +
-  scale_y_log10(TeX("Pseudocount for variance ($\\nu_0$)")) +
+  scale_x_log10(TeX("Prior confidence in mean (pseudo-observations $\\kappa_0$)")) +
+  scale_y_log10(expression(atop("Prior confidence in variance", paste("(pseudo-observations ", nu[0], ")")))) +
   coord_equal() +
   geom_abline() +
   geom_point(data = confidence_maps, size=10, shape="*", color="red")
