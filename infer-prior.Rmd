@@ -175,22 +175,22 @@ these listeners used f0 to categorize stops with ambiguous VOTs. In
 another condition, listeners heard a talker who produced an
 *un*correlated distribution, where f0 is uninformative. In contrast to
 the listeners in the first condition, during the post test these
-listeners _ignored_ f0 even for ambiguous VOTs. This effect
-is consistent with the idea that listeners are rationally integrating
+listeners _ignored_ f0 even for ambiguous VOTs. This effect is
+consistent with the idea that listeners are rationally integrating
 multiple cues to voicing, weighing them based on how informative they
 are [@Ernst2004; @Clayards2008; @Bejjanki2011]. However, listeners in a
 third condition who were exposed to a talker who produced an
-*anti*correlated distribution did _not_ follow the
-predictions of rational cue integration. Despite the fact that f0 was
-just as informative for this accent as for the positively correlated
-accent, listeners _ignored_ f0 as a cue to voicing. This
-suggests that these listeners have ruled out the possibility of a
-reversed mapping between f0 and voicing (/b/ vs. /p/), possibly perhaps
-American English talkers typically do not typically produce it [e.g.,
-@House1953]. Likewise, @Sumner2011 found that listeners had trouble
-adapting to a talker who produced VOT distributions for /b/ and /p/ that
-had _substantially_ lower means (approximately -60ms and
-0ms, respectively) than a typical talker [approximately 0--10ms and 60ms
+*anti*correlated distribution did _not_ follow the predictions of
+rational cue integration. Despite the fact that f0 was just as
+informative for this accent as for the positively correlated accent,
+listeners _ignored_ f0 as a cue to voicing. This suggests that these
+listeners have ruled out the possibility of a reversed mapping between
+f0 and voicing (/b/ vs. /p/), possibly perhaps American English talkers
+typically do not typically produce it [e.g., @House1953]. Likewise,
+@Sumner2011 found that American English listeners had trouble adapting
+to a talker who produced VOT distributions for /b/ and /p/ that had
+_substantially_ lower means (approximately -60ms and 0ms, respectively)
+than a typical American English talker [approximately 0--10ms and 60ms
 VOT; @Lisker1964].
 
 So on the one hand, distributional learning provides a unifying
@@ -209,10 +209,11 @@ forms of distributional learning. First, distributional learning in
 infancy is, at least initially, almost entirely unsupervised, meaning
 that there is very little information about whether any two observed
 acoustic cue values come from the same cluster (category) or different
-ones. Adults have a great deal of circumstantial evidence from the
-lexicon, pragmatic context, phonotactics, etc. which provides *some*
-information about the intended category for a particular cue value. This
-makes the distributional problem of adaptation at least semi-supervised.
+ones [but see @Feldman2013b; @Feldman2013]. Adults have a great deal of
+circumstantial evidence from the lexicon, pragmatic context,
+phonotactics, etc. which provides *some* information about the intended
+category for a particular cue value. This makes the distributional
+learning problem of adaptation at least semi-supervised.
 
 Second, when adapting to an unfamiliar talker, adults have a great deal
 of prior experience with *other* talkers which they could use to narrow
@@ -1046,7 +1047,7 @@ The results of Experiment 2 suggest that labeling individual VOTs as /b/ or /p/
 does very little to affect listeners' distributional learning.  Both at the
 condition level (fixed effect boundaries) and the subject level (distribution of
 participants' boundaries), distributional learning leads to the same shift in
-category boundaries regardless of whether all trials are unlabeld (Experiment 1)
+category boundaries regardless of whether all trials are unlabled (Experiment 1)
 or half labeled (Experiment 2).  This in turn suggests that the discrepancy
 between listeners learned boundaries and the boundary implied by the exposure
 distribution is _not_ due to uncertainty about the whether any particular VOT
