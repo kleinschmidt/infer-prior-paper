@@ -61,6 +61,9 @@ knit_hooks$set(tbl.cap = function(before, options, envir) {
 ```{r preamble, cache=FALSE}
 
 library(tidyverse)
+library(dplyr)
+library(glue)
+library(magrittr)
 library(beliefupdatr)
 library(supunsup)
 
