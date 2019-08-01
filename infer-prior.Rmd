@@ -1873,3 +1873,49 @@ ggplot(sepmeans_class_bysub, aes(x=vot, color=vot_cond)) +
   lims(x = c(-10, 70))
 
 ```
+
+```{r sepmeans-bounds }
+
+sepmeans_bounds <-
+  sepmeans_class %>%
+  group_by(vot_cond, trial, block) %>%
+  find_bound(x=vot, y=Estimate)
+
+sepmeans_bounds_bysub <-
+  sepmeans_class_bysub %>%
+  group_by(vot_cond, subject, trial, block) %>%
+  find_bound(x=vot, y=Estimate)
+
+sepmeans_bounds_fixef_samples <-
+  tidybayes::linpred_draws(b_logit_exp4, sepmeans_pred, re_formula=NA) %>%
+  group_by(vot_cond, block, trial, .draw) %>%
+  find_bound(x=vot, y=.value)
+
+sepmeans_bounds_fixef <-
+  sepmeans_bounds_fixef_samples %>%
+  group_by(vot_cond, block, trial) %>%
+  summarise(low=quantile(vot, 0.025), high=quantile(vot, 0.975), mean=mean(vot))
+
+```
+
+```{r plot-sepmeans-bounds }
+
+sepmeans_bounds_bysub %>%
+  filter(block==1) %>%
+  ggplot(aes(x=vot_cond, y=vot, fill=vot_cond, color=vot_cond)) +
+  geom_violin(alpha=0.5) + #, color=NA)+
+  geom_violin(data = expt1_bounds_bysub %>%
+                filter(vot_cond == "10, 50")
+            , alpha=0) +
+  geom_pointrange(data = sepmeans_bounds_fixef %>% filter(block==1),
+                  aes(y=mean, ymin=low, ymax=high),
+                  color="white", show.legend=FALSE) +
+  theme(legend.position="none") +
+  scale_shape_manual(values = c(16, 1)) +
+  lims(y=c(10,50)) +
+  labs(title="Experiment 4",
+       y = "Boundary VOT (ms)",
+       x = "Exposure condition (/b/, /p/ mean VOT)") +
+  coord_flip()
+
+```
