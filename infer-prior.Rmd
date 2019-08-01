@@ -1779,3 +1779,97 @@ likely to be similar levels of talker variability in such spectral cues.
 
 
 # Experiment 4
+
+```{r sepmeans-data}
+
+sepmeans <- supunsup::separatemeans_clean
+
+sepmeans_conds <-
+  sepmeans %>%
+  group_by(bvotCond, pvotCond) %>%
+  summarise() %>%
+  ungroup() %>%
+  arrange(bvotCond, pvotCond) %>%
+  mutate(vot_cond = paste(bvotCond, pvotCond, sep=', '),
+         vot_cond = factor(vot_cond, levels=vot_cond),
+         ideal_boundary = (pvotCond + bvotCond)/2)
+
+sepmeans %<>% inner_join(sepmeans_conds)
+
+sepmeans_test <- sepmeans %>%
+  filter(is_test) %>%
+  mutate(vot_s = (vot - mean(vot)) / sd(vot),
+         trial_s = (trial - mean(trial)) / sd(trial))
+
+exp4_blocks <-
+  sepmeans_test %>%
+  group_by(block=ntile(trial, 6)) %>%
+  summarise_at(vars(trial, trial_s), mean)
+
+```
+
+```{r sepmeans-regression}
+
+f4 <- respP ~ 1 + vot_cond * vot_s * trial_s + (1 + vot_s | subject)
+
+## b_logit_exp4 <- brm(f4, data=sepmeans_test, family=bernoulli(), chains=4, iter=1000)
+## saveRDS(b_logit_exp4, "models/brm_logistic_expt4.rds")
+b_logit_exp4 <- readRDS("models/brm_logistic_expt4.rds")
+
+sepmeans_pred <-
+  cross_df(list(vot_s = seq(min(sepmeans_test$vot_s),
+                            max(sepmeans_test$vot_s),
+                            length.out=100),
+                vot_cond = unique(sepmeans_test$vot_cond),
+                block = 1:6)) %>%
+  left_join(exp4_blocks, by="block") %>%
+  mutate(vot = vot_s * sd(sepmeans_test$vot) + mean(sepmeans_test$vot)) %>%
+  left_join(sepmeans_conds, by="vot_cond")
+
+sepmeans_class <-
+  fitted(b_logit_exp4, newdata = sepmeans_pred, re_formula = NA) %>%
+  as_tibble() %>%
+  bind_cols(sepmeans_pred)
+
+sepmeans_pred_subj <-
+  sepmeans_test %>%
+  group_by(subject, vot_cond) %>%
+  summarise() %>%
+  inner_join(sepmeans_pred, by="vot_cond")
+
+sepmeans_class_bysub <-
+  fitted(b_logit_exp4, newdata = sepmeans_pred_subj) %>%
+  as_tibble() %>%
+  bind_cols(sepmeans_pred_subj)
+
+```
+
+```{r sepmeans-results, fig.width=10, fig.height=3, fig.cap="Results from experiment 4" }
+
+sepmeans_exposure_stats <- sepmeans %>%
+  filter(!is_test) %>%
+  group_by(vot_cond, category=trueCat) %>%
+  summarise(mean=mean(vot), sd=sd(vot))
+
+sepmeans_perfect_learning <- sepmeans_exposure_stats %>%
+  group_by(vot_cond) %>%
+  do(stats_to_lhood(.)) %>%
+  lhood_to_classification()
+
+ggplot(sepmeans_class_bysub, aes(x=vot, color=vot_cond)) +
+  geom_line(data=.%>%filter(block==1), aes(y=Estimate, group=subject), alpha=0.2) +
+  facet_grid(.~vot_cond) +
+  geom_line(data=sepmeans_perfect_learning, aes(y=prob_p), group=1, linetype="33", size=1,
+            show.legend=FALSE) +
+  geom_line(data=no_learning, aes(y=prob_p), group=1, linetype="99", color='black',
+            show.legend=FALSE) +
+  geom_line(data = filter(sepmeans_class, block==1), aes(y=Estimate), size=1) +
+  ## geom_point(data=expt1_bounds %>% filter(block==3),
+  ##            y=0.5) +
+  labs(x="VOT (ms)",
+       y="Probability /p/ response",
+       title="Experiment 4: Classification functions",
+       subtitle="Fit with mixed effects logistic regression, predictions for first sixth of test trials") +
+  lims(x = c(-10, 70))
+
+```
