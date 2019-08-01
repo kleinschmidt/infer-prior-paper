@@ -1739,7 +1739,7 @@ updating model of recalibration [@Kleinschmidt2015b], which found that listeners
 have relatively _weak_ prior beliefs.  That model was mathematically the
 same---updating Normal-Inverse $\chi^2$ prior beliefs about cue
 distributions---and the number of trials in the experiments were similar (about
-200), but @Kleinschmidt2015 found prior pseudocounts on the order of 10s of
+200), but @Kleinschmidt2015b found prior pseudocounts on the order of 10s of
 observations, rather than 100s like the current study.  Why this discrepancy?
 One possibility is that @Kleinschmidt2015b fit that model to data from a
 phonetic recalibration study, where listeners repeatedly hear stimuli chosen to
