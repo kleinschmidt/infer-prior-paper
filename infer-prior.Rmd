@@ -1941,3 +1941,99 @@ sepmeans_bounds_bysub %>%
   coord_flip()
 
 ```
+
+```{r sepmeans-posterior-check}
+
+#' Convert from stan parametrization to beliefupdatr::nix2
+stan_conj_to_nix2 <- function(stan_p) {
+  with(stan_p, list(nu = nu_0,
+                    kappa = kappa_0,
+                    mu = mu_0,
+                    sigma2 = sigma_0 ^ 2))
+}
+
+# convert samples of prior params in array form to list of samples in nix2
+# parameter list form.
+#
+# e.g., mod_nix2_samples[[1]][[1]] is the first 
+mod_nix2_samples <- 
+  rstan::extract(fit_inc, pars=c('nu_0', 'kappa_0', 'mu_0', 'sigma_0')) %>%
+  ## repeate these since there's just one for both categories
+  map_at(c('nu_0', 'kappa_0'), ~ cbind(.x, .x)) %>%
+  ## turn arrays into nested lists
+  map(array_tree) %>%
+  ## zip list of variables into list of samples
+  transpose() %>%
+  ## zip each sample's list of variables into list of categories
+  map(transpose) %>%
+  ## ...and zip list of samples into a list of categories
+  transpose() %>%
+  set_names(c('b', 'p')) %>%
+  ## rename and convert expected sd to var
+  at_depth(2, stan_conj_to_nix2)
+
+## confirm that we have nix2 params at depth 2
+## invisible(mod_nix2_samples %>% at_depth(2, ~ assert_that(is_nix2_params(.))))
+
+## get summary statistics for each condition
+updated_nix2_samples <- 
+  sepmeans %>%
+  left_join(sepmeans_conds) %>%
+  group_by(bvotCond, pvotCond, trueCat) %>%
+  filter(subject == first(subject),
+         is_test == FALSE) %>%
+  nest() %>%
+  mutate(prior_samples = map(trueCat, ~ mod_nix2_samples[[.x]]),
+         updated_samples = map2(data, prior_samples,
+                                function(d, s) map(s, nix2_update, x=d$vot)))
+
+sample_to_lhood <- function(p)
+  data_frame(vot = seq(-10,50),
+             lhood = d_nix2_predict(vot, p))
+
+predicted_lhood <- updated_nix2_samples %>%
+  mutate(test_lhood = map(updated_samples,
+                          . %>%
+                            map(sample_to_lhood) %>%
+                            do.call(what=rbind))) %>%
+  unnest(test_lhood)
+
+lapse_rate_samples <-
+  rstan::extract(fit_inc, pars='lapse_rate') %>%
+  map(as.numeric) %>%
+  as.tibble() %>%
+  mutate(sample = row_number())
+
+predicted_prob_p <-
+  predicted_lhood %>%
+  group_by(bvotCond, pvotCond, trueCat, vot) %>%
+  mutate(sample = row_number()) %>%
+  spread(trueCat, lhood) %>%
+  left_join(lapse_rate_samples) %>%
+  mutate(prob_p = p / (b+p),
+         prob_p_lapse = prob_p * (1-lapse_rate) + lapse_rate*0.5) %>%
+  group_by(bvotCond, pvotCond, vot) %>%
+  summarise_at(vars(prob_p, prob_p_lapse),
+               funs(mean=mean, lo=quantile(., 0.025), hi=quantile(., 0.975)))
+
+```
+
+```{r plot-exp4-predictions-first-third, fig.width=8, fig.height=2, fig.cap="The prior beliefs inferred in Experiment 3 predict how much listeners adapt to each of the input distributions of Experiment 4. Shaded regions show the 95% posterior predictive intervals for the belief updating model, based on prior beliefs inferred from Experiment 1 and exposure distributions from Experiment 2.  Dots and errorbars show mean and 95% bootstrapped CIs for the mean probability of /p/ response over subjects. Note the additional uncertainty in predictions relative to the posterior predictive distribution given Experiment 1's conditions {@fig:mod-vs-behav-class-funs}."}
+
+predicted_prob_p %>%
+  left_join(sepmeans_conds) %>%
+  ggplot(aes(x=vot, y=prob_p_lapse_mean, color=vot_cond, fill=vot_cond)) +
+  # geom_line() +
+  geom_ribbon(aes(ymin=prob_p_lapse_lo, ymax=prob_p_lapse_hi),
+              alpha=0.2, color=NA) +
+  geom_pointrange(data = sepmeans_test %>%
+                    filter(ntile(trial,3) == 1) %>%
+                    group_by(vot_cond, vot, subject) %>%
+                    summarise(resp_p = mean(respP)),
+                  aes(y=resp_p),
+                  stat='summary', fun.data=mean_cl_boot) +
+  facet_grid(.~vot_cond) +
+  labs(x = 'VOT (ms)',
+       y = 'Probability /p/ response')
+
+```
