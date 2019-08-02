@@ -1999,9 +1999,9 @@ predicted_lhood <- updated_nix2_samples %>%
   unnest(test_lhood)
 
 lapse_rate_samples <-
-  rstan::extract(fit_inc, pars='lapse_rate') %>%
-  map(as.numeric) %>%
-  as.tibble() %>%
+  rstan::extract(fit_inc, pars='lapse_rate')[[1]][, 6] %>%
+  as.numeric() %>%
+  tibble(lapse_rate=.) %>%
   mutate(sample = row_number())
 
 predicted_prob_p <-
