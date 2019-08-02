@@ -1898,7 +1898,7 @@ sepmeans_bounds_fixef <-
 
 ```
 
-```{r plot-sepmeans-bounds }
+```{r plot-sepmeans-bounds, fig.cap="/b/-/p/ category boundaries from Experiment 4.  Violins show distributions of subject's boundaries (estimated based on Bayesian mixed effect logistic regression) and points/CIs show the posterior mean and 95% CI for the group-level (fixed effect) estimate from the same regression.  Subjects boundaries from the Experiment 1 condition with the same exposure statistics are shown in outline, and are quite close to the results from Experiment 4 (if less variable).  Note that the position of the 'complete learning' boundaries (thick dashed lines; based on the exposure statistics) are much more extreme than in Experiment 1, reflecting the more extreme shifts in the distributions that listeners experience in Experiment 4."}
 
 sepmeans_bounds_bysub %>%
   filter(block==1) %>%
@@ -1912,10 +1912,32 @@ sepmeans_bounds_bysub %>%
                   color="white", show.legend=FALSE) +
   theme(legend.position="none") +
   scale_shape_manual(values = c(16, 1)) +
-  lims(y=c(10,50)) +
-  labs(title="Experiment 4",
+  lims(y=c(-16,50)) +
+  labs(title="Experiment 4: Category boundaries",
+       subtitle="Estimated values at first sixth of test block",
        y = "Boundary VOT (ms)",
        x = "Exposure condition (/b/, /p/ mean VOT)") +
+  geom_hline(yintercept=no_learning_bound, color="black", linetype=2) +
+  geom_segment(aes(x=as.numeric(vot_cond)-.5, # exposure boundaries_exp1
+                   xend=as.numeric(vot_cond)+.5,
+                   y=ideal_boundary,
+                   yend=ideal_boundary,
+                   color=vot_cond),
+               linetype = 2, size = 1,
+               data = sepmeans_conds) +
+  geom_text(data=sepmeans_conds %>% filter(vot_cond=="10, 50"),
+            aes(y=ideal_boundary, color=vot_cond),
+            ## x=3.5, y=41, 
+            label="Complete learning\n(Exposure talker)",
+            hjust = 0, vjust = 0,
+            nudge_x = -0.7, nudge_y = 1) +
+  geom_text(data=perfect_learning_bound %>% filter(vot_cond=="10, 50"),
+            aes(color=vot_cond, x = as.numeric(vot_cond)+1.3),
+            y=no_learning_bound-1, color='black',
+            ## x=3.5, y=41, 
+            label="No learning\n(Typical talker)",
+            hjust = 1, vjust = 0,
+            ) +
   coord_flip()
 
 ```
