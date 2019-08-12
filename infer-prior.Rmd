@@ -1808,6 +1808,25 @@ exp4_blocks <-
 
 ```
 
+```{r exposure-dists-exp4, fig.width=10, fig.height=2, fig.cap="In Experiment 4, each subject heard a talker that produced one of these five VOT distributions. The variance of each category was constant across conditions, but the means varied semi-independently."}
+
+sepmeans %>%
+  left_join(sepmeans_conds) %>%
+  filter(!is_test) %>%
+  group_by(vot_cond, vot) %>%
+  filter(subject == first(subject)) %>%
+  tally() %>%
+  ggplot(aes(x=vot)) +
+  geom_bar(stat='identity', aes(y=n, fill=vot_cond)) +
+  geom_line(data=prior_lhood, aes(y=lhood*1600, group=category),
+            color="black", linetype=2) +
+  facet_grid(.~vot_cond) +
+  scale_x_continuous('VOT (ms)') +
+  scale_y_continuous('Frequency')
+
+```
+
+
 ```{r sepmeans-regression}
 
 f4 <- respP ~ 1 + vot_cond * vot_s * trial_s + (1 + vot_s | subject)
