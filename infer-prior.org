@@ -91,6 +91,10 @@
 
 * more literature to consider
 
+** Bozena's paper with Roger
+   Esp. 2014
+** Jessamyn Schertz papers
+   Korean VOT learning etc. @Schertz2016a
 ** DONE L2 learning
 
    Baese Berk stuff?  (I think some of that is on dist learning of prevoiced VOT
