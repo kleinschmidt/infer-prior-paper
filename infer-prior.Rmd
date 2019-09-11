@@ -1780,6 +1780,56 @@ likely to be similar levels of talker variability in such spectral cues.
 
 # Experiment 4
 
+The evidence presented thus far suggests that adult distributional learning is
+constrained in substantial ways (Experiment 1), that these constraints cannot be
+attributed to uncertainty due to the lack of labeling information (Experiment
+2), and that the observed constraints are at least consistent with belief
+updating starting from a shared set of prior beliefs (Experiment 3).  One
+interpretation of the modeling results from Experiment 3 is that the prior
+beliefs that the model infers as the starting point for distributional learning
+actually correspond to the real contents of listener's prior beliefs.  This
+final experiment serves as a stronger test of this idea, by testing
+distributional learning with an even wider range of exposure distributions.
+The results of this study suggest that the modeling results from Experiment 3
+should be interpreted with some caution, and more specifically suggests that the
+ability of a belief updating model to provide insight into listeners'
+prior beliefs is determined in equally large part by the assumptions of the
+model and the structure of variation in the exposure distributions that provide
+input to the model.
+
+There are two concrete reasons why the inferred prior beliefs from the belief
+updating model might not reflect listeners actual prior beliefs, or even provide
+a particularly good account of their behavior in slightly different
+distributional learning circumstances.  The first is that American English word
+initial stop voicing is actually characterized by _three_ clusters: positive
+VOTs (aspirated) which are perceived as /p/, VOTs of approximately zero, and
+negative VOTs (prevoicing), which are both perceived as /b/ [@Lisker1964;
+@Baese-Berk2009].  The belief updating model assumes there are only two
+clusters, and so any large negative VOTs would result, in the model, in large
+negative shifts in the low-VOT cluster (which starts near zero, according to the
+results of Experiment 3).  However, if listners actually use a three-component
+model, then negative VOTs might be assigned to a prevoiced cluster, leaving the
+un-aspirated cluster relatively unchanged and little to no change in boundary.
+That is, the two-component model may over-estimate the extent to which
+exposure to a distribution with large negative VOTs would cause American English
+listeners to adjust their categorization boundary.
+
+The second reason is that the model assigns independent prior beliefs to /b/ and
+/p/, whereas in reality there is _structure_ in the way these categories' VOT
+distributions vary across talkers [@Chodroff2017].  If listeners expect
+correlated variation in, for example, the mean VOT of /b/ and the mean VOT of
+/p/ across talkers, then there may in fact be _stronger_ than predicted
+constraints on learning pairs of distributions that deviate from the expected
+pattern of correlation (e.g., higher-than-expected /b/ but lower-than-expected
+/p/).  This possibility is exacerbated by the fact that the variation in VOT
+means in Experiments 1 and 2 were perfectly correlated, since the difference
+between the means for /b/ and /p/ was 40ms in every exposure condition.
+
+To address both of these, Experiment 4 examines distributional learning to
+bimodal VOT distributions where the /b/ and /p/ distributions do not vary in
+lock-step as in Experiment 1 and 2, and moroever feature a larger range of both
+negative and positiev VOTs across conditions.
+
 ```{r sepmeans-data}
 
 sepmeans <- supunsup::separatemeans_clean
