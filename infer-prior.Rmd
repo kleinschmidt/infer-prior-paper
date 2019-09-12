@@ -2018,6 +2018,10 @@ sepmeans_class_bysub <-
 
 ```
 
+## Results
+
+
+
 ```{r sepmeans-results, fig.width=10, fig.height=3, fig.cap="Results from experiment 4" }
 
 sepmeans_exposure_stats <- sepmeans %>%
@@ -2071,6 +2075,57 @@ sepmeans_bounds_fixef <-
   summarise(low=quantile(vot, 0.025), high=quantile(vot, 0.975), mean=mean(vot))
 
 ```
+
+Figure -@fig:sepmeans-results shows the classification functions produced by
+listeners during the first sixth of the test phase of Experiment 4 (estimated by
+Bayesian hierarchical logistic regression), and Figure
+-@fig:plot-sepmeans-bounds shows the corresponding estimates of the /b/-/p/
+boundaries.  First, consider the 10, 50ms condition.  This condition serves as a
+replication of the condition with the same exposure distributions from
+Experiment 1, and a check of the post-test procedure used in the other
+conditions of Experiment 4 to measure listeners' category boundaries.  As Figure
+-@fig:plot-sepmeans-bounds shows, listeners in the 10, 50ms condition from
+Experiment 4 produced very similar---if somewhat more variable---category
+boundaries in the post-test (filled violin) compared with the boundaries
+measured during exposure in the 10, 50ms condition from Experiment 1 (outline
+violin).  On the one hand, this valides the use of the post-test procedure in
+Experiment 4 as a way of measuring the outcome of distributional learning.  On
+the other hand, the greater variability in these measurements suggests that the
+use of a post-test might reduce the power to detect _differences_ in learning
+between conditions of Experiment 4.
+
+```{r boundary-summaries-exp4}
+
+boundary_diff_p_vals <-
+  sepmeans_bounds_fixef_samples %>%
+  filter(block == 1) %>%
+  spread(vot_cond, vot) %>%
+  summarise(p_20_50 = mean(`-20, 50` > `-50, 50`),
+            p_50_80 = mean(`-50, 50` > `-80, 50`),
+            p_20_80 = mean(`-20, 50` > `-80, 50`))
+
+```
+
+Next, exposure to large negative VOTs produces comparably small shifts in the
+/b/-/p/ category boundary.  In fact, in the conditions with a lower mean of -80,
+-50, and -20ms, listeners' category boundaries seem to cluster around the
+boundary for a typical talker, rather than lying in between the typical talker's
+boundary and the exposure talker's ideal boundary as in Experiment 1.  Moreover,
+while the differences in boundaries between these three conditions are trending
+in the expected direction, with more negative VOTs expected to lead to lower
+category boundaries, these differences are not very reliable (Bayesian $p = 
+`r boundary_diff_p_vals$p_20_50`$ for -20ms vs. -50ms, $p = 
+`r boundary_diff_p_vals$p_50_80`$ for -50ms vs. -80ms) except for largest such
+difference between the -80ms and -20ms condition (Bayesian $p=
+`r boundary_diff_p_vals$p_20_80`$).
+
+
+
+There are two notable differences with the results from Experiment
+1 (Figure -@fig:exp1-results).  First, there appears to be more between-listener
+variability in the classification functions in each condition, especially for
+the conditions with large negative VOTs.  This may correspond to differences in
+the procedure (
 
 ```{r plot-sepmeans-bounds, fig.cap="/b/-/p/ category boundaries from Experiment 4.  Violins show distributions of subject's boundaries (estimated based on Bayesian mixed effect logistic regression) and points/CIs show the posterior mean and 95% CI for the group-level (fixed effect) estimate from the same regression.  Subjects boundaries from the Experiment 1 condition with the same exposure statistics are shown in outline, and are quite close to the results from Experiment 4 (if less variable).  Note that the position of the 'complete learning' boundaries (thick dashed lines; based on the exposure statistics) are much more extreme than in Experiment 1, reflecting the more extreme shifts in the distributions that listeners experience in Experiment 4."}
 
@@ -2178,14 +2233,17 @@ lapse_rate_samples <-
   tibble(lapse_rate=.) %>%
   mutate(sample = row_number())
 
-predicted_prob_p <-
+predicted_prob_p_samples <-
   predicted_lhood %>%
   group_by(bvotCond, pvotCond, trueCat, vot) %>%
   mutate(sample = row_number()) %>%
   spread(trueCat, lhood) %>%
   left_join(lapse_rate_samples) %>%
   mutate(prob_p = p / (b+p),
-         prob_p_lapse = prob_p * (1-lapse_rate) + lapse_rate*0.5) %>%
+         prob_p_lapse = prob_p * (1-lapse_rate) + lapse_rate*0.5)
+
+predicted_prob_p <-
+  predicted_prob_p_samples %>%
   group_by(bvotCond, pvotCond, vot) %>%
   summarise_at(vars(prob_p, prob_p_lapse),
                funs(mean=mean, lo=quantile(., 0.025), hi=quantile(., 0.975)))
@@ -2211,3 +2269,11 @@ predicted_prob_p %>%
        y = 'Probability /p/ response')
 
 ```
+
+
+## Discussion
+
+<!-- RE lack of learning in high VOT conditions -->
+Note, though, that because the separation between the high and low VOT clusters
+in these conditions was so large, using the typical talker's boundary would
+result in very few errors.
