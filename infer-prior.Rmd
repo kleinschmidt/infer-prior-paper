@@ -1851,12 +1851,19 @@ sepmeans_test <- sepmeans %>%
   mutate(vot_s = (vot - mean(vot)) / sd(vot),
          trial_s = (trial - mean(trial)) / sd(trial))
 
+post_test_len <-
+  sepmeans_test %>%
+  filter(subject==first(subject)) %>%
+  nrow()
+
 exp4_blocks <-
   sepmeans_test %>%
   group_by(block=ntile(trial, 6)) %>%
   summarise_at(vars(trial, trial_s), mean)
 
 ```
+
+## Methods
 
 ```{r exposure-dists-exp4, fig.width=10, fig.height=2, fig.cap="In Experiment 4, each subject heard a talker that produced one of these five VOT distributions. The variance of each category was constant across conditions, but the means varied semi-independently."}
 
@@ -1876,6 +1883,97 @@ sepmeans %>%
 
 ```
 
+As in Experiment 1 and 2, listeners performed a distributional learning task,
+hearing a talker who produced one of five different bimodal VOT distributions.
+Across these distributions, we varied /b/ and /p/ mean VOT semi-independently
+(Figure -@fig:exposure-dists-exp4). These distributions cover a wider range of
+implied category boundaries (from -15 to 45ms VOT) than Experiment 1 and 2 (10
+to 50ms), especially on the lower end. They also varied in the distance between
+cluster means (from 40 to 130ms VOT), unlike Experiment 1 which maintained a
+constant separation between /b/ and /p/ mean VOT of 40ms.  Note that the
+condition with /b/ mean of 10ms and /p/ mean of 50ms VOT is the same as in
+Experiment 1.  This condition was included to provide a way of comparing with
+Experiment 1, since the design of Experiment 4 required a change in procedure
+(which we discuss next).
+
+### Procedure: assessing category boundaries
+
+The procedure was identical to Experiment 1, with one exception. After
+completing the 222 trial exposure phase as in Experiment 1, listeners completed
+a test phase in order to assess their category boundaries. This phase consisted
+of `r post_test_len` additional trials with VOTs evenly distributed from -10 to
+50ms in 10ms steps. This additional phase was necessary because of the large
+separation between /b/ and /p/ clusters in the exposure distributions meant that
+in most conditions there were no trials with VOTs anywhere near the predicted
+(or typical) boundaries.
+
+Critically, listeners were not told about the change from exposure to test
+phase: the procedures were identical, and there was no break in between.
+Besides the change in VOT distributions, there was no way for listeners to tell
+that they had entered the test phase. Of course, if listeners are actually (as
+we hypothesize) _learning_ these distributions, their behavior may well change
+as they proceed through the test phase, gradually erasing any effect of the
+differences in the exposure distributions. Thus, when analyzing data from the
+test phase, whenever possible we limit ourselves to the early parts of the test
+phase, when listeners behavior should be minimally affected by the change in
+distributions.
+
+As in Experiment 1, listeners' adaptation was evaluated via their classification
+functions, estimated with a hierarchical Bayesian logistic regression model.  In
+addition to VOT, a predictor for trial was also included, in order to account
+for any (un-)learning effects that might happen during post-test.  In order to
+visualize the fitted classification functions and to estimate listeners'
+category boundaries, I used the classification function estimates from the trial
+halfway through the first third of the post-test.[^why-not-beginning]
+
+[^why-not-beginning]: The predictions from a regression model are more uncertain
+    and more driven by noise at the extreme ranges of continuous predictors,
+    like trial number. Thus we use the point one-sixth into the post-test to estimate
+    classification functions, rather than the very beginning, because it is
+    _close_ to the beginning of the post test, but not so close that the
+    predictions are substantially affected by the extra instability of the
+    predictions that come at the edge of a continuous predictors range.
+
+
+### Participants
+
+```{r exp2-subjects}
+
+n_excl4 <- supunsup::separatemeans_excluded %>%
+  left_join(sepmeans_conds) %>%
+  group_by(vot_cond, subject) %>%
+  summarise() %>%
+  tally()
+
+n_clean4 <- sepmeans %>%
+  left_join(sepmeans_conds) %>%
+  group_by(vot_cond, subject) %>%
+  summarise() %>%
+  tally()
+
+n_total4 <- bind_rows(n_excl4, n_clean4) %$% sum(n)
+
+accept_to_submit_time <-
+  supunsup::separatemeans_assignments %>%
+  do(daver::boot_ci(., function(d,i) with(d[i, ], mean(submittime-accepttime))))
+
+active_time <- supunsup::separatemeans %>%
+  group_by(subject) %>%
+  summarise(time = max(tend) - min(tstart)) %>%
+  mutate(time_min = time / 60000) %>%
+  do(daver::boot_ci(.$time_min, function(d,i) mean(d[i])))
+
+```
+
+A total of `r n_total4` participants were recruited via Amazon's Mechanical
+Turk.  Subjects were paid \$2.50 for participation.  The task took subjects
+about 25 minutes to complete (because of the additional post-test, discussed
+next).  As in Experiment 1, we excluded subjects ($n=`r n_excl4 %$% sum(n)`$)
+who failed to classify words with unambiguous VOTs reliably during exposure (not
+post-test, see above).  After exclusion, `r n_clean4 %$% sum(n)` subjects
+remained for analysis (no subjects had previously participated in one of our VOT
+studies).  Subjects were evenly distributed across conditions (range of 
+`r n_clean4 %$% min(n)` to `r n_clean4 %$% max(n)` per condition).
 
 ```{r sepmeans-regression}
 
