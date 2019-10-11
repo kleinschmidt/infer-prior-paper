@@ -2297,8 +2297,50 @@ predicted_prob_p %>%
 
 ```
 
+Finally, can the prior beliefs inferred based on the pattern of distributional
+learning from Experiment 1 explain the distributional learning or lack thereof
+observed in this experiment?  Figure -@fig:plot-exp4-predictions-first-third
+shows the posterior predictive intervals for the belief updating model's
+classification functions compared with the average probability of /p/ responses
+in the first third of the test phase of Experiment 4.  The model's predictions
+are quite accurate for the 10ms /b/, 50ms /p/ condition which is a near
+replication of the same exposure condition from Experiment 1.  But for the other
+conditions, the model tends to predict *more* distributional learning (larger
+boundary shifts) than listeners actually show, or in the case of the two most
+extreme negative VOT conditions, makes very vague predictions.
+
 
 ## Discussion
+
+The results of Experiment 4 suggest that some caution is due in generalizing
+from Experiments 1 and 2.  In particular, while the results of Experiment 1 are
+consistent with belief updating, the prior beliefs inferred as most likely based
+on those exposure distributions do not generalize well to distributional
+learning to the distributions used in this experiment.  These distributions
+differed in two important ways from those of the earlier experiments.  First,
+they included large negative VOTs in some conditions, which @Sumner2011 found
+failed to produce large shifts in category boundaries except in a few particular
+presentation orders.  Similarly, little distributional learning was observed in
+conditions with large negative VOTs in this experiment.  
+
+Second, the means of the high and low VOT clusters
+(implicitly /b/ and /p/) moved together in lock-step in Experiments 1 and 2,
+while in Experiment 4 they were manipulated independently.
+
+
+
+
+Together, these results suggest further constraints that guide distributional
+learning above and beyond those that are evident from Experiments 1 and 2.
+
+
+<!-- Is this incompatible with belief updating?  No, just need to 1. take into -->
+<!-- account possible correlations in the prior and 2. consider the possibility -->
+<!-- that listeners maintain beliefs about the prevoiced cluster and are -->
+<!-- updating that instead of the short-lag cluster, which the model doesn't -->
+<!-- capture. -->
+
+
 
 This lack of robust distributional learning for large negative VOTs contrasts
 with the results from Experiments 1 and 2.  Those experiments found that even
@@ -2307,10 +2349,11 @@ by the exposure distributions, it was still robust compared with other exposure
 distributions.
 
 
-<!-- RE lack of learning in high VOT conditions -->
-Note, though, that because the separation between the high and low VOT clusters
-in these conditions was so large, using the typical talker's boundary would
-result in very few errors.
+<!-- RE lack of learning in high VOT conditions --> Note, though, that because
+the separation between the high and low VOT clusters in these conditions was so
+large, using the typical talker's boundary would result in very few errors.
+Nevertheless, listeners do usually show sensitivity to shifts in the mean of VOT
+distributions when asked to rate the goodness or typicality of VOTs. [@CITE]
 
 
 
