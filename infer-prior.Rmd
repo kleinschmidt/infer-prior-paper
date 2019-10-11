@@ -2087,12 +2087,15 @@ conditions of Experiment 4 to measure listeners' category boundaries.  As Figure
 -@fig:plot-sepmeans-bounds shows, listeners in the 10, 50ms condition from
 Experiment 4 produced very similar---if somewhat more variable---category
 boundaries in the post-test (filled violin) compared with the boundaries
-measured during exposure in the 10, 50ms condition from Experiment 1 (outline
-violin).  On the one hand, this valides the use of the post-test procedure in
-Experiment 4 as a way of measuring the outcome of distributional learning.  On
-the other hand, the greater variability in these measurements suggests that the
-use of a post-test might reduce the power to detect _differences_ in learning
-between conditions of Experiment 4.
+measured during exposure in the 10, 50ms condition from Experiment 1 (empty
+violin).  There is also more uncertainty associated with the estimates of the
+population-level fixed-effects boundaries as well (the filled vs. open white
+circles and associated credible intervals), even though the estimates themselves
+are largely in agreement (27 vs. 28ms VOT).  On the one hand, this validates the
+use of the post-test procedure in Experiment 4 as a way of measuring the outcome
+of distributional learning.  On the other hand, the greater variability in these
+measurements suggests that the use of a post-test might reduce the power to
+detect _differences_ in learning between conditions of Experiment 4.
 
 ```{r boundary-summaries-exp4}
 
@@ -2102,13 +2105,21 @@ boundary_diff_p_vals <-
   spread(vot_cond, vot) %>%
   transmute(b20_50 = `-20, 50` - `-50, 50`,
             b50_80 = `-50, 50` - `-80, 50`,
-            b20_80 = `-20, 50` - `-80, 50`) %>%
+            b20_80 = `-20, 50` - `-80, 50`,
+            b80_50 = `10, 80` - `10, 50`) %>%
   gather("contrast", "diff", -block, -trial) %>%
   group_by(contrast) %>%
   summarise_at("diff", list(mean=mean,
                             low=~quantile(., 0.025),
                             high=~quantile(., 0.975),
-                            p=~mean(.>0)))
+                            p=~mean(.>0))) %>%
+  mutate(mean_ci = glue("{signif(mean, 2)}ms (95% credible interval $[{signif(low, 2)}, {signif(high, 2)}]$)"))
+
+expt4_bounds_vs_no_learning <-
+  sepmeans_bounds_fixef_samples %>%
+  filter(block==1) %>%
+  group_by(vot_cond) %>%
+  summarise(p = mean(vot < no_learning_bound))
 
 ```
 
@@ -2120,34 +2131,40 @@ boundary and the exposure talker's ideal boundary as in Experiment 1.  Moreover,
 while the differences in boundaries between these three conditions are trending
 in the expected direction, with more negative VOTs expected to lead to lower
 category boundaries, these differences are small (on the order of 0-5ms,
-compared with exposure distributions with 15ms differences between boundaries)
-and not particularly reliable (going in the expected direction with 
-$p=`r boundary_diff_p_vals[['p']][1]`$[^bayes_p2] for the -20ms vs. -50ms /b/
-conditions and $p=`r boundary_diff_p_vals[['p']][3]`$ for -50ms vs. -80ms /b/)
+compared with exposure distributions with 15ms differences between implied
+boundaries) and not particularly reliable (going in the expected direction with
+only $p=`r boundary_diff_p_vals[['p']][1]`$[^bayes_p2] for the -20ms vs. -50ms
+/b/ conditions and $p=`r boundary_diff_p_vals[['p']][3]`$ for -50ms vs. -80ms
+/b/).  Even comparing the -80ms /b/ and -20ms /b/ conditions, the difference
+between the boundaries is more reliable but still small in absolute terms, only
+`r boundary_diff_p_vals[['mean_ci']][2]`.
 
 [^bayes_p2]: As above, these are Bayesian posterior $p$ values, or the
     proportion of posterior samples in which the inferred boundary was higher
     for the condition with the higher exposure mean.
 
-
-
-There are two notable differences with the results from Experiment
-1 (Figure -@fig:exp1-results).  First, there appears to be more between-listener
-variability in the classification functions in each condition, especially for
-the conditions with large negative VOTs.  This may correspond to differences in
-the procedure (
+However, this lack of robust distributional learning is not unique to large
+negative VOTs.  The 10ms /b/, 80ms /p/ mean condition also produces comparably
+small shifts in category boundaries compared with the 10ms /b/, 50ms /p/
+condition, with a posterior mean difference between the population-level
+boundaries of only `r boundary_diff_p_vals[['mean_ci']][4]`.
 
 ```{r plot-sepmeans-bounds, fig.cap="/b/-/p/ category boundaries from Experiment 4.  Violins show distributions of subject's boundaries (estimated based on Bayesian mixed effect logistic regression) and points/CIs show the posterior mean and 95% CI for the group-level (fixed effect) estimate from the same regression.  Subjects boundaries from the Experiment 1 condition with the same exposure statistics are shown in outline, and are quite close to the results from Experiment 4 (if less variable).  Note that the position of the 'complete learning' boundaries (thick dashed lines; based on the exposure statistics) are much more extreme than in Experiment 1, reflecting the more extreme shifts in the distributions that listeners experience in Experiment 4."}
 
 sepmeans_bounds_bysub %>%
   filter(block==1) %>%
-  ggplot(aes(x=vot_cond, y=vot, fill=vot_cond, color=vot_cond)) +
-  geom_violin(alpha=0.5) + #, color=NA)+
+  ggplot(aes(x=vot_cond, y=vot)) +
+  geom_violin(alpha=0.5, aes(fill=vot_cond, color=vot_cond)) + #, color=NA)+
   geom_violin(data = expt1_bounds_bysub %>%
-                filter(vot_cond == "10, 50")
-            , alpha=0) +
+                filter(vot_cond == "10, 50"),
+              aes(fill=vot_cond, color=vot_cond),
+              alpha=0) +
   geom_pointrange(data = sepmeans_bounds_fixef %>% filter(block==1),
                   aes(y=mean, ymin=low, ymax=high),
+                  color="white", show.legend=FALSE) +
+  geom_pointrange(data = expt1_bounds_fixef %>% filter(block==3, vot_cond=="10, 50"),
+                  aes(y=mean, ymin=low, ymax=high), shape = 1,
+                  position=position_nudge(x=0.1),
                   color="white", show.legend=FALSE) +
   theme(legend.position="none") +
   scale_shape_manual(values = c(16, 1)) +
@@ -2260,7 +2277,7 @@ predicted_prob_p <-
 
 ```
 
-```{r plot-exp4-predictions-first-third, fig.width=8, fig.height=2, fig.cap="The prior beliefs inferred in Experiment 3 predict how much listeners adapt to each of the input distributions of Experiment 4. Shaded regions show the 95% posterior predictive intervals for the belief updating model, based on prior beliefs inferred from Experiment 1 and exposure distributions from Experiment 2.  Dots and errorbars show mean and 95% bootstrapped CIs for the mean probability of /p/ response over subjects. Note the additional uncertainty in predictions relative to the posterior predictive distribution given Experiment 1's conditions {@fig:mod-vs-behav-class-funs}."}
+```{r plot-exp4-predictions-first-third, fig.width=8, fig.height=2, fig.cap="The prior beliefs inferred in Experiment 3 predict how much listeners adapt to each of the input distributions of Experiment 4. Shaded regions show the 95% posterior predictive intervals for the belief updating model, based on prior beliefs inferred from Experiment 1 and exposure distributions from Experiment 2.  Dots and errorbars show mean and 95% bootstrapped CIs for the mean probability of /p/ response over subjects. Note the additional uncertainty in predictions relative to the posterior predictive distribution given Experiment 1's conditions (Figure -@fig:mod-vs-behav-class-funs)."}
 
 predicted_prob_p %>%
   left_join(sepmeans_conds) %>%
@@ -2283,7 +2300,18 @@ predicted_prob_p %>%
 
 ## Discussion
 
+This lack of robust distributional learning for large negative VOTs contrasts
+with the results from Experiments 1 and 2.  Those experiments found that even
+when distributional learning was incomplete compared with the boundaries implied
+by the exposure distributions, it was still robust compared with other exposure
+distributions.
+
+
 <!-- RE lack of learning in high VOT conditions -->
 Note, though, that because the separation between the high and low VOT clusters
 in these conditions was so large, using the typical talker's boundary would
 result in very few errors.
+
+
+
+
