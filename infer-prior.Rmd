@@ -1918,7 +1918,7 @@ Critically, listeners were not told about the change from exposure to test
 phase: the procedures were identical, and there was no break in between.
 Besides the change in VOT distributions, there was no way for listeners to tell
 that they had entered the test phase. Of course, if listeners are actually (as
-we hypothesize) _learning_ these distributions, their behavior may well change
+hypothesized) _learning_ these distributions, their behavior may well change
 as they proceed through the test phase, gradually erasing any effect of the
 differences in the exposure distributions. Thus, when analyzing data from the
 test phase, whenever possible we limit ourselves to the early parts of the test
@@ -2100,9 +2100,15 @@ boundary_diff_p_vals <-
   sepmeans_bounds_fixef_samples %>%
   filter(block == 1) %>%
   spread(vot_cond, vot) %>%
-  summarise(p_20_50 = mean(`-20, 50` > `-50, 50`),
-            p_50_80 = mean(`-50, 50` > `-80, 50`),
-            p_20_80 = mean(`-20, 50` > `-80, 50`))
+  transmute(b20_50 = `-20, 50` - `-50, 50`,
+            b50_80 = `-50, 50` - `-80, 50`,
+            b20_80 = `-20, 50` - `-80, 50`) %>%
+  gather("contrast", "diff", -block, -trial) %>%
+  group_by(contrast) %>%
+  summarise_at("diff", list(mean=mean,
+                            low=~quantile(., 0.025),
+                            high=~quantile(., 0.975),
+                            p=~mean(.>0)))
 
 ```
 
@@ -2113,11 +2119,15 @@ boundary for a typical talker, rather than lying in between the typical talker's
 boundary and the exposure talker's ideal boundary as in Experiment 1.  Moreover,
 while the differences in boundaries between these three conditions are trending
 in the expected direction, with more negative VOTs expected to lead to lower
-category boundaries, these differences are not very reliable (Bayesian $p = 
-`r boundary_diff_p_vals$p_20_50`$ for -20ms vs. -50ms, $p = 
-`r boundary_diff_p_vals$p_50_80`$ for -50ms vs. -80ms) except for largest such
-difference between the -80ms and -20ms condition (Bayesian $p=
-`r boundary_diff_p_vals$p_20_80`$).
+category boundaries, these differences are small (on the order of 0-5ms,
+compared with exposure distributions with 15ms differences between boundaries)
+and not particularly reliable (going in the expected direction with 
+$p=`r boundary_diff_p_vals[['p']][1]`$[^bayes_p2] for the -20ms vs. -50ms /b/
+conditions and $p=`r boundary_diff_p_vals[['p']][3]`$ for -50ms vs. -80ms /b/)
+
+[^bayes_p2]: As above, these are Bayesian posterior $p$ values, or the
+    proportion of posterior samples in which the inferred boundary was higher
+    for the condition with the higher exposure mean.
 
 
 
