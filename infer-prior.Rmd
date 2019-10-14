@@ -2297,35 +2297,40 @@ predicted_prob_p %>%
 
 ```
 
-Finally, can the prior beliefs inferred based on the pattern of distributional
-learning from Experiment 1 explain the distributional learning or lack thereof
-observed in this experiment?  Figure -@fig:plot-exp4-predictions-first-third
-shows the posterior predictive intervals for the belief updating model's
-classification functions compared with the average probability of /p/ responses
-in the first third of the test phase of Experiment 4.  The model's predictions
-are quite accurate for the 10ms /b/, 50ms /p/ condition which is a near
-replication of the same exposure condition from Experiment 1.  But for the other
-conditions, the model tends to predict *more* distributional learning (larger
-boundary shifts) than listeners actually show, or in the case of the two most
-extreme negative VOT conditions, makes very vague predictions.
+Finally, can the prior beliefs inferred from Experiment 1 explain the
+distributional learning or lack thereof observed in this experiment?  Figure
+-@fig:plot-exp4-predictions-first-third shows the posterior predictive intervals
+for the model comparedwith the average probability of /p/ responses in the first
+third of the test phase of Experiment 4.  The model's predictions are quite
+accurate for the 10ms /b/, 50ms /p/ condition which is a near replication of the
+same exposure condition from Experiment 1.  But for the other conditions, the
+model tends to predict *more* distributional learning (larger positive or
+negative boundary shifts) than listeners actually show, or in the case of the
+two most extreme negative VOT conditions, makes very vague predictions.
 
 
 ## Discussion
 
 The results of Experiment 4 suggest that some caution is due in generalizing
-from Experiments 1 and 2.  In particular, while the results of Experiment 1 are
-consistent with belief updating, the prior beliefs inferred as most likely based
-on those exposure distributions do not generalize well to distributional
-learning to the distributions used in this experiment.  These distributions
-differed in two important ways from those of the earlier experiments.  First,
-they included large negative VOTs in some conditions, which @Sumner2011 found
-failed to produce large shifts in category boundaries except in a few particular
-presentation orders.  Similarly, little distributional learning was observed in
-conditions with large negative VOTs in this experiment.  
+from Experiments 1 and 2.  Those experiments did reveal constraints on
+distributional learning, even using a restricted set of distributions.  The
+exposure distributions from this epxeriemtn differed in two important ways from
+those of the earlier experiments.  First, they included large negative VOTs in
+some conditions, for which little distributional learning was observed.  This is
+consistent with @Sumner2011, who also found that negative VOTs failed to produce
+large shifts in category boundaries except in a few particular presentation
+orders.
 
-Second, the means of the high and low VOT clusters
-(implicitly /b/ and /p/) moved together in lock-step in Experiments 1 and 2,
-while in Experiment 4 they were manipulated independently.
+Second, the means of the high and low VOT clusters (implicitly /b/ and /p/)
+moved together in lock-step in Experiments 1 and 2, while in Experiment 4 they
+were manipulated independently.  Varying the means of each cluster together
+maximizes the necessity of a boundary shift, since failure to shift the boundary
+would result in a large increase in the rate of errors given the implied
+category assignments from the clusters.  Exposure distributions where only *one*
+cluster deviates from listeners expectations does not *require* as large of a
+shift in the boundary between /b/ and /p/, since continuing to use the ideal
+boundary for a "typical talker" would yield low error rates (see Figure
+-@fig:exposure-dists-exp4).
 
 
 
@@ -2353,7 +2358,8 @@ distributions.
 the separation between the high and low VOT clusters in these conditions was so
 large, using the typical talker's boundary would result in very few errors.
 Nevertheless, listeners do usually show sensitivity to shifts in the mean of VOT
-distributions when asked to rate the goodness or typicality of VOTs. [@CITE]
+distributions when asked to rate the goodness or typicality of words with
+varying VOTs. [@CITE]
 
 
 
