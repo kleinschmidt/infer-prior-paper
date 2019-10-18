@@ -872,7 +872,12 @@ were the same as Experiment 1, and data from `r n_excluded_2` participants were
 excluded from analysis: `r n_subj_repeat_2` for repeated participation
 (including participants who had participated in Experiment 1), `r n_subj_bad_2` for
 inaccurate categorization of unambiguous VOTs, with `r n_both_2` excluded for
-both criteria.  This left data from `r n_subj_exp2` remaining for analysis.
+both criteria.  This left data from `r n_subj_exp2` remaining for
+analysis.[^excluded-data]
+
+[^excluded-data]: The full datasets for all experiments reported here, including
+    subjects excluded from analysis, is available in the
+    [`supunsup`](https://github.com/kleinschmidt/phonetic-sup-unsup) R package.
 
 ## Results
 
@@ -1692,18 +1697,26 @@ bind_rows(mutate(map_prior_lhood, source = "Belief updating\nMAP estimate"),
 ```
 
 Figure -@fig:inferred-beliefs shows the prior expected VOT distributions for /b/
-and /p/ that are most likely (maximum a posteriori/MAP) given the distributional
-learning behavior.  The belief updating model recovers distributions that are
+and /p/ that are most likely given the distributional learning behavior (maximum
+a posteriori/MAP).  The belief updating model recovers distributions that are
 similar but not identical to those estimated by @Kronrod2016 (based on
 classification and discrimination data, assuming that /b/ has a mean VOT of 0
 ms).  The inferred distribution for /p/ has a slightly lower mean but very
-similar variance, while /b/ has a similar mean but higher variance.
+similar variance, while /b/ has a similar mean but higher variance.  Notably,
+the variance of the two distributions is quite similar, and the difference
+between the prior means for /b/ and /p/ is very close to 40ms, the difference
+between the cluster means of the _exposure_ distributions.
 
 ## Discussion
 
 The results of the belief updating modeling show that the pattern of constrained
 distributional learning from Experiment 1 can be explained as belief updating
-starting from a shared set of prior beliefs.
+starting from a shared set of prior beliefs.  Both the outcome of this learning
+and the learning curves are captured by a Bayesian belief updating model modeled
+on previous work on phonetic recalibration [@Kleinschmidt2015b].  This suggests
+that despite their superficial differences, both recalibration and
+distributional learning may be reflections of the same underlying process of
+belief updating.
 
 ### Content of prior beliefs
 
@@ -1766,15 +1779,6 @@ frequencies are not exactly the same as the formant _trajectories_ which are the
 primary cue for distinguishing voiced intervocalic stops, but there is still
 likely to be similar levels of talker variability in such spectral cues.
 
-
-
-* learning may flatten off and assymptote with more exposure, reflecting
-  discounting of less recent trials (Dave and Emily's paper, Giraud paper, ).
-  This is still _compatible_ with belief updating, it just suggests that
-  listeners are assuming a different implicit generative model, which allows for
-  the fact that a talker's distributions may drift, or change slowly, making
-  recent observations more informative about the _current_ distributions than
-  are observations from many minutes, hours, days, etc. ago.
 
 
 
@@ -2313,24 +2317,42 @@ two most extreme negative VOT conditions, makes very vague predictions.
 
 The results of Experiment 4 suggest that some caution is due in generalizing
 from Experiments 1 and 2.  Those experiments did reveal constraints on
-distributional learning, even using a restricted set of distributions.  The
-exposure distributions from this epxeriemtn differed in two important ways from
-those of the earlier experiments.  First, they included large negative VOTs in
-some conditions, for which little distributional learning was observed.  This is
-consistent with @Sumner2011, who also found that negative VOTs failed to produce
-large shifts in category boundaries except in a few particular presentation
-orders.
+distributional learning, using a range of distributions which varied in how
+similar they were to a typical talker's VOT distributions.  However, even though
+some of these distributions were quite different from a typical talker, the
+range of variation was still rather limited.  The exposure distributions from
+this experiment differed in two important ways from those of Experiments 1
+and 2.  First, some conditions included large negative VOTs, for which little
+distributional learning was observed.  This is consistent with @Sumner2011, who
+also found that negative VOTs failed to produce large shifts in category
+boundaries except in a few particular presentation orders.
+
+```{r expt4-error-rates}
+
+max_error_perc <- 
+  sepmeans %>%
+  filter(!is_test) %>%
+  group_by(vot_cond) %>%
+  summarise(err = round(100*mean(xor(trueCat == 'p', vot > no_learning_bound)), digits=1)) %>%
+  pull(err) %>%
+  max() %>%
+  glue(., "%")
+
+```
 
 Second, the means of the high and low VOT clusters (implicitly /b/ and /p/)
-moved together in lock-step in Experiments 1 and 2, while in Experiment 4 they
-were manipulated independently.  Varying the means of each cluster together
+moved together in lock-step in Experiments 1 and 2, while in this experiment
+they were manipulated independently.  Varying the means of each cluster together
 maximizes the necessity of a boundary shift, since failure to shift the boundary
 would result in a large increase in the rate of errors given the implied
 category assignments from the clusters.  Exposure distributions where only *one*
 cluster deviates from listeners expectations does not *require* as large of a
-shift in the boundary between /b/ and /p/, since continuing to use the ideal
-boundary for a "typical talker" would yield low error rates (see Figure
+shift in the boundary between /b/ and /p/ in order to achieve a low error.  In
+fact, for all the exposure distributions tested in Experiment 4, continuing to
+use the ideal boundary for a "typical talker" would yield low error rates (less
+than `r max_error_perc` in all conditions; see Figure
 -@fig:exposure-dists-exp4).
+
 
 
 
@@ -2362,5 +2384,14 @@ distributions when asked to rate the goodness or typicality of words with
 varying VOTs. [@CITE]
 
 
+
+
+* learning may flatten off and assymptote with more exposure, reflecting
+  discounting of less recent trials (Dave and Emily's paper, Giraud paper, ).
+  This is still _compatible_ with belief updating, it just suggests that
+  listeners are assuming a different implicit generative model, which allows for
+  the fact that a talker's distributions may drift, or change slowly, making
+  recent observations more informative about the _current_ distributions than
+  are observations from many minutes, hours, days, etc. ago.
 
 
