@@ -983,6 +983,27 @@ expt2_bounds_fixef_samples %>%
 
 ```
 
+```{r expt2-class-funs, fig.cap='Classification functions from semi-supervised distributional learning', fig.width=8, fig.height=2}
+
+ggplot(expt2_class_bysub, aes(x=vot, color=vot_cond)) +
+  geom_line(data=.%>%filter(block==3), aes(y=Estimate, group=subject), alpha=0.2) +
+  facet_grid(.~vot_cond) +
+  geom_line(data=filter(perfect_learning, vot_cond != '-10, 30'),
+            aes(y=prob_p), group=1, linetype="33", size=1,
+            show.legend=FALSE) +
+  geom_line(data=no_learning, aes(y=prob_p), group=1, linetype="99", color='black',
+            show.legend=FALSE) +
+  geom_point(data=expt2_bounds_fixef %>% filter(block==3, supervised=='supervised'),
+             aes(x=mean),
+             y=0.5) +
+  labs(x="VOT (ms)",
+       y="Probability /p/ response",
+       title="Experiment 2: Classification functions (semi-supervised learning)",
+       subtitle="Fitted with mixed effects logistic regression, predictions for final third of trials") +
+  lims(x = c(-10, 70))
+
+```
+
 ```{r expt2-bounds, fig.cap='Providing 50% labeled trials during distributional learning makes no difference in listener\'s category boundaries (Experiment 2, solid voilins/points) compared to purely unsupervised learning (Experiment 1, outlined violins/points, re-plotted from @fig:expt1-boundaries).  For ease of comparison with results from Experiment 1, the same axis limits are used as @fig:expt1-boundaries; this lead to exclusion from the figure of five listeners with boundaries greater than 50ms (2 in the 20ms /b/ condition, 3 in the 30ms /b/ condition).  All participants are included in the regression model from which the fixed effects boundaries are estimated (points/lines).'}
 
 expt2_bounds_bysub %>%
@@ -1042,7 +1063,8 @@ The condition that comes the closest to showing any effect is the 30ms /b/, 70ms
 However, the fixed effect boundaries in this condition may have been biased by
 the presence of three outlier participants with unreliable responses which leads to
 very shallow classification functions and very high estimated boundaries
-(greater than 50ms).  These participants weren't so unreliable as to be excluded by
+(greater than 50ms; see Figure -@fig:expt2-class-funs).  These participants
+weren't so unreliable as to be excluded by
 the pre-set exclusion criteria so they are included in the analysis here for the
 sake of completeness.  Even so, there is still no significant (Bayesian
 $p<0.05$) effect of supervision in any regression coefficient _or_ the estimated
