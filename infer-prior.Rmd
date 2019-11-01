@@ -2347,11 +2347,22 @@ maximizes the necessity of a boundary shift, since failure to shift the boundary
 would result in a large increase in the rate of errors given the implied
 category assignments from the clusters.  Exposure distributions where only *one*
 cluster deviates from listeners expectations does not *require* as large of a
-shift in the boundary between /b/ and /p/ in order to achieve a low error.  In
-fact, for all the exposure distributions tested in Experiment 4, continuing to
-use the ideal boundary for a "typical talker" would yield low error rates (less
-than `r max_error_perc` in all conditions; see Figure
+shift in the boundary between /b/ and /p/ in order to achieve a low recognition
+error.  In fact, for all the exposure distributions tested in Experiment 4,
+continuing to use the ideal boundary for a "typical talker" would yield low
+error rates (less than `r max_error_perc` in all conditions; see Figure
 -@fig:exposure-dists-exp4).
+
+The results from this experiment thus suggest that there are further constraints
+on listeners distributional learning than were revealed in Experiments 1 and 2.
+However, interpreting these constraints requires some caution, since 
+
+
+
+
+
+
+
 
 
 
@@ -2384,14 +2395,70 @@ distributions when asked to rate the goodness or typicality of words with
 varying VOTs. [@CITE]
 
 
+# General Discussion
 
+* suggest that DL is constrained by prior experience with other talkers.
+* if this is the case, then these constraints---a primary difference between DL
+  in adaptation and acquisition---are just DL at another level: learning a good
+  prior for what kinds of accents (VOT distributions) you expect to encounter,
+  and using that to guide adaptation.
 
-* learning may flatten off and assymptote with more exposure, reflecting
-  discounting of less recent trials (Dave and Emily's paper, Giraud paper, ).
-  This is still _compatible_ with belief updating, it just suggests that
-  listeners are assuming a different implicit generative model, which allows for
-  the fact that a talker's distributions may drift, or change slowly, making
-  recent observations more informative about the _current_ distributions than
-  are observations from many minutes, hours, days, etc. ago.
+## Do constraints on distributional reflect prior experience
 
+* Yes: 
+    * category boundaries are a compromise between typical talker and exposure
+      talker
+    * belief updating model of experiment 1
+    * inferred prior beliefs look pretty close to typical talker
+* No: 
+    * belief updating model fails to generalize to experiment 4
+    * inferred prior beliefs aren't EXACTLY the same as typical talker (equal
+      variance, confidence higher than actual variability)
+    * learning curves might be the wrong shape (sharper at the start, flatter at
+      the end) and more recent data might count for more [@Saltzman2017;
+      @Olasagasti2018]
+        * learning may flatten off and assymptote with more exposure, reflecting
+          discounting of less recent trials (Dave and Emily's paper, Giraud
+          paper, ).  This is still _compatible_ with belief updating, it just
+          suggests that listeners are assuming a different implicit generative
+          model, which allows for the fact that a talker's distributions may
+          drift, or change slowly, making recent observations more informative
+          about the _current_ distributions than are observations from many
+          minutes, hours, days, etc. ago.
+* Maybe
+    * failure of belief updating model could reflect failures of a number of
+      assumptions: 
+        * 2 categories (whereas there's actually three CLUSTERS that
+          are assigned to two phonological categories).
+        * use of independent, conjugate prior is very restrictive and might not
+          be able to capture the actual variation across talkers
+    * limited range of variation in the exposure distributions for experiment 1
+      (so it's possible that there's a compromise set of parameters that
+      captures both)
 
+## Can adaptation serve as a "mind reading" tool?
+
+* Cognitive model of adaptation as belief updating allows us (potentially) to
+  infer what listeners believe an unfamiliar talker will sound like by looking
+  at patterns of adaptation or lack thereof across different distributions.
+* model does recover prior beliefs that look SOMETHING like what we'd expect
+  from production data...but not exactly
+* and these beliefs DON'T generalize effectively to adaptation to different
+  types of accents.
+* ((( I guess this is just a reminder that interpretation of any computational
+  model is contingent on all the assumptions that that model makes, and the kind
+  of input data the model receives )))
+
+# Conclusion
+
+One of the major discoveries of the last two decades of research in speech
+processing is that adults maintain a surprising amount of flexibility, and
+quickly adapt to unusual variants of sounds in their language.  Moreover, this
+rapid _adaptation_ may correspond to the continued operation of the same kind of
+distributional learning mechanisms which have been implicated in language
+_acquisition_ early in life [@Kleinschmidt2015b].  In this paper, I have
+explored some constraints on the ability of distributional learning in adults,
+finding that adult distributional learning _is_ constrained, these constraints
+do not appear to arise from the unsupervised nature of distributional learning,
+but rather are consistent with belief updating guided by a listener's prior
+experience with talker variability.
