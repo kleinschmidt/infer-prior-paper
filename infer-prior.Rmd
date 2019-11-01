@@ -2432,6 +2432,35 @@ guide their learning.  Experiment 2 tests an alternative hypothesis: that these
 constraints are really due to the fact that the typical distributional learning
 task is _unsupervised_, and that the apparent constraints found in Experiment 1
 would go away when some VOTs are _labeled_ according to the intended category.
+However, adding labeling information to half the trials had no effect on
+distributional learning.  Experiment 3 shows that a belief updating
+model---where all listeners start from shared prior beliefs---can capture the
+pattern of distributional learning (or lack thereof) found in Experiment 1.
+Moreover, the model's inferred prior beliefs are similar to the VOT
+distributions that a typical talker of English produces.  This suggests that the
+constraints on distributional learning observed in Experiment 1 are at least
+_consistent_ with belief updating guided by prior experience with other talkers.
+
+In order for prior experience with talker variability to constrain adaptation in
+a belief updating model, the listener must have _learned_ the distribution of
+accents they have encountered in the past, and hence may expect to encounter in
+the future future [@Kleinschmidt2015b].  That is, constraints on learning
+distributions of _cues_ (e.g., VOT) in adults may result from distributional
+learning at another level, where the observations are _talkers' accents_ (e.g.,
+VOT distributions) instead of individual tokens.  Thus, in this way of looking
+at it, the primary difference between _adaptation_ and _acquisition_ comes down
+to the continued operation of the same kind of distributional learning
+mechanisms, at multiple levels.
+
+However, while the results of the first three experiments in this paper support
+the idea that distributional learning during adaptation is constrained by prior
+experience with other talkers, a final Experiment 4 suggests that the
+constraints on distributional learning may be more complex than can be captured
+by the simple belief updating model of Experiment 3.  In the remainder of this
+paper, I will discuss whether this means for the overall conclusion I have been
+arguing for.
+
+
 
 * suggest that DL is constrained by prior experience with other talkers.
 * if this is the case, then these constraints---a primary difference between DL
