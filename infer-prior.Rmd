@@ -987,7 +987,7 @@ expt2_bounds_fixef_samples %>%
 
 ```
 
-```{r expt2-class-funs, fig.cap='Classification functions from semi-supervised distributional learning', fig.width=8, fig.height=2}
+```{r expt2-class-funs, fig.cap='Classification functions from semi-supervised distributional learning', fig.width=8.5, fig.height=3}
 
 ggplot(expt2_class_bysub, aes(x=vot, color=vot_cond)) +
   geom_line(data=.%>%filter(block==3), aes(y=Estimate, group=subject), alpha=0.2) +
@@ -2480,7 +2480,7 @@ prior experience with talker variability.  Nearly all listeners use category
 boundaries that are a compromise between the optimal boundaries for the VOT
 distributions of a typical talker and those of the exposure talker.  Providing
 labeling information does not seem to aid in learning, even for distributions
-that deviate strongly from a typical talker
+that deviate strongly from a typical talker.
 
 * Yes: 
     * category boundaries are a compromise between typical talker and exposure

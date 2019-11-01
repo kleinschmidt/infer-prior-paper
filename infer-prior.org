@@ -91,7 +91,10 @@
 *** DONE write up:
 **** DONE intro, results, dicusssion
 ** TODO write discussion
-
+*** DONE outline structure
+*** TODO revise lead in
+    This maybe could be a lot more concise...dont' necessarily need to
+    recapitulate the whole series of studies.
 * TODO more literature to consider
 
 ** Bozena's paper with Roger
