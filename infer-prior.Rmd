@@ -2419,6 +2419,20 @@ varying VOTs. [@CITE]
 
 # General Discussion
 
+In this paper, I have explored the nature and possible explanations of
+constraints on distributional learning in adults.  Experiment 1 shows that
+distributional learning of voice onset time (VOT) as a cue to word-intial stop
+voicing is constrained: listeners learn some distributions ("accents") better
+than others, as measured by the agreement between their actual /b/-/p/ category
+boundary and the boundary that is implied by the distributions they are exposed
+to.  Moreover, listeners show more complete learning for distributions that are
+closer to what a typical talker of American English produces, which suggests
+that listenres are drawing on their previous experience with other talkers to
+guide their learning.  Experiment 2 tests an alternative hypothesis: that these
+constraints are really due to the fact that the typical distributional learning
+task is _unsupervised_, and that the apparent constraints found in Experiment 1
+would go away when some VOTs are _labeled_ according to the intended category.
+
 * suggest that DL is constrained by prior experience with other talkers.
 * if this is the case, then these constraints---a primary difference between DL
   in adaptation and acquisition---are just DL at another level: learning a good
@@ -2439,14 +2453,6 @@ varying VOTs. [@CITE]
     * learning curves might be the wrong shape (sharper at the start, flatter at
       the end) and more recent data might count for more [@Saltzman2017;
       @Olasagasti2018]
-        * learning may flatten off and assymptote with more exposure, reflecting
-          discounting of less recent trials (Dave and Emily's paper, Giraud
-          paper, ).  This is still _compatible_ with belief updating, it just
-          suggests that listeners are assuming a different implicit generative
-          model, which allows for the fact that a talker's distributions may
-          drift, or change slowly, making recent observations more informative
-          about the _current_ distributions than are observations from many
-          minutes, hours, days, etc. ago.
 * Maybe
     * failure of belief updating model could reflect failures of a number of
       assumptions: 
@@ -2454,6 +2460,14 @@ varying VOTs. [@CITE]
           are assigned to two phonological categories).
         * use of independent, conjugate prior is very restrictive and might not
           be able to capture the actual variation across talkers
+    * learning may flatten off and assymptote with more exposure, reflecting
+      discounting of less recent trials (Dave and Emily's paper, Giraud
+      paper, ).  This is still _compatible_ with belief updating, it just
+      suggests that listeners are assuming a different implicit generative
+      model, which allows for the fact that a talker's distributions may
+      drift, or change slowly, making recent observations more informative
+      about the _current_ distributions than are observations from many
+      minutes, hours, days, etc. ago.
     * limited range of variation in the exposure distributions for experiment 1
       (so it's possible that there's a compromise set of parameters that
       captures both)
