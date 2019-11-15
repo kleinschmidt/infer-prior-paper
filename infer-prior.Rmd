@@ -2461,7 +2461,7 @@ the idea that distributional learning during adaptation is constrained by prior
 experience with other talkers, a final Experiment 4 suggests that the
 constraints on distributional learning may be more complex than can be captured
 by the simple belief updating model of Experiment 3.  In the remainder of this
-paper, I will discuss whether this means for the overall conclusion I have been
+paper, I will discuss what this means for the overall conclusion I have been
 arguing for.
 
 
@@ -2479,8 +2479,110 @@ only support the idea that constraints on distributional learning arise from
 prior experience with talker variability.  Nearly all listeners use category
 boundaries that are a compromise between the optimal boundaries for the VOT
 distributions of a typical talker and those of the exposure talker.  Providing
-labeling information does not seem to aid in learning, even for distributions
-that deviate strongly from a typical talker.
+labeling information does not seem to aid in learning distributions that deviate
+strongly from a typical talker.
+
+### Potential points of failure in the belief updating model
+
+Most problematically for the hypothesis that constraints on distributional
+learning come from prior experience with other talkers, the prior beliefs
+inferred from listeners' distributional learning in Experiment 1 do not
+successfully predict the distributional learning in Expeirment 4.  However, this
+tests not only whether the prior beliefs hypothesis correct, but also that the
+particular belief updating _model_ which instantiates this hypothesis is a
+sufficiently close approximation to the putative belief updating processes that
+listeners are engaging during distributional learning.  The failure of the
+belief updating model (and the prior beliefs inferred from it) to generalize to
+learning of a different set of distributions in Experiment 4 could reflect the
+failure of assumptions made in the modeling process as well.
+
+One suspect assumption that the model makes is that talkers' productions can be
+characterized as two clusters of VOT, which are normal distributions.  However,
+even though American English has two phonemic voicing categories, many talkers
+produce three distinct _clusters_ of VOTs, with a single long-lag VOT cluster
+for voiceless (aspirated) stops, and two clusters for voiced/unaspirated stops:
+one with a mean around 0ms VOT and low variance (short-lag), and another with a
+large negative mean VOT and high variance (pre-voiced) [e.g. @Lisker1964;
+@Goldrick2013].  In an ideal listener model with three clusters, the short-lag
+cluster would largely determine where the voiced/voiceless response boundary
+falls, since the pre-voiced and short-lag clusters are both phonemically voiced.
+After exposure to large negative VOTs, a belief updating model with three
+clusters would not update beliefs about the short-lag clusters, and hence
+predict little change in the voiced/voicess response boundary.  Testing this in
+an implemented model presents a number of technical challenges.  Not least among
+them is the fact that the model presented here assumes that the cluster labels
+of each token are known.  This assumption massively simplifies the inference in
+the model, and is reasonable given that the bimodal structure of the exposure
+distributions is extremely clear and that Experiment 2 found that providing
+cluster labels for half the tokens led to no change in distributional learning.
+But it's unclear what the cluster labels should be when there are three clusters
+(two for for phonemically voiced stops), so I leave exploring this possibility
+for future work.
+
+The other major architectural assumption of the belief updating model which may
+be suspect is the *form* of the prior beliefs themselves.  Specifically, the model
+assumes that the prior beliefs about /b/ and /p/ are _independent_, and that
+each distribution has a _conjugate prior_.  @Chodroff2017 found strong
+correlations between the mean VOTs for voiceless stops with different places of
+articulation across talkers, and weaker but significant correlations between the
+means for voiced and voiceless stops (at least for spontaneous speech).
+Independent priors for different voiced stops cannot capture the actual
+structure of variation across talkers, and thus may not be a good approximation
+of listeners' prior beliefs.  Furthermore, the use of a _conjugate_ prior
+(again, for computational reasons) and results in a restricted set of possible
+relationships between expectations about within- and between-talker variance in
+VOT.
+
+### Differences in procedure
+
+Another possible explanation for the failure of the belief updating model to
+generalize to Experiment 4 is that a different procedure was used to measure
+distributional learning.  Experiment 1 did not distinguish between an exposure
+and test phase, and measured distributional learning via responses to trials
+during the bimodally distributed exposure.  In Experiment 4, the VOT clusters in
+the exposure distributions were so widely separate that in many conditions no
+trials had VOTs near the expected boundary, and so a separate post-test phase
+was necessary to measure listeners' categorization functions.  In this phase,
+listeners experienced a very different _distribution_ of VOTs which was flat
+between -10ms and 50ms.  Thus, it's possible that distributional learning
+continued throughout the test phase, undoing some of what listeners had learned
+from the earlier bimodal distributions.  The presence of a control condition
+with the same bimodal distribution as one of the conditions in Experiment 1
+(10ms /b/, 50ms /p/) provides _some_ confidence that unlearning was not
+complete, but this is also the condition in Experiment 4 with the largest
+overlap between the exposure and test distributions, and so it's possible that
+the effect of unlearning is larger in the other conditions, where the belief
+updating model also failed to generalize.
+
+### Long-term trajectory of distributional learning
+
+Finally, a more serious problem for the belief updating model used here is the
+long-term distributional learning behavior.  Specifically, a straightforward
+Bayesian belief-updating model predicts that no matter how strong the prior
+beliefs, they can eventually be overcome by observed data.  This is a
+consequence of treating every observation as equally informative about the
+current distributions.  The empirical evidence on this question is mixed, with
+some studies finding that listeners continue to integrate evidence even over
+rather drammatic changes in context [e.g. @Theodore2019; @Kraljic2006;
+@Kraljic2007], while others find that listeners seem to weight more recent
+evidence more strongly, even within a single context [@Saltzman2017;
+@Olasagasti2018].  Both of these are compatible with Bayesian belief-updating
+_in principle_, they just correspond to different assumptions about the
+generative process.  If the generative process is such that the distribution
+parameters (mean, variance, etc.) vary _across_ contexts (e.g., talkers) but are
+stable _within_ talkers, then each token should be treated as equally
+informative.  However, if the generative process is instead one where there is
+some amount of drift or change over time even _within_ a context, then this
+corresponds to a belief updating model that weights more recent observations
+more heavily, since they are assumed to come from distributions with parameters
+that are more similar to the current ones.
+
+The empirical data from these studies is not clear enough about the learning
+curves over time to be able to resolve this question unambiguously.  However,
+visually inspecting the learning curves predicted by the belief updating model
+compared with the (admittedly crude) measurements of the actual learning curves
+(Figure -@fig:plot-modeled-category-boundaries)......
+
 
 * Yes: 
     * category boundaries are a compromise between typical talker and exposure
@@ -2524,6 +2626,10 @@ that deviate strongly from a typical talker.
 
 ## Can adaptation serve as a "mind reading" tool?
 
+Finally, the belief updating modelin this paper does not include any additional
+information about what VOT distributions actually look like for a typical talker
+of American English.  This was a deliberate choice, in order to see whether 
+
 * Cognitive model of adaptation as belief updating allows us (potentially) to
   infer what listeners believe an unfamiliar talker will sound like by looking
   at patterns of adaptation or lack thereof across different distributions.
@@ -2534,6 +2640,8 @@ that deviate strongly from a typical talker.
 * ((( I guess this is just a reminder that interpretation of any computational
   model is contingent on all the assumptions that that model makes, and the kind
   of input data the model receives )))
+
+
 
 # Conclusion
 
