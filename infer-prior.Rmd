@@ -2521,26 +2521,6 @@ of listeners' prior beliefs.  Furthermore, the use of a _conjugate_ prior
 relationships between expectations about within- and between-talker variance in
 VOT.
 
-### Differences in procedure
-
-Another possible explanation for the failure of the belief updating model to
-generalize to Experiment 4 is that a different procedure was used to measure
-distributional learning.  Experiment 1 did not distinguish between an exposure
-and test phase, and measured distributional learning via responses to trials
-during the bimodally distributed exposure.  In Experiment 4, the VOT clusters in
-the exposure distributions were so widely separate that in many conditions no
-trials had VOTs near the expected boundary, and so a separate post-test phase
-was necessary to measure listeners' categorization functions.  In this phase,
-listeners experienced a very different _distribution_ of VOTs which was flat
-between -10ms and 50ms.  Thus, it's possible that distributional learning
-continued throughout the test phase, undoing some of what listeners had learned
-from the earlier bimodal distributions.  The presence of a control condition
-with the same bimodal distribution as one of the conditions in Experiment 1
-(10ms /b/, 50ms /p/) provides _some_ confidence that unlearning was not
-complete, but this is also the condition in Experiment 4 with the largest
-overlap between the exposure and test distributions, and so it's possible that
-the effect of unlearning is larger in the other conditions, where the belief
-updating model also failed to generalize.
 
 ### Long-term trajectory of distributional learning
 
