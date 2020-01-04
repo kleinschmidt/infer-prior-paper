@@ -2341,17 +2341,27 @@ two most extreme negative VOT conditions, makes very vague predictions.
 
 ## Discussion
 
-The results of Experiment 4 suggest that some caution is due in generalizing
-from Experiments 1 and 2.  Those experiments did reveal constraints on
-distributional learning, using a range of distributions which varied in how
-similar they were to a typical talker's VOT distributions.  However, even though
-some of these distributions were quite different from a typical talker, the
-range of variation was still rather limited.  The exposure distributions from
-this experiment differed in two important ways from those of Experiments 1
-and 2.  First, some conditions included large negative VOTs, for which little
-distributional learning was observed.  This is consistent with @Sumner2011, who
-also found that negative VOTs failed to produce large shifts in category
-boundaries except in a few particular presentation orders.
+The results of Experiment 4 differ in at least two important ways from the
+results of Experiments 1 and 2.  First, there was less distributional learning
+overall.  Second, the particular pattern of distributional learning across
+conditions in this experiment was not predicted by the same combination of prior
+beliefs and Bayesian belief-updating that explained the patterns of learning
+from Experiment 1.
+
+There are a number of possible reasons for these discrepancies.  First, the
+distributions that listeners were exposed to in this experiment differed in
+important ways from the earlier experiments.  First, some conditions included
+large negative VOTs, for which little distributional learning was observed.
+This is consistent with @Sumner2011, who also found that negative VOTs failed to
+produce large shifts in category boundaries except in a few particular
+presentation orders.  The lack of robust distributional learning for large
+negative VOTs contrasts with the results from Experiments 1 and 2.  Those
+experiments found that even when distributional learning was incomplete compared
+with the boundaries implied by the exposure distributions, it was still robust
+compared with other exposure distributions.  But in Experiment 4, the
+differences between the /b/-/p/ boundaries in the conditions with negative VOTs
+did not differ reliably from each other.
+
 
 ```{r expt4-error-rates}
 
@@ -2379,47 +2389,25 @@ continuing to use the ideal boundary for a "typical talker" would yield low
 error rates (less than `r max_error_perc` in all conditions; see Figure
 -@fig:exposure-dists-exp4).
 
-The results from this experiment thus suggest that there are further constraints
-on listeners distributional learning than were revealed in Experiments 1 and 2.
-However, interpreting these constraints requires some caution, since 
+There are also important differences in the procedure used to assess
+distributional learning which could explain the overall weaker distributional
+learning in this experiment.  Experiments 1 and 2 did not distinguish between an
+exposure and test phase, and measured distributional learning via responses to
+trials during the bimodally distributed exposure.  In Experiment 4, the VOT
+clusters in the exposure distributions were so widely separated that in many
+conditions no trials had VOTs near the expected boundary, and so a separate
+post-test phase was necessary to measure listeners' categorization functions.
+In this phase, listeners experienced a very different _distribution_ of VOTs
+which was flat between -10ms and 50ms.  Thus, it's possible that distributional
+learning continued throughout the test phase, undoing some of what listeners had
+learned from the earlier bimodal distributions.
 
-
-
-
-
-
-
-
-
-
-
-
-Together, these results suggest further constraints that guide distributional
-learning above and beyond those that are evident from Experiments 1 and 2.
-
-
-<!-- Is this incompatible with belief updating?  No, just need to 1. take into -->
-<!-- account possible correlations in the prior and 2. consider the possibility -->
-<!-- that listeners maintain beliefs about the prevoiced cluster and are -->
-<!-- updating that instead of the short-lag cluster, which the model doesn't -->
-<!-- capture. -->
-
-
-
-This lack of robust distributional learning for large negative VOTs contrasts
-with the results from Experiments 1 and 2.  Those experiments found that even
-when distributional learning was incomplete compared with the boundaries implied
-by the exposure distributions, it was still robust compared with other exposure
-distributions.
-
-
-<!-- RE lack of learning in high VOT conditions --> Note, though, that because
-the separation between the high and low VOT clusters in these conditions was so
-large, using the typical talker's boundary would result in very few errors.
-Nevertheless, listeners do usually show sensitivity to shifts in the mean of VOT
-distributions when asked to rate the goodness or typicality of words with
-varying VOTs. [@CITE]
-
+Even though the 10ms /b/, 50ms /p/ condition showed a similar degree of learning
+as in Experiment 1, this is the condition where the exposure and test ranges
+have the most overlap.  Moreover, the differences between the conditions
+gradually disappear over the course of the test block, especially for the most
+extreme (-80ms, 50ms and 10ms, 80ms VOT) conditions (see Supplementary table
+@REF)
 
 # General Discussion
 
