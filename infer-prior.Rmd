@@ -2492,6 +2492,10 @@ they have experienced?
 
 Chodroff, LCN paper, etc...
 
+Bozena, Schertz: do these differ by language?  does native language background
+affect adaptation/DL BEYOND just the structure of the language (e.g., which
+categories do you already have?  what cues?)
+
 ### What do people learn about talker variability?
 
 Finally, the belief updating model in this paper does not include any additional
