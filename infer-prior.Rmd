@@ -2508,23 +2508,56 @@ Bozena, Schertz: do these differ by language?  does native language background
 affect adaptation/DL BEYOND just the structure of the language (e.g., which
 categories do you already have?  what cues?)
 
-### What do people learn about talker variability?
+### What do people know about talker variability?
 
-Finally, the belief updating model in this paper does not include any additional
-information about what VOT distributions actually look like for a typical talker
-of American English.  This was a deliberate choice, in order to see whether
+One of the major challenges in this research program is to probe the implicit,
+subjective expectations that listeners bring when adapting to an unfamiliar
+talker.  These beliefs are difficult to probe because we can only ever observe
+with any amount of directness a listener's beliefs about the *current* context.
+These beliefs combine their implicit expectations with their recent experience,
+and so any of the measurements we can make in experiment provide only indirect
+evidence about those prior expectations.  Some kind of linking hypotheses are
+needed in order to be able to assess these implicit prior expectations.
 
-* Cognitive model of adaptation as belief updating allows us (potentially) to
-  infer what listeners believe an unfamiliar talker will sound like by looking
-  at patterns of adaptation or lack thereof across different distributions.
-* model does recover prior beliefs that look SOMETHING like what we'd expect
-  from production data...but not exactly
-* and these beliefs DON'T generalize effectively to adaptation to different
-  types of accents.
-* ((( I guess this is just a reminder that interpretation of any computational
-  model is contingent on all the assumptions that that model makes, and the kind
-  of input data the model receives )))
+One of my hopes at the beginning of this project was that the kind of belief
+updating model presented in Experiment 3, along with data on the degree and
+specific type of distributional learning in different exposure conditions, could
+serve as a kind of "mind reading" device, allowing us to probe listeners
+subjective prior beliefs.  In principle, this is a straightforward application
+of the principles of Bayesian cognitive modeling: there is some unobservable
+cognitive variables (subjective prior beliefs), and Bayesian inference allows us
+to recover them from behavior.  This procedure did yield some meaningful
+information (beyond the simple "existence proof" of the suitability of
+belief updating as a model for distribtuaion learning).  First, the model tells
+us something about how *confident* listeners are in their prior beliefs.
+Second, the model tells us something about the *content* of those beliefs, the
+specfic expectations about the mean and variance of the VOT distributions for
+/b/ and /p/ that are most consistent with the overall pattern of distributional
+learning.
 
+However, in practice, these inferences are rather more tenuous than we might
+like, since they depend on all of the various assumptions that the model makes
+in linking behavior to the cognitive variables of interest.  These assumptions
+can be fundamental to the logical structure of the model, but they can also be
+simplifications made for reasons of mathematical or computational tractability.
+For instance, one important assumption was that no information about the actual
+underlying distributions of VOTs for /b/ and /p/ (or their variability across
+talkers) was built in.  Doing so would be straightforward (as a "hyperprior" in
+the belief updating model), but would also mean that the inferred prior beliefs
+would be colored by our own assumptions about what VOT distributions should look
+like, negating somewhat the usefulness of this technique for "mind reading".
+
+The tenuousness of the inferences about listeners prior beliefs is demonstrated
+by the model's poor performance when predicting behavior in Experiment 4.  This
+was a stringent, but critically important test.  If the model really had, in
+fact, recovered listener's prior expectations about what kind of VOT
+distributions an unfamiliar talker is likely to produce, then it should be able
+to predict distributional learning even to distributions it was not trained on.
+This was clearly not the case in Experiment 4, which means that one or more of
+the many linking hypotheses behind this model the experimental data is
+incorrect.  In the following section, I discuss a number of reasons why this
+model may have failed to generalize (in addition to the reasons discussed in
+Experiment 4 itself).
 
 ## Is distributional learning really belief updating?
 
