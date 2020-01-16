@@ -2327,8 +2327,9 @@ predicted_prob_p %>%
 
 ```
 
-Finally, can the prior beliefs inferred from Experiment 1 explain the
-distributional learning or lack thereof observed in this experiment?  Figure
+Finally, can the simple belief updating model from Experiment 3---using the
+prior beliefs inferred from Experiment 1---explain the distributional learning
+or lack thereof observed in this experiment?  Figure
 -@fig:plot-exp4-predictions-first-third shows the posterior predictive intervals
 for the model comparedwith the average probability of /p/ responses in the first
 third of the test phase of Experiment 4.  The model's predictions are quite
@@ -2350,18 +2351,19 @@ from Experiment 1.
 
 There are a number of possible reasons for these discrepancies.  First, the
 distributions that listeners were exposed to in this experiment differed in
-important ways from the earlier experiments.  First, some conditions included
-large negative VOTs, for which little distributional learning was observed.
-This is consistent with @Sumner2011, who also found that negative VOTs failed to
-produce large shifts in category boundaries except in a few particular
-presentation orders.  The lack of robust distributional learning for large
-negative VOTs contrasts with the results from Experiments 1 and 2.  Those
-experiments found that even when distributional learning was incomplete compared
-with the boundaries implied by the exposure distributions, it was still robust
-compared with other exposure distributions.  But in Experiment 4, the
-differences between the /b/-/p/ boundaries in the conditions with negative VOTs
-did not differ reliably from each other.
-
+important ways from the earlier experiments.  First, they deviated even more
+dramatically from the distributions produced by a typical talker of American
+English.  In particular, some conditions included large negative VOTs, for which
+little distributional learning was observed.  This is consistent with
+@Sumner2011, who also found that negative VOTs failed to produce large shifts in
+category boundaries except in a few particular presentation orders.  However,
+the lack of robust distributional learning for large negative VOTs contrasts
+with the results from Experiments 1 and 2.  Those experiments found that even
+when distributional learning was incomplete (compared with the ideal boundaries
+implied by the exposure distributions), there were still robust differences in
+VOT classification compared with other exposure distributions.  But in
+Experiment 4, the differences between the /b/-/p/ boundaries in the conditions
+with negative VOTs did not differ reliably from each other.
 
 ```{r expt4-error-rates}
 
@@ -2400,14 +2402,24 @@ post-test phase was necessary to measure listeners' categorization functions.
 In this phase, listeners experienced a very different _distribution_ of VOTs
 which was flat between -10ms and 50ms.  Thus, it's possible that distributional
 learning continued throughout the test phase, undoing some of what listeners had
-learned from the earlier bimodal distributions.
+learned from the earlier bimodal distributions (and indeed there is some
+evidence that the small differences between conditions present at the beginning
+of the test phase gradually disappear, see Supplementary Table -@tab:exp4-reg).
 
-Even though the 10ms /b/, 50ms /p/ condition showed a similar degree of learning
-as in Experiment 1, this is the condition where the exposure and test ranges
-have the most overlap.  Moreover, the differences between the conditions
-gradually disappear over the course of the test block, especially for the most
-extreme (-80ms, 50ms and 10ms, 80ms VOT) conditions (see Supplementary table
-@REF)
+More generally, the bimodal exposure distributions in Experiment 4 provide no
+direct evidence about how the range of VOTs during test (-10ms to 50ms VOT)
+should be categorized.  The one exception to this is the 10ms /b/, 50ms /p/
+condition, which is the only condition that showed a comparable degree of
+distributional learning as the earlier experiments.  The evidence provided by
+the exposure distributions in any of these experiments may not seem to be
+*direct* in the sense that there was no explicit labeling of any of the VOTs as
+/b/ or /p/.  Nevertheless, tokens that were encountered during test actually
+*occurred* during exposure in Experiments 1 and 2, whereas in this experiment
+listeners are hearing many of the VOTs of the test phase for the first time
+during the test phase itself.  Thus, they have to extrapolate from their
+experience with other, quite different VOTs, and this extrapolation is much more
+sensitive to particular underlying assumptions of the speech perception system
+(or my model thereof) than the interpolation of Experiments 1 and 2.
 
 # General Discussion
 
