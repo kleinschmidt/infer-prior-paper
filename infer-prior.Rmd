@@ -2307,7 +2307,7 @@ predicted_prob_p <-
 
 ```
 
-```{r plot-exp4-predictions-first-third, fig.width=8, fig.height=2, fig.cap="The prior beliefs inferred in Experiment 3 predict how much listeners adapt to each of the input distributions of Experiment 4. Shaded regions show the 95% posterior predictive intervals for the belief updating model, based on prior beliefs inferred from Experiment 1 and exposure distributions from Experiment 2.  Dots and errorbars show mean and 95% bootstrapped CIs for the mean probability of /p/ response over subjects. Note the additional uncertainty in predictions relative to the posterior predictive distribution given Experiment 1's conditions (Figure -@fig:mod-vs-behav-class-funs)."}
+```{r plot-exp4-predictions-first-third, fig.width=8, fig.height=2, fig.cap="The actual categorization functions observed in this experiment (dots and lines) diverge from the predictions of the simple belief updating model from Experiment 3 (shaded regions), which are based on prior beliefs inferred based on distributional learning in Experiment 1.  Shaded regions show the 95% posterior predictive intervals for the belief updating model, based on prior beliefs inferred from Experiment 1 and exposure distributions from Experiment 2.  Dots and errorbars show mean and 95% bootstrapped CIs for the mean probability of /p/ response over subjects. Note the additional uncertainty in predictions relative to the posterior predictive distribution given Experiment 1's conditions (Figure -@fig:mod-vs-behav-class-funs)."}
 
 predicted_prob_p %>%
   left_join(sepmeans_conds) %>%
