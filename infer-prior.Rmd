@@ -2471,25 +2471,9 @@ for future work, and finally the caveats suggested by Experiment 4.
 
 ## Implications for future work
 
-
-- overall implication: suggests a continuous operation of a distributional
-  learning mechanisms through acquisition and adult language use.
-    - at some (computational) level both adaptation and acqusition ARE
-      distributional learning
-    - all distributional learning has to start somewhere
-    - where you start from can dramatically affect the outcome of your learning:
-      if your prior expectations are too vague learning will take too long, but
-      if they're too specific then you might be wrong.  ideally, want to
-      probabilistically match your prior expectations to the distribution of
-      things that you will actually encounter.
-
-
-
 The first, most general implication of these results is that they suggest a view
 where distributional learning operates continuously throughout language
-acquisition and adult language use and adptation, and the primary difference
-between acquisition and adaptation is simply different amounts and types of
-prior experience that the system can draw on.  The idea that statistical
+acquisition and adult language use and adptation.  The idea that statistical
 learning continues throughout the lifespan is not a new idea [e.g.,
 @Botvinick2004; @Chang2006; @Elman1990a; @Johnson1997; @Goldinger1998;
 @Nielsen2008], although it has received more attention of late in the study of
@@ -2500,42 +2484,63 @@ statistical properties of the environment [e.g., @Ganguli2016; @Simoncelli2001]
 and short-run changes in those properties [e.g., @Schweinhart2017;
 @Stocker2006].
 
-In order for prior experience with talker variability to constrain adaptation in
-a belief updating model, the listener must have _learned_ something about the
-patterns of variability across talkers.  At a computational level [in the sense
-of @Marr1982], this may also be a form of distributional learning: in order to
-effectively adapt to an unfamiliar talker's accent, a listener needs to have
-some reasonably good estimate of the amount and kind of talker variability they
-should expect, which is directly related to the distribution of talkers' accents
-that exist in their environment [@Kleinschmidt2015b].
+In all of these views, acquisition and adaptation are both forms of
+distributional learning, with the primary difference between them being the
+different amounts and types of prior experience that the system can draw on.
+The role of prior experience in constraining distributional learning hints at
+another sense in which acquisition and adaptation may be connected by
+distributional learning.  In order for prior experience with talker variability
+to constrain adaptation in a belief updating model, the listener must have
+_learned_ something about the patterns of variability across talkers.  At a
+computational level [in the sense of @Marr1982], this may also be a form of
+distributional learning.  In order to effectively adapt to an unfamiliar
+talker's accent, a listener needs to have some reasonably good estimate of the
+amount and kind of talker variability they should expect, which is directly
+related to the distribution of talkers' accents that exist in their environment.
+In *this* view---articulated in @Kleinschmidt2015b---not only are adaptation and
+acquisition both forms of distributional learning, but the difference between
+them is caused by distributional learning at another level.  The existing
+evidence for this claim was reviewed in @Kleinschmidt2015b, and I will not
+revisit it here in depth.  One additional piece of evidence for this possibility
+is that learning at the second level (of talker variability) appears to opperate
+continuously during language acquisition, and in parallel with acquisition of
+the linguistic structure [for a recent review, see @Johnson2020].
 
-<!-- also: evidence that babies are engaged in indexical-level learning from an -->
-<!-- early age as well.  sensitive to indexical information -->
-
-
-<!-- blah blah: -->
-If their prior expectations are too vague, then
-
-That is, constraints on learning
-distributions of _cues_ (e.g., VOT) in adults may result from distributional
-learning at another level, where the observations are _talkers' accents_ (e.g.,
-VOT distributions) instead of individual tokens.  Thus, in this way of looking
-at it, the primary difference between _adaptation_ and _acquisition_ comes down
-to the continued operation of the same kind of distributional learning
-mechanisms, at multiple levels.
-
-This raises two related sets of questions for future research: (1) what
-distributions are *available* for learning, and (2) do listeners' distributional
-learning biases and constraints reflect the distributions across talkers that
-they have experienced?
+This possibility raises two related sets of questions for future research: (1)
+what distributions are *available* for learning, and (2) do listeners'
+distributional learning biases and constraints reflect the distributions across
+talkers that they have experienced?
 
 ### What distributions are available to learn?
 
-Chodroff, LCN paper, etc...
+The first question can be answered by looking at the amount and structure of the
+talker variability that actually exists in the world.  Current attempts at this
+have already revealed interesting findings.  For instance, vowel formant
+distributions vary little *within* a talker (over the course of a day), but vary
+considerably *across* talkers [@Heald2015].  Vowels are more variable across
+talkers than voicing of stop consonants [@Kleinschmidt2019], even once
+variability in vocal tract length is taken into account.  Moreover, this
+variability is in many cases highly structured *within* a talker, across
+categories [@Chodroff2017].
 
-Bozena, Schertz: do these differ by language?  does native language background
-affect adaptation/DL BEYOND just the structure of the language (e.g., which
-categories do you already have?  what cues?)
+When combined with a Bayesian belief updating model like the one employed here,
+these findings suggest clear predictions for constraints on distributional
+learning during adaptation.  Because talkers are consistent in their realization
+of vowels, learning should be relatively stable and accumulate evidence over
+time.  Because vowels are more variable than stop voicing, listeners should
+show less constrained, more strongly experience-driven distributional learning
+of vowels than stop voicing.  Because certain phonemes' distributions are
+correlated within talkers, listeners should have a harder time learning
+distributions that violate these correlations (e.g., a higher-than average mean
+VOT for /p/ but lower-than-average mean VOT for /k/).
+
+Still, the studies of variability in production are only scratching the surface
+of the possible structures that might exist in talker variability.
+Investigating differences across languages and dialects is particularly
+pressing.  To what extent are these patterns *universal* across languages,
+rather than language- or dialect-specific [e.g., @Schertz2016]?
+Language-specific patterns in talker variability must, by definition, be learned
+during language acquisition, greatly adding to the burden on the learner.
 
 ### What do people know about talker variability?
 
