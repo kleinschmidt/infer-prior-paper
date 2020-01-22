@@ -2489,19 +2489,25 @@ The first, most general implication of these results is that they suggest a view
 where distributional learning operates continuously throughout language
 acquisition and adult language use and adptation, and the primary difference
 between acquisition and adaptation is simply different amounts and types of
-prior experience that the system can draw on.
-
+prior experience that the system can draw on.  The idea that statistical
+learning continues throughout the lifespan is not a new idea [e.g.,
+@Botvinick2004; @Chang2006; @Elman1990a; @Johnson1997; @Goldinger1998;
+@Nielsen2008], although it has received more attention of late in the study of
+language processing [@Kleinschmidt2015b; @Fine2013a; @Schuster2020;
+@Yildirim2016].  Nor is it specific to language [e.g., @Qian2012].  At a basic
+level, the sensitivities of perceptual systems are tuned to both the long-run
+statistical properties of the environment [e.g., @Ganguli2016; @Simoncelli2001]
+and short-run changes in those properties [e.g., @Schweinhart2017;
+@Stocker2006].
 
 In order for prior experience with talker variability to constrain adaptation in
 a belief updating model, the listener must have _learned_ something about the
 patterns of variability across talkers.  At a computational level [in the sense
-of @Marr1982], this is also a problem of distributional learning: in order to
+of @Marr1982], this may also be a form of distributional learning: in order to
 effectively adapt to an unfamiliar talker's accent, a listener needs to have
-some reasonably good estimate of the distribution of talkers' accents that
-exist in their environment [@Kleinschmidt2015b].
-
-<!-- maybe some tie in with exemplar theories and "life long statistical -->
-<!-- learning" elman stuff? -->
+some reasonably good estimate of the amount and kind of talker variability they
+should expect, which is directly related to the distribution of talkers' accents
+that exist in their environment [@Kleinschmidt2015b].
 
 <!-- also: evidence that babies are engaged in indexical-level learning from an -->
 <!-- early age as well.  sensitive to indexical information -->
@@ -2518,8 +2524,8 @@ at it, the primary difference between _adaptation_ and _acquisition_ comes down
 to the continued operation of the same kind of distributional learning
 mechanisms, at multiple levels.
 
-This raises an important set of questions for future research: what
-distributions are *available* for learning, and do listeners' distribution
+This raises two related sets of questions for future research: (1) what
+distributions are *available* for learning, and (2) do listeners' distributional
 learning biases and constraints reflect the distributions across talkers that
 they have experienced?
 
