@@ -2428,51 +2428,31 @@ sensitive to particular underlying assumptions of the speech perception system
 
 # General Discussion
 
-In this paper, I have explored the nature and possible explanations of
-constraints on distributional learning in adults.  Experiment 1 shows that
-distributional learning of voice onset time (VOT) as a cue to word-intial stop
-voicing is constrained: listeners learn some distributions ("accents") better
-than others, as measured by the agreement between their actual /b/-/p/ category
-boundary and the boundary that is implied by the distributions they are exposed
-to.  Moreover, listeners show more complete learning for distributions that are
+This paper has explored the nature and possible explanations of constraints on
+distributional learning in adults.  Experiment 1 shows that distributional
+learning of voice onset time (VOT) as a cue to word-intial stop voicing is
+constrained: listeners learn some distributions ("accents") better than others,
+as measured by the agreement between their actual /b/-/p/ category boundary and
+the boundary that is implied by the distributions they are exposed to.
+Moreover, listeners show more complete learning for distributions that are
 closer to what a typical talker of American English produces, which suggests
 that listenres are drawing on their previous experience with other talkers to
 guide their learning.  Experiment 2 tests an alternative hypothesis: that these
 constraints are really due to the fact that the typical distributional learning
 task is _unsupervised_, and that the apparent constraints found in Experiment 1
 would go away when some VOTs are _labeled_ according to the intended category.
-However, adding labeling information to half the trials had no effect on
+Surprisingly, adding labeling information to half the trials had no effect on
 distributional learning.  Experiment 3 shows that a belief updating
-model---where all listeners start from shared prior beliefs---can capture the
+model---where all listeners start from the same prior beliefs---can capture the
 pattern of distributional learning (or lack thereof) found in Experiment 1.
 Moreover, the model's inferred prior beliefs are similar to the VOT
 distributions that a typical talker of English produces.  This suggests that the
 constraints on distributional learning observed in Experiment 1 are at least
 _consistent_ with belief updating guided by prior experience with other talkers.
-
-* these results suggest a *continuous* view of the relationship between the kind
-  of learning that happens during language acquisition and the kind of learning
-  that happens when adults are adapting to an unfamiliar talker.
-* primary difference is the amount and type of prior experience that learners
-  can draw on.
-* moreover, learning from that prior experience is, in some sense, also a form
-  of distributional learning, where people must learn not only the distributions
-  of *sounds* but the distribution of *accents* (or of phonetic category
-  distributions themselves).
-* in this view, the primary difference between language acquisition and
-  adaptation comes from the continuous operation of distributional learning at
-  multiple levels: at least the levels of phonetic categories (acquiring the
-  linguistic structure of the language) and accents or generative models
-  (acquiring the *indexical* or *social* structure of the language environment)
-
-
-However, a final Experiment 4 suggests that the constraints on distributional
-learning may be more complex than can be captured by the simple belief updating
-model of Experiment 3.
-
 In the remainder of this paper, I will discuss the implications of these results
-for future work, and finally the caveats suggested by Experiment 4.
-
+for future work, and finally the caveats given a final Experiment 4, which
+suggests that the constraints on distributional learning of VOT/voicing may be
+more complex than revealed in the first three experiments.
 
 ## Implications for future work
 
@@ -2483,13 +2463,13 @@ learning continues throughout the lifespan is not a new idea [e.g.,
 @Botvinick2004; @Chang2006; @Elman1990a; @Johnson1997; @Goldinger1998;
 @Nielsen2008], although it has received more attention of late in the study of
 language processing [@Kleinschmidt2015b; @Fine2013a; @Schuster2020;
-@Yildirim2016].  Nor is it specific to language [e.g., @Qian2012].  At a basic
+@Yildirim2016].  Nor is it specific to language [e.g., @Qian2012]: at a basic
 level, the sensitivities of perceptual systems are tuned to both the long-run
 statistical properties of the environment [e.g., @Ganguli2016; @Simoncelli2001]
 and short-run changes in those properties [e.g., @Schweinhart2017;
 @Stocker2006].
 
-In all of these views, acquisition and adaptation are both forms of
+In this view, acquisition and adaptation are both forms of
 distributional learning, with the primary difference between them being the
 different amounts and types of prior experience that the system can draw on.
 The role of prior experience in constraining distributional learning hints at
@@ -2501,20 +2481,23 @@ computational level [in the sense of @Marr1982], this may also be a form of
 distributional learning.  In order to effectively adapt to an unfamiliar
 talker's accent, a listener needs to have some reasonably good estimate of the
 amount and kind of talker variability they should expect, which is directly
-related to the distribution of talkers' accents that exist in their environment.
+related to the distribution of talkers' accents[^accent] that exist in their environment.
 In *this* view---articulated in @Kleinschmidt2015b---not only are adaptation and
 acquisition both forms of distributional learning, but the difference between
-them is caused by distributional learning at another level.  The existing
+them is due to continuous distributional learning at another level.  The existing
 evidence for this claim was reviewed in @Kleinschmidt2015b, and I will not
 revisit it here in depth.  One additional piece of evidence for this possibility
 is that learning at the second level (of talker variability) appears to opperate
 continuously during language acquisition, and in parallel with acquisition of
 the linguistic structure [for a recent review, see @Johnson2020].
 
+[^accent]: Using "accent" here as a shorthand for the probabilistic generative
+    model that characterizes an individuals use of their language.
+
 This possibility raises two related sets of questions for future research: (1)
-what distributions are *available* for learning, and (2) do listeners'
-distributional learning biases and constraints reflect the distributions across
-talkers that they have experienced?
+what distributions of talkers' accents are *available* for learning, and (2) do
+listeners' distributional learning biases and constraints reflect such
+distributions across talkers that they have experienced?
 
 ### What distributions are available to learn?
 
@@ -2523,23 +2506,23 @@ talker variability that actually exists in the world.  Current attempts at this
 have already revealed interesting findings.  For instance, vowel formant
 distributions vary little *within* a talker (over the course of a day), but vary
 considerably *across* talkers [@Heald2015].  Vowels are more variable across
-talkers than voicing of stop consonants [@Kleinschmidt2019], even once
-variability in vocal tract length is taken into account.  Moreover, this
-variability is in many cases highly structured *within* a talker, across
-categories [@Chodroff2017].
+talkers than voicing of stop consonants, even once variability in vocal tract
+length is taken into account [@Kleinschmidt2019].  Moreover, this variability is
+in many cases highly structured *within* a talker, across categories
+[@Chodroff2017].
 
 When combined with a Bayesian belief updating model like the one employed here,
 these findings suggest clear predictions for constraints on distributional
-learning during adaptation.  Because talkers are consistent in their realization
+learning during adaptation.  If talkers are consistent in their realization
 of vowels, learning should be relatively stable and accumulate evidence over
-time.  Because vowels are more variable than stop voicing, listeners should
+time.  If vowels are more variable than stop voicing, listeners should
 show less constrained, more strongly experience-driven distributional learning
-of vowels than stop voicing.  Because certain phonemes' distributions are
+of vowels than stop voicing.  If certain phonemes' distributions are
 correlated within talkers, listeners should have a harder time learning
 distributions that violate these correlations (e.g., a higher-than average mean
 VOT for /p/ but lower-than-average mean VOT for /k/).
 
-Still, the studies of variability in production are only scratching the surface
+Thus far, the studies of variability in production are only scratching the surface
 of the possible structures that might exist in talker variability.
 Investigating differences across languages and dialects is particularly
 pressing.  To what extent are these patterns *universal* across languages,
@@ -2554,20 +2537,21 @@ subjective expectations that listeners bring when adapting to an unfamiliar
 talker.  These beliefs are difficult to probe because we can only ever observe
 with any amount of directness a listener's beliefs about the *current* context.
 These beliefs combine their implicit expectations with their recent experience,
-and so any of the measurements we can make in experiment provide only indirect
-evidence about those prior expectations.  Some kind of linking hypotheses are
+and so any of the measurements we can make in an experiment provide only indirect
+evidence about those prior expectations.  Some kind of linking hypothesis is
 needed in order to be able to assess these implicit prior expectations.
 
-One of my hopes at the beginning of this project was that the kind of belief
-updating model presented in Experiment 3, along with data on the degree and
+One possible such linking hypothesis is the kind of belief
+updating model presented in Experiment 3.  This sort of model, along with data on the degree and
 specific type of distributional learning in different exposure conditions, could
-serve as a kind of "mind reading" device, allowing us to probe listeners
-subjective prior beliefs.  In principle, this is a straightforward application
+in principle
+serve as a kind of "mind reading" device, allowing us to probe listeners'
+subjective prior beliefs.  This is a straightforward application
 of the principles of Bayesian cognitive modeling: there is some unobservable
 cognitive variables (subjective prior beliefs), and Bayesian inference allows us
-to recover them from behavior.  This procedure did yield some meaningful
+to infer them based on behavior.  This procedure did yield some meaningful
 information (beyond the simple "existence proof" of the suitability of
-belief updating as a model for distribtuaion learning).  First, the model tells
+belief updating as a model for distribtuaion learning in this experiment).  First, the model tells
 us something about how *confident* listeners are in their prior beliefs.
 Second, the model tells us something about the *content* of those beliefs, the
 specfic expectations about the mean and variance of the VOT distributions for
@@ -2583,8 +2567,9 @@ For instance, one important assumption was that no information about the actual
 underlying distributions of VOTs for /b/ and /p/ (or their variability across
 talkers) was built in.  Doing so would be straightforward (as a "hyperprior" in
 the belief updating model), but would also mean that the inferred prior beliefs
-would be colored by our own assumptions about what VOT distributions should look
-like, negating somewhat the usefulness of this technique for "mind reading".
+would be colored by our own assumptions as scientists about what VOT
+distributions should look like, negating somewhat the usefulness of this
+technique for "mind reading".
 
 The tenuousness of the inferences about listeners prior beliefs is demonstrated
 by the model's poor performance when predicting behavior in Experiment 4.  This
@@ -2593,7 +2578,7 @@ fact, recovered listener's prior expectations about what kind of VOT
 distributions an unfamiliar talker is likely to produce, then it should be able
 to predict distributional learning even to distributions it was not trained on.
 This was clearly not the case in Experiment 4, which means that one or more of
-the many linking hypotheses behind this model the experimental data is
+the many linking hypotheses connecting this model to the experimental data is
 incorrect.  In the following section, I discuss a number of reasons why this
 model may have failed to generalize (in addition to the reasons discussed in
 Experiment 4 itself).
@@ -2606,18 +2591,28 @@ prior experience with talker variability.  Nearly all listeners use category
 boundaries that are a compromise between the optimal boundaries for the VOT
 distributions of a typical talker and those of the exposure talker.  Providing
 labeling information does not seem to aid in learning distributions that deviate
-strongly from a typical talker.
+strongly from a typical talker.  However, Experiment 4 suggests that there may
+be additional (or different) constraints on distributional learning of VOT
+distributions for voicing in American English.  First, distributional learning
+was overall _weaker_ in many conditions than in Experiments 1 and 2, despite
+larger shifts in the VOT distributions.  Second, the belief updating model from
+Experiment 3 (trained on learning behavior from Experiment 1) did a poor job of
+predicting the degree of distributional learning observed in Experiment 4.
+
+Above, I discussed a number of differences between the experimental procedures
+themselves between Experiments 1 and 4, which may explain some of the observed
+differences.  Here, I will discuss more general assumptions of the model which
+may also explain these diffrences
 
 ### Potential points of failure in the belief updating model
 
-Most problematically for the hypothesis that constraints on distributional
-learning come from prior experience with other talkers, the prior beliefs
-inferred from listeners' distributional learning in Experiment 1 do not
-successfully predict the distributional learning in Expeirment 4.  However, this
-tests not only whether the prior beliefs hypothesis correct, but also that the
-particular belief updating _model_ which instantiates this hypothesis is a
-sufficiently close approximation to the putative belief updating processes that
-listeners are engaging during distributional learning.  The failure of the
+Comparing the belief updating model from Experiment 3 with the data from
+Experiment 4 is a stringent test, and many hypotheses and assumptions would be
+need to be correct (or close enough) to generalize successfully.  That is, this
+comparison tests not only whether the overall belief updating hypothesis
+correct, but also that the particular belief updating _model_ which instantiates
+this hypothesis is a sufficiently close approximation to the actual processes
+that listeners are engaging during distributional learning.  The failure of the
 belief updating model (and the prior beliefs inferred from it) to generalize to
 learning of a different set of distributions in Experiment 4 could reflect the
 failure of assumptions made in the modeling process as well.
@@ -2671,17 +2666,17 @@ current distributions.  The empirical evidence on this question is mixed, with
 some studies finding that listeners continue to integrate evidence even over
 rather drammatic changes in context [e.g. @Theodore2019; @Kraljic2006;
 @Kraljic2007], while others find that listeners seem to weight more recent
-evidence more strongly, even within a single context [@Saltzman2017;
-@Olasagasti2018].
+evidence more strongly, even within the context of a single talker
+[@Saltzman2017; @Olasagasti2018].
 
 These findings may not be compatible with the simple _model_ presented here, but
-they are compatible with the _theory_ of Bayesian belief-updating.  They just
-correspond belief updating models which make different assumptions about the
+they are compatible with the _theory_ of Bayesian belief-updating.  They simply
+correspond to belief updating models which make different assumptions about the
 generative process.  If the generative process is such that the distribution
 parameters (mean, variance, etc.) vary _across_ contexts (e.g., talkers) but are
 stable _within_ talkers, then each token that a talker produces should be
 treated as equally informative.  However, if the generative process is instead
-one where there is some amount of drift or change over time even _within_ a
+one where there is some amount of drift, variabiltiy, or change over time even _within_ a
 context (talker), then a Bayesian belief updating model would weight more recent
 observations more heavily, since according to the assumed generative process
 they come from distributions with parameters that are more similar to the
@@ -2695,56 +2690,17 @@ compared with the (admittedly crude) measurements of the actual learning curves
 initially more rapid and assymptote more quickly than this particular belief
 updating model captures.  If this is in fact the case, then in a belief-updating
 framework it would suggest that listeners assume there can be some local
-variation within a talker, in addition to global variation across talkers.
-<!-- 
-is this right?  look at production data...relates to the stuff that Shannon
-Heald has done.  more broadly, relates to the issues of distributional learning
-the prior.
--->
-
-
-* Yes: 
-    * category boundaries are a compromise between typical talker and exposure
-      talker
-    * belief updating model of experiment 1
-    * inferred prior beliefs look pretty close to typical talker
-* No: 
-    * belief updating model fails to generalize to experiment 4
-    * inferred prior beliefs aren't EXACTLY the same as typical talker (equal
-      variance, confidence higher than actual variability)
-    * learning curves might be the wrong shape (sharper at the start, flatter at
-      the end) and more recent data might count for more [@Saltzman2017;
-      @Olasagasti2018]
-* Maybe
-    * failure of belief updating model could reflect failures of a number of
-      assumptions: 
-        * 2 categories (whereas there's actually three CLUSTERS that
-          are assigned to two phonological categories).
-        * use of independent, conjugate prior is very restrictive and might not
-          be able to capture the actual variation across talkers
-    * different test procedure in Experiment 4: measure with a flat distribution
-      from -10 to 50, which doesn't overlap very much with the exposure
-      distributions in the more extreme conditions and hence may drive further
-      distributional learning.  tried to correct for that in the regression
-      analysis but that's impossible to do completely.  and even though the
-      replication of the 10,50 condition from expt 1 suggests that it's not that
-      different, the range of VOTs included in the test phase overlaps a lot
-      with the exposure distributions there so it's least likely to drive
-      un-learning of any of the conditions.
-    * learning may flatten off and assymptote with more exposure, reflecting
-      discounting of less recent trials (Dave and Emily's paper, Giraud
-      paper, ).  This is still _compatible_ with belief updating, it just
-      suggests that listeners are assuming a different implicit generative
-      model, which allows for the fact that a talker's distributions may
-      drift, or change slowly, making recent observations more informative
-      about the _current_ distributions than are observations from many
-      minutes, hours, days, etc. ago.
-    * limited range of variation in the exposure distributions for experiment 1
-      (so it's possible that there's a compromise set of parameters that
-      captures both)
-
-
-
+variation within a talker, in addition to global variation across talkers.  More
+work that examines the time course of adaptation more carefully is needed to
+better understand these dynamics and further constrain models of adaptation.  A
+final but important caveat for this work is that the time course and assumed
+generative model may be different for different parts of the linguistic
+generative model.  The "ideal adapter" framework of @Kleinschmidt2015b [as well
+as @Qian2012] points out that the kind of adaptation a system does is itself
+something that should be adapted to the amount and kind of variability that's
+present in the environment, and if different aspects of the linguistic
+generative model have different amounts and kinds of variability, we should
+expect adaptation to have different characteristics as well.
 
 # Conclusion
 
