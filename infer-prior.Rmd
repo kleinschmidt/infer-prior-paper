@@ -685,7 +685,8 @@ expt1_boundary_undershoot <-
                  perc=round(100 *
                               (.-no_learning_bound) /
                               (ideal_bound-no_learning_bound)))) %>%
-  select(-ideal_bound, block, trial)
+  select(-ideal_bound, block, trial) %>%
+  mutate(abs_ci = glue("{round(mean_abs,0)}ms (95% CI $[{round(low_abs,0)}, {round(high_abs,0)}]$)"))
   
 
 ```
@@ -724,7 +725,10 @@ corresponding to a typical talker of American English (thin black colored
 lines).
 
 The undershoot is largest in absolute terms for the most shifted distributions,
-with 
+with the boundary for the 30, 70ms VOT condition undershooting by 
+`r expt1_boundary_undershoot %>% filter(vot_cond=="30, 70") %>% pull(abs_ci)` and the -10,
+30ms condition by 
+`r expt1_boundary_undershoot %>% filter(vot_cond=="-10, 30") %>% pull(abs_ci)`.
 
 ## Discussion
 
