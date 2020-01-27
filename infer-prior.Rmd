@@ -117,14 +117,19 @@ categories based on subtle changes in single segments in otherwise
 unaccented talkers [@Kraljic2006; @Norris2003; @Bertelson2003].
 
 Both acquisition and adaptation have been theorized to be forms of
-distributional learning. First, computational modeling shows that both
-acquisition [@McMurray2009; @Vallabha2007; @Feldman2013; but see
-@Hitczenko2018] and rapid adaptation [@Kleinschmidt2015b] can be treated
-as forms of distributional learning. At some level, acquisition simply
-*is* a problem of distributional learning, in the sense that
-<!-- ((( -->
-<!-- computational level analysis?? it IS a problem of distributional -->
-<!-- learning ))) -->
+distributional learning.  First, at a computational level [in the sense of
+@Marr1982], acquisition simply *is* a problem of distributional learning.  The
+probabilistic relationships between different linguistic and sensory units
+define the structure of the language, and so learning the structure of your
+language requires learning---at least approximately and implicitly---the
+distributions associated with different structures in the language.  Likewise,
+accommodating talker variabiltiy is also, at a computational level, a problem of
+learning the speaker- or context-specific probabilistic relationships between
+observable cues and underlying linguistic structures.  This similarity is
+demonstrated by the computational modeling which shows that both acquisition
+[@McMurray2009; @Vallabha2007; @Feldman2013; but see @Hitczenko2018] and rapid
+adaptation [@Kleinschmidt2015b; @Theodore2019] can be treated as forms of
+distributional learning.
 
 Second, both adults and infants are sensitive to distributional
 properties of speech. One set of findings shows that listeners (both
