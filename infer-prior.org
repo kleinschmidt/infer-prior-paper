@@ -91,12 +91,12 @@
 *** DONE generate predictions from model for data
 *** DONE write up:
 **** DONE intro, results, dicusssion
-** TODO write discussion
+** DONE write discussion
 *** DONE outline structure
 *** DONE revise lead in
     This maybe could be a lot more concise...dont' necessarily need to
     recapitulate the whole series of studies.
-*** TODO read over existing discussion materials and make a plan
+*** DONE read over existing discussion materials and make a plan
     <2020-01-16 Thu>
     I've made a good if messy start on the general discussion, and moved a lot
     of materials to the discussion for expt 4.  So I need to go read that and
@@ -143,6 +143,8 @@
    """
 
    I've incorporated some of these refs...
+** TODO Cristia meta-analysis of dist learning acquisition papers
+   this is @Cristia2018a
 * DONE decide which data goes in this paper
   One of the issues I keep coming back to is the question of *which data to
   discuss in this paper*.  A priori, my strong preferences is *all of it*.
