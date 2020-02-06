@@ -517,3 +517,126 @@
 
 *** cline between language learning and adaptation
     cite @Pajak2016: hierarchical inference under uncertainty.
+
+* Feedback from Elika
+
+#+begin_src text 
+
+  ,* seems like you want to allude to the ‘unsupervised’ nature of dl early in
+    intro but don’t say that directly until a bit later
+
+  ,* some typos in text and cut off things in fig’s throughout, just fyi, i’m not
+    listing them
+
+  ,* notion of training vs. life experience doesn't quite get captured (what you're
+    doing in your study vs. what life learning is like)--you do come back to this
+    a bit with exp4 and disc, but i might plant a see od if in intro
+
+  ,* babies are bad at some things and some things never get constrained, cf clicks
+    Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
+    acquisition is unconstrained or give some caveats
+
+  ,* dan swingley and eric theissen and noami f would all argue i think that the
+    WORD(even if you don't understand it) it occurs is acts as a cue so “there is
+    very little information about whether any two observed acoustic cue values
+    come from the same cluster (category) or different ones “ is a little hard to
+    say
+
+  ,* in case relevant, seedlings infants get the vast majority of their input from
+    just mom/ mom+dad so they don’t actually have TONS of cross talker experience
+    when they’re showing good phonemic rep’s
+
+  ,* feels a little funny to have a mini results summary overall before exp 1
+
+  ,* intro in general reads quite smoothly and clearly!
+
+
+
+  ,*fig 3: you never tell us what the colored/black dotted lines are or what the
+   dot is or what the traces are exactly (you can sort this out from the following
+   figure a bit though)
+
+  ,* i vs. we: make a choice…feels like a style/register shift when you get to
+    experiments, can’t put my finger on it..
+
+  ,* this feels funnily worded “what I intended listeners to treat as ...“
+
+  ,* exp2: clever design!
+
+  ,* can you say something slightly bland and stats-y to assuage readers’ fears
+    that you’ve collapsed the two labeling conditions?
+
+  ,* i don’t quite follow the rationale for why -10ms,30ms was dropped.  e.g. which
+    set of data pilot vs. current are you talking about in the last sentence of
+    the -10ms,30ms cond pg.7
+
+  ,* why bigger N for exp 2 (esp with fewer cond’s?)
+
+  ,* ooh rpackage nice
+
+  ,* awk wording: “to guide their responses on that trial. “
+
+  ,* exp 2: i found the outlier description a little confusing; could you put those
+    points on your graph separately?do the results change if you actually remove
+    them? oh i see they are the 3 more horizontal lines on fig 6 purple panel;
+    this wasn’t immediately clear to me
+
+  ,* sometimes helpful to include model specification in pseudocode; some ppl like
+    to see model estimates in table or graph, i’m agnostic bc i get way more out
+    of the graphs you have an believe you did the rest right, but others may be
+    more skeptical than me:)
+
+  ,* haha you’ve anthropomorphized your model “an impossibly large number to
+    consider. “
+
+  ,* “can be computed analytically “ as opposed to?
+
+  ,* after the last sentence in ‘model fitting procedure’ you could gently remind
+    people that they’re welcome to do whatever they like with the code and dat you
+    provide in they want to take a different tack with REs
+
+  ,* the modeling section was a little hard to follow for me, as a non-modeler, so
+    depending on your audience that comment may be irrelevant. but a take-home
+    sentence at the end of teach subsection of results for exp 3 might help. also
+    you spent a lot more time talking about the learning pattern for the model
+    than within the exp 1 and 2 where you just say ‘we’re looking at the 5/6 mark
+    and thereafter’; this may be just fine, but flagging it in case you want to
+    foreshadow above that you’ll come back to that in exp 3
+
+  ,* oy, do you really wanna through the ‘there are 3 clusters’ stuff in there?
+    feels like it muddies the waters a bit to bring it up at this late stage (plus
+    psychological reality for Ss, effect of their being to ‘letters’, etc.?) oh
+    actually you mention this in two places, exp 4 and exp 3 disc,…uh you also
+    mention it again in the GenDisc, cut/smooth/etc.
+
+  ,* you only warned readers about 3 experiments, tbh i got a little bleary-eyed
+    trying to keep straight what was going on by exp 4. but i think there’s some
+    redundancy in discussion for this study and the setup (e.g. the role of
+    testing midway)
+
+  ,* this is a little trippy for me in the context of your stems: “In order to
+    effectively adapt to an unfamiliar talker’s accent, a listener needs to have
+    some reasonably good estimate of the amount and kind of talker variability
+    they should expect, which is directly related to the distribution of talkers’
+    accents8 that exist in their environment “ bc you’re not really altering the
+    categories in ways that actual talkers (or those with a particular accent do),
+    right? i’d smooth that point or acknowledge it or something
+
+  ,* pretty unrelated but remind me to tell you about my postdoc Federica’s f32
+    which is centered on between vs. within talker variability in our corpus and
+    in studies with 8 month olds in the lab
+
+  ,* flow-wise: i might do exp 1:3 and then the model
+
+  ,* also, tbh, the model could be it’s own separate paper, giving you two
+    shorter-sweeter-more-focused papers, but i see why you might not want to do
+    that
+
+  ,* don’t end on a caveat pre-conclusion, end on a strength of what you’ve done
+    that we didn’t know before!
+#+end_src
+
+
+#+begin_example
+
+#+end_example
