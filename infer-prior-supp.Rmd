@@ -1,0 +1,104 @@
+```{r knitr-setup, warning=FALSE, message=FALSE, error=FALSE, echo=FALSE, results='hide'}
+
+library(knitr)
+opts_chunk$set(warning = FALSE,
+               message = FALSE,
+               error = FALSE,
+               cache=TRUE,
+               results = "hide",
+               echo=opts_knit$get("rmarkdown.pandoc.to") != 'latex')
+
+options(digits=2)
+
+## Produce markdown-formatted figures so that pandoc knows what to do with
+## the captions. requires pandoc-fignos to parse the IDs. refer to figures
+## in text with {@fig:label} or just @fig:label
+## 
+## (see https://github.com/tomduck/pandoc-fignos)
+knit_hooks$set(plot = function(x, options) {
+  paste0('![', options$fig.cap, ']',
+         '(', opts_knit$get('base.url'), paste(x, collapse='.'), ')',
+         '{#fig:', options$label, '}')
+})
+## Produce markdown-formatted table captions with anchors for cross-refs.
+## Requires pandoc-tablenos to parse the IDs. Refer to tables
+## in text with {@tbl:label} or @tbl:label.
+## Based partly on http://stackoverflow.com/a/18672268
+##
+## (see https://github.com/tomduck/pandoc-tablenos)
+knit_hooks$set(tbl.cap = function(before, options, envir) {
+  if(!before){
+    paste0('\n\nTable: ', options$tbl.cap,
+           ' {#tbl:', options$label, '}', sep = '')
+  }
+})
+
+```
+
+```{r preamble, cache=FALSE}
+
+library(tidyverse)
+library(dplyr)
+library(glue)
+library(magrittr)
+library(beliefupdatr)
+library(supunsup)
+
+library(rstan)
+library(brms)
+library(tidybayes)
+
+library(cowplot)
+theme_set(cowplot::theme_cowplot() +
+            theme(plot.title=element_text(hjust=0)))
+library(latex2exp)
+
+## devtools::install_github('kleinschmidt/daver')
+library(daver)
+## devtools::install_github('kleinschmidt/phonetic-sup-unsup')
+library(supunsup)
+## devtools::install_github('kleinschmidt/beliefupdatr')
+library(beliefupdatr)
+
+```
+
+
+# Experiment 1
+
+The Bayesian logistic regression model for Experiment 1 was fit using `brms`
+[@Burkner2017], based on the formula:
+
+```
+respP ~ 1 + bvotCond * vot_s * trial_s + (1 + vot_s | subject)
+```
+
+`respP` is 0 for a click on the /b/-initial response picture and 1 for the
+/p/-initial, `bvotCond` is the experimental condition (exposure distributions),
+dummy coded as 0 or 1, and `vot_s` and `trial_s` are the stimulus VOT and the
+trial number, each standardized to have mean 0 and variance 1.
+
+This formula generates fixed effects for all main effects of condition, VOT, and
+trial, all two-way interactions, and the three-way interaction.
+
+```{r expt-1-model-table, results="raw"}
+
+b_logit_exp1 <- readRDS("models/brm_logistic_exp1.rds")
+summary(b_logit_exp1)
+
+```
+
+```{r expt-1-model-plot, fig.width=8.9, fig.height=6.4, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 1.  Red indicates coefficients that are reliably less than zero, and blue indicates reliably greater than zero.}
+
+b_logit_exp1 %>%
+  gather_draws(`b_.*`, regex=TRUE) %>%
+  ungroup() %>%
+  mutate(.variable = factor(str_replace(.variable, "b_", ""),
+                            levels = rownames(fixef(b_logit_exp1)))) %>%
+  group_by(.variable) %>%
+  mutate(p_gt_zero = mean(.value > 0)) %>%
+  ggplot(aes(x=.value, y=.variable, fill=p_gt_zero)) +
+  geom_halfeyeh(relative_scale = 2) +
+  scale_fill_gradient2("p(β > 0)", midpoint=0.5, mid=gray(0.9)) +
+  geom_vline(xintercept = 0, linetype=3)
+
+```
