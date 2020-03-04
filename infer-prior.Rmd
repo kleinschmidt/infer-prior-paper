@@ -239,11 +239,11 @@ The goal of this paper is to systematically probe the constraints on
 distributional learning in American English-speaking adults. Experiment
 1 tests the ability of American English listeners to change their
 classification of word initial stop voicing based on experience with a
-range of distributions of voice-onset time (VOT). I find that
-distributional learning is more complete when the experimental
-distributions are more similar to those of a typical American English
-talker, suggesting that prior experience with other talkers may
-constrain distributional learning. Experiment 2 tests another possible
+range of distributions of voice-onset time (VOT).  The results of this
+experiment show that distributional learning by adults is, in fact, constrained,
+and moreover these constraints are qualitatively consistent with prior
+experience with typical talkers of American English. Experiment 2 tests an
+alternative possible
 constraint on distributional learning, which is the absence of *labels*,
 which could lead to uncertainty about whether the bimodal distribution
 really corresponds to the standard English categories of voiced and
@@ -253,7 +253,10 @@ half of the trials has no effect on the speed or completeness of
 distributional learning. Experiment 3 uses a Bayesian belief-updating
 model to test whether the constraints observed in Experiment 1 can be
 explained as belief updating starting from a common set of prior beliefs
-that is shared by all of the subjects.
+that is shared by all of the subjects.  Finally, Experiment 4 tests
+distributional learning for a wider range of VOT distributions, and the results
+suggest that the constraints on distributional learning may be more complex than
+revealed by Experiments 1--3.
 
 Together, these results show that distributional learning in adults *is*
 constrained, and these constraints are at least consistent with belief
