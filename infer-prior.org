@@ -102,6 +102,8 @@
     of materials to the discussion for expt 4.  So I need to go read that and
     see what it all needs.
 ** TODO regression tables for an appendix/supplementary material
+** TODO speed of learning in expt 2
+   just look at whether there's an interaction between trial and supervision.
 * TODO more literature to consider
 
 ** Bozena's paper with Roger

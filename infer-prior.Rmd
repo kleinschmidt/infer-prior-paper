@@ -560,7 +560,7 @@ expt1_bounds_fixef_samples <-
 
 ```
 
-```{r exp1-results, fig.width=10, fig.height=3, fig.cap="Results from experiment 1 show that distributional learning is incomplete for large shifts of VOT distributions from a typical talker's distributions"}
+```{r exp1-results, fig.width=10, fig.height=3, fig.cap="Results from experiment 1 show that distributional learning is constrained, with individual subjects' classification functions (fine colored lines) representing an apparent compromise between the ideal boundary given a typical talker's distributions (skinny, black dashed lines), and the ideal boundary for the exposure distributions (heavy colored dashed lines; see @fig:vot-dists-exp1 for both).  Subjects' classification functions were estimated for the final third of trials (i.e., at trial 185 out of 222) based on the posterior distributions of the fixed and random effects.  Dots show the estimated population boundary in each condition, based on the fixed effects alone."}
 
 perfect_learning <- exposure_stats %>%
   group_by(vot_cond) %>%
@@ -584,12 +584,12 @@ ggplot(expt1_class_bysub, aes(x=vot, color=vot_cond)) +
   labs(x="VOT (ms)",
        y="Probability /p/ response",
        title="Experiment 1: Classification functions",
-       subtitle="Fitted with mixed effects logistic regression, predictions for final third of trials") +
+       subtitle="Estimated with Bayesian mixed effects logistic regression, predictions for final third of trials") +
   lims(x = c(-10, 70))
 
 ```
 
-```{r expt1-boundaries, fig.cap="Category boundaries by condition.  Violins show the distribution of participants' boundaries (random effects), and the white points show the group-level boundary (fixed effects, with 95% Bayesian confidence intervals)"}
+```{r expt1-boundaries, fig.cap="Category boundaries by condition.  Violins show the distribution of participants' boundaries (random effects), and the white points show the group-level boundary (fixed effects, with 95% Bayesian credible intervals).  The black dashed line shows the ideal category boundary given a typical talker's distributions, and the colored heavy dashed lines show the ideal boundaries based on each condition's exposure distributions (see @fig:vot-dists-exp1)."}
 
 no_learning_bound <-
   no_learning %>%
@@ -697,9 +697,32 @@ expt1_boundary_undershoot <-
 
 ```
 
+```{r exp1-respP-logodds}
+exp1_p_logodds_summary <-
+  b_logit_exp1 %>%
+  gather_draws(b_bvotCond0, b_bvotCond10, b_bvotCond20, b_bvotCond30) %>%
+  group_by(.draw) %>%
+  arrange(.draw, .variable) %>%
+  mutate(.value_d = lag(.value, default=0) - .value) %>%
+  group_by(.variable) %>%
+  summarise(p = mean(.value_d > 0),
+            mean = mean(.value_d),
+            low = quantile(.value_d, 0.025),
+            high = quantile(.value_d, 0.975))
+
+min_p_increase <- format(min(exp1_p_logodds_summary$p), digits=3)
+
+```
+
 
 The first question is whether listeners learned anything at all from exposure to
-these VOT distributions.  One way to answer this is to look at the _category
+these VOT distributions.  Figure -@fig:exp1-results shows that, qualitatively,
+listeners generated different categorization functions after exposure to
+different distributions.  The results of the Bayesian mixed-effects regression
+verify this qualitative impression, with the overall probability of responding /p/
+increasing from each condition to the next with $p > `r min_p_increase`$.[^bayes_p]
+
+A more informative way of answering this question is to look at the _category
 boundary_---the VOT that is ambiguous between /b/ and /p/---corresponding to the
 fixed effects for each exposure condition.  Because trial number was inluded as
 a regressor, trial was fixed at 184 (83% or 5/6 of the 222 total trials).  The
@@ -708,7 +731,7 @@ boundary for each condition, and the corresponding confidence intervals are the
 95% posterior intervals (e.g., the 95% quantiles of the posterior samples).
 Visual inspection shows that the group-level posterior distributions of the
 boundaries are almost entirely non-overlapping with their
-most-similar/neighboring conditions (all $`r ex1_pval_str`$[^bayes_p]), even though the
+most-similar/neighboring conditions (all $`r ex1_pval_str`$), even though the
 _subject_-level distributions do overlap (as shown by the colored violins).
 
 [^bayes_p]: The $p$ values reported here are Bayesian $p$ values, or the
@@ -1002,7 +1025,7 @@ expt2_bounds_fixef_samples %>%
 
 ```
 
-```{r expt2-class-funs, fig.cap='Classification functions from semi-supervised distributional learning', fig.width=8.5, fig.height=3}
+```{r expt2-class-funs, fig.cap='Classification functions from semi-supervised distributional learning.  As for Experiment 1 (Figure -@fig:exp1-results), individual subjects categorization functions (fine colored lines) are intermediate between the ideal boundary given a typical talker's distributions (skinny, black dashed lines), and the ideal boundary for the exposure distributions (heavy colored dashed lines).', fig.width=8.5, fig.height=3}
 
 ggplot(expt2_class_bysub, aes(x=vot, color=vot_cond)) +
   geom_line(data=.%>%filter(block==3), aes(y=Estimate, group=subject), alpha=0.2) +
@@ -1043,6 +1066,16 @@ expt2_bounds_bysub %>%
        x = "Exposure condition (/b/, /p/ mean VOT)") +
   coord_flip()
 
+```
+
+```{r exp2-sup-effects, eval=FALSE}
+b_logit_exp2 %>%
+  gather_draws(`b_.*supervised.*`, regex=TRUE) %>%
+  group_by(.variable) %>%
+  mutate(p_gt_zero = mean(.value > 0)) %>%
+  ggplot(aes(x=.value, y=.variable, fill=qlogis(p_gt_zero))) +
+  geom_halfeyeh() +
+  scale_fill_gradient2(mid = gray(0.9), limits=c(-4, 4))
 ```
 
 First, listeners were highly sensitive to the labels on labeled trials,
@@ -1186,7 +1219,7 @@ listener's expectations about the category mean is based on $\kappa_0$ prior
 observations from that category, and likewise for the variance and $\nu_0$.
 This prior distribution is a _conjugate prior_ because after observing $n$ data
 points with sample mean $\bar x$ and variance $s^2$, the posterior distribution
-is also a Normal-Inverse Chi squared, with parameters
+is also a Normal-Inverse Chi squared, with updated values of the four parameters:
 
 \begin{align}
 \kappa_n &= \kappa_0 + n \\
