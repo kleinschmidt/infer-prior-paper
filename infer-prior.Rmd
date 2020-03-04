@@ -453,13 +453,16 @@ refer to the typical talker's boundary as the "no learning" baseline, and the
 exposure talker's boundary as the "complete learning" baseline.
 
 Each subject's classification function was estimated with a Bayesian multilevel
-logistic regression, using the `brms` package [@Burkner2017] for `R`
-[@RCoreTeam2017].  This approach simultaneously estimates the group-level
+(mixed-effect) logistic regression, using the `brms` package [@Burkner2017] for
+`R` [@RCoreTeam2017].  This approach simultaneously estimates the group-level
 effects of the experimental manipulation (VOT shift condition) on the /b/-/p/
-category boundary location and sharpness, and each individual participants' boundary
-locations and slopes.  A multilevel approach like this has the benefit of
-properly accounting for and balancing the joint uncertainty about the group- and
-individual-level effects [@Gelman2007].[^shrinkage]
+category boundary location and sharpness, and each individual participants'
+boundary locations and slopes.  A multilevel approach like this has the benefit
+of properly accounting for and balancing the joint uncertainty about the group-
+and individual-level effects [@Gelman2007].[^shrinkage] The advantage of using a
+Bayesian approach in this case, over standard mixed-effects models as fit with
+`lme4`, is that the Bayesian approach allows for direct estimates of
+subject-level effects (i.e., category boundaries), with associated uncertainty.
 
 [^shrinkage]: One effect of using a multilevel approach is that the estimate of
     each subject's boundary is "shrunk" towards the group-level estimate.  This
