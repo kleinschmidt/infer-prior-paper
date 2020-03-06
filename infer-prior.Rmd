@@ -216,13 +216,19 @@ constraints. There are a number of other differences between the
 learning problems posed by acquisition and adaptation, even if both are
 forms of distributional learning. First, distributional learning in
 infancy is, at least initially, almost entirely unsupervised, meaning
-that there is very little information about whether any two observed
-acoustic cue values come from the same cluster (category) or different
-ones [but see @Feldman2013b; @Feldman2013]. Adults have a great deal of
-circumstantial evidence from the lexicon, pragmatic context,
-phonotactics, etc. which provides *some* information about the intended
-category for a particular cue value. This makes the distributional
-learning problem of adaptation at least semi-supervised.
+that there is very little direct information about whether any two observed
+sounds come from the same cluster (category) or different
+ones.  Any such information to this effect that *is* available comes from
+context that these sounds occur in, like the fact that sounds are embedded in
+words, which infants begin to learn early, in parallel with the phonetic
+categories of their language [@Bergelson2012].  While this kind of
+"self-supervision" can serve as an important additional source of information in
+distributional learnign [@Feldman2013b; @Feldman2013], it is much weaker than
+the richer, less uncertain circumstantial evidence that adults can draw on from
+the lexicon, pragmatic context, phonotactics, etc.  These contextual sources
+often provide a great deal information about the intended category for a
+particular cue value, which makes the distributional learning problem of
+adaptation often (but not always) effectively a supervised learning problem.
 
 Second, when adapting to an unfamiliar talker, adults have a great deal
 of prior experience with *other* talkers which they could use to narrow
