@@ -5,6 +5,7 @@
 # bayesian logistic regression analyses
 
 library(tidyverse)
+library(glue)
 library(magrittr)
 library(forcats)
 library(brms)
@@ -170,15 +171,25 @@ beta_prior <- set_prior("student_t(3, 0, 1)", class="b")
 
 make_stancode(f2_int, d2, family=bernoulli(), prior=beta_prior)
 
-b_logit_sup_v_unsup_w_prior <- brm(f2_int,
-                                   data = d2,
-                                   family = bernoulli(),
-                                   chains = 4,
-                                   prior = beta_prior,
-                                   iter = 1000,
-                                   sample_prior = "yes")
+## b_logit_sup_v_unsup_w_prior <- brm(f2_int,
+##                                    data = d2,
+##                                    family = bernoulli(),
+##                                    chains = 4,
+##                                    prior = beta_prior,
+##                                    iter = 1000,
+##                                    sample_prior = "yes")
 
-saveRDS(b_logit_sup_v_unsup_w_prior, "b_logit_sup_v_unsup_w_prior.rds")
+## saveRDS(b_logit_sup_v_unsup_w_prior, "b_logit_sup_v_unsup_w_prior.rds")
+
+b_logit_sup_v_unsup_w_prior <- readRDS("b_logit_sup_v_unsup_w_prior.rds")
+
+hyps <- b_logit_sup_v_unsup_w_prior %>%
+  rownames() %>%
+  fixef() %>%
+  purrr::keep(~ str_detect(., "supervised")) %>%
+  glue("{x} = 0", x=.)
+
+hypothesis(b_logit_sup_v_unsup_w_prior, hypothesis=hyps)
 
 ################################################################################
 # non-linear trial effects
