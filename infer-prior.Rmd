@@ -140,7 +140,8 @@ distribution [e.g. @Escudero2011; @Goudbeek2008;
 @Maye2000; @Maye2002; @Feldman2013b]. Another set of findings shows that
 adult listeners can adapt to changes in the means and/or variances of
 the cue distributions for known phonetic categories [e.g.,
-@Clayards2008; @Theodore2015; @Theodore2019; @Colby2018; @Chladkova2017].
+@Clayards2008; @Theodore2015; @Theodore2019; @Colby2018; @Chladkova2017;
+Schrieber2013].
 What both of these sets of findings have in common is that listeners
 pick up on the distributions of cues without any explicit instruction
 about the itended category label associated with each token. For

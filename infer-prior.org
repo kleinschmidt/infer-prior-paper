@@ -105,7 +105,11 @@
 ** TODO speed of learning in expt 2
    just look at whether there's an interaction between trial and supervision.
 * TODO more literature to consider
-
+** TODO Mechanisms of learning
+   @Harmon2019: follow up of the Idemaru and Holt studies trying to tease apart
+   error-driven and reinforcement learnig in these supervised cue-reweighting
+   designs.  They MENTION distributional learning in their overview of
+   frameworks but don't seem to talk much more about it...
 ** Bozena's paper with Roger
    Esp. 2014
 ** Jessamyn Schertz papers
