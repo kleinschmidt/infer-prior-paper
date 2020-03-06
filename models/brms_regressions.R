@@ -1,4 +1,7 @@
 ################################################################################
+# paths are relative to this script (e.g., models/ subdir of repo)
+
+################################################################################
 # bayesian logistic regression analyses
 
 library(tidyverse)
@@ -156,6 +159,26 @@ f_noint <- respP ~ 0 + bvotCond * supervised * vot_s * trial_s +
 
 b_logit_sup_v_unsup <- readRDS("brm_logistic_sup_v_unsup.rds")
 
+
+################################################################################
+# expt 1 vs 2: with intercept, and prior so we can do bayes factors
+
+f2_int <- respP ~ bvotCond * supervised * vot_s * trial_s +
+  (1 + vot_s | subject)
+
+beta_prior <- set_prior("student_t(3, 0, 1)", class="b")
+
+make_stancode(f2_int, d2, family=bernoulli(), prior=beta_prior)
+
+b_logit_sup_v_unsup_w_prior <- brm(f2_int,
+                                   data = d2,
+                                   family = bernoulli(),
+                                   chains = 4,
+                                   prior = beta_prior,
+                                   iter = 1000,
+                                   sample_prior = "yes")
+
+saveRDS(b_logit_sup_v_unsup_w_prior, "b_logit_sup_v_unsup_w_prior.rds")
 
 ################################################################################
 # non-linear trial effects
