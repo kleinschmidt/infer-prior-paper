@@ -797,9 +797,10 @@ options are available for a response.  For distributions that are highly
 shifted, most tokens will fall into one of the two pre-existing distributions
 (see @Fig:vot-dists-exp1): in the condition with the highest positive shift
 (30ms /b/, 70ms /p/), 73% of all tokens from the lower cluster would be
-classified as /p/ according to a typical talker's distributions.  Thus, what I
-intended listeners to treat as two separate clusters of VOTs---one for /b/ and
-one for /p/---they may instead have interpreted as one large cluster in extreme
+classified as /p/ according to a typical talker's distributions.  Thus, what
+what intended to be two separate clusters of VOTs---one for /b/ and
+one for /p/---may instead have been interpreted by listeners as one large
+cluster in the extreme
 conditions, lacking any labels to tell them otherwise.  I address this
 possibility in Experiment 2, by providing labels on a portion of trials.
 
@@ -910,8 +911,8 @@ was not included.  This is because these two experiments were originally run
 concurrently as a pilot for an imaging study.  The original goal of the
 supervised conditions of Experiment 2 was to see if distributional learning
 could be accelerated by including some labeled trials.  The -10ms, 30ms
-condition of Experiment 1 was run after analyzing data from Experiments 1 and 2
-together.
+condition of Experiment 1 was run after analyzing data from the other conditions
+Experiments 1 and 2 together.
 
 ### Participants
 
@@ -922,7 +923,9 @@ excluded from analysis: `r n_subj_repeat_2` for repeated participation
 (including participants who had participated in Experiment 1), `r n_subj_bad_2` for
 inaccurate categorization of unambiguous VOTs, with `r n_both_2` excluded for
 both criteria.  This left data from `r n_subj_exp2` remaining for
-analysis.[^excluded-data]
+analysis.[^excluded-data]  The larger sample size reflects the fact that there
+were originally two different variants of the supervised learning task, which
+yielded similar results and are thus analyzed together here.
 
 [^excluded-data]: The full datasets for all experiments reported here, including
     subjects excluded from analysis, is available in the
@@ -1087,8 +1090,7 @@ b_logit_exp2 %>%
 
 First, listeners were highly sensitive to the labels on labeled trials,
 responding consistent with the label `r label_consistent`% of the time (range
-across participants of `r label_range[1]`--`r label_range[2]`%).  That is, listeners
-used labels to guide their responses on that trial.
+across participants of `r label_range[1]`--`r label_range[2]`%).
 
 Second, did listeners use labels to guide or accelerate their _learning_?  As
 with Experiment 1 I assessed listeners' distributional learning via category
@@ -1276,7 +1278,8 @@ Second, the use of a conjugate Normal Inverse Chi-squared prior is also an
 important simplification, as it means that the belief updating can be computed
 analytically.  Combined with the first assumption, this means that the updated
 beliefs can be computed directly from the prior parameters and the observed
-count, mean, and variance of each category.
+count, mean, and variance of each category, rather than requiring an additional
+level of MCMC sampling to approximate.
 
 ### Model fitting procedure
 
@@ -1306,6 +1309,11 @@ effectively introduces unconstrained flexibility in how the model captures
 differences between _distributions_.  So, I opted not to include random effects
 in the belief updating model, so as to make as rigorous as possible a test of
 its ability to capture differences in distributional learning found above.
+However, the data and analysis scripts are available online for the interested
+reader to explore the consequences of alternative choices.
+<!-- 
+TODO: link?
+-->
 
 ## Results
 
@@ -2528,15 +2536,18 @@ distributional learning.  In order for prior experience with talker variability
 to constrain adaptation in a belief updating model, the listener must have
 _learned_ something about the patterns of variability across talkers.  At a
 computational level [in the sense of @Marr1982], this may also be a form of
-distributional learning.  In order to effectively adapt to an unfamiliar
+distributional learning.  In order to effectively and efficiently adapt to an unfamiliar
 talker's accent, a listener needs to have some reasonably good estimate of the
 amount and kind of talker variability they should expect, which is directly
 related to the distribution of talkers' accents[^accent] that exist in their environment.
 In *this* view---articulated in @Kleinschmidt2015b---not only are adaptation and
 acquisition both forms of distributional learning, but the difference between
-them is due to continuous distributional learning at another level.  The existing
+them is due to continuous distributional learning at another level.  The
+experiments reported here are at least consistent with this view: distributions
+that diverge more from a typical talker's distributions are harder to learn.
+The other existing
 evidence for this claim was reviewed in @Kleinschmidt2015b, and I will not
-revisit it here in depth.  One additional piece of evidence for this possibility
+revisit it here in depth.  However, one additional piece of evidence for this possibility
 is that learning at the second level (of talker variability) appears to opperate
 continuously during language acquisition, and in parallel with acquisition of
 the linguistic structure [for a recent review, see @Johnson2020].

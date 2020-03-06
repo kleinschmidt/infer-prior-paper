@@ -81,6 +81,8 @@
 *** TODO compute savage-dickey bayes factor for sup vs. unsup
     can do this using BRMS, as long as you use ~sample_prior=TRUE~.  Then use
     ~hypothesis(varname = 0)~ etc.  (from this [[https://vuorre.netlify.com/post/2017/03/21/bayes-factors-with-brms/][blog post]])
+
+    WIP in [[file:models/brms_regressions.R::b_logit_sup_v_unsup_w_prior <- brm(f2_int,][brms_regression.R]]
 ** TODO edit intro
 ** DONE modeling ("experiment" 3)
 *** DONE Results: write up inferred beliefs.
@@ -104,6 +106,14 @@
 ** TODO regression tables for an appendix/supplementary material
 ** TODO speed of learning in expt 2
    just look at whether there's an interaction between trial and supervision.
+** TODO editing misc
+*** I vs. we
+*** what about things babies are bad at/don't lose?
+babies are bad at some things and some things never get constrained, cf clicks
+     Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
+     acquisition is unconstrained or give some caveats
+*** when does the "three cluster" stuff come in?
+    Elika thought that in model, exp 4, and gen disc was too much.  "cut/smooth/etc"
 * TODO more literature to consider
 ** TODO Mechanisms of learning
    @Harmon2019: follow up of the Idemaru and Holt studies trying to tease apart
@@ -525,7 +535,6 @@
     cite @Pajak2016: hierarchical inference under uncertainty.
 
 * Feedback 
-
 ** from Meghan
 
    #+begin_src text
@@ -562,7 +571,7 @@
      Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
      acquisition is unconstrained or give some caveats
 
-   ,* dan swingley and eric theissen and noami f would all argue i think that the
+✔  ,* dan swingley and eric theissen and noami f would all argue i think that the
      WORD(even if you don't understand it) it occurs is acts as a cue so “there is
      very little information about whether any two observed acoustic cue values
      come from the same cluster (category) or different ones “ is a little hard to
@@ -578,14 +587,14 @@
 
 
 
-   ,*fig 3: you never tell us what the colored/black dotted lines are or what the
+✔  ,*fig 3: you never tell us what the colored/black dotted lines are or what the
     dot is or what the traces are exactly (you can sort this out from the following
     figure a bit though)
 
    ,* i vs. we: make a choice…feels like a style/register shift when you get to
      experiments, can’t put my finger on it..
 
-   ,* this feels funnily worded “what I intended listeners to treat as ...“
+✔  ,* this feels funnily worded “what I intended listeners to treat as ...“
 
    ,* exp2: clever design!
 
@@ -596,11 +605,11 @@
      set of data pilot vs. current are you talking about in the last sentence of
      the -10ms,30ms cond pg.7
 
-   ,* why bigger N for exp 2 (esp with fewer cond’s?)
+✔  ,* why bigger N for exp 2 (esp with fewer cond’s?)
 
    ,* ooh rpackage nice
 
-   ,* awk wording: “to guide their responses on that trial. “
+✔  ,* awk wording: “to guide their responses on that trial. “
 
    ,* exp 2: i found the outlier description a little confusing; could you put those
      points on your graph separately?do the results change if you actually remove
@@ -615,9 +624,9 @@
    ,* haha you’ve anthropomorphized your model “an impossibly large number to
      consider. “
 
-   ,* “can be computed analytically “ as opposed to?
+✔  ,* “can be computed analytically “ as opposed to?
 
-   ,* after the last sentence in ‘model fitting procedure’ you could gently remind
+✔  ,* after the last sentence in ‘model fitting procedure’ you could gently remind
      people that they’re welcome to do whatever they like with the code and dat you
      provide in they want to take a different tack with REs
 
@@ -635,12 +644,12 @@
      actually you mention this in two places, exp 4 and exp 3 disc,…uh you also
      mention it again in the GenDisc, cut/smooth/etc.
 
-   ,* you only warned readers about 3 experiments, tbh i got a little bleary-eyed
+✔  ,* you only warned readers about 3 experiments, tbh i got a little bleary-eyed
      trying to keep straight what was going on by exp 4. but i think there’s some
      redundancy in discussion for this study and the setup (e.g. the role of
      testing midway)
 
-   ,* this is a little trippy for me in the context of your stems: “In order to
+✔  ,* this is a little trippy for me in the context of your stems: “In order to
      effectively adapt to an unfamiliar talker’s accent, a listener needs to have
      some reasonably good estimate of the amount and kind of talker variability
      they should expect, which is directly related to the distribution of talkers’
