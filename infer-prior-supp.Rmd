@@ -62,6 +62,22 @@ library(beliefupdatr)
 
 ```
 
+```{r}
+
+## clean names from regression models
+
+beta_name_subs <- list(
+  c(":", " : "),
+  c("vot_s", "VOT"),
+  c("trial_s", "Trial"),
+  c("bvotCond", "/b/ VOT "),
+  )
+
+clean_beta <-
+  . %>%
+  str_replace_multi(beta_name_subs)
+
+```
 
 # Experiment 1
 
@@ -144,3 +160,41 @@ favor of the null.  In this case, using a prior that assigns a relatively high
 probability to the null hypothesis parameter value creates a relatively
 _conservative_ test of support for the null hypothesis.
 
+```{r}
+
+b_logit_exp2 <- readRDS("models/b_logit_sup_v_unsup_w_prior.rds")
+
+hyps_sup <- b_logit_sup_v_unsup_w_prior %>%
+  fixef() %>%
+  rownames() %>%
+  purrr::keep(~ str_detect(., "supervised")) %>%
+  glue("{x} = 0", x=.)
+
+hyps_sup_test <- hypothesis(b_logit_sup_v_unsup_w_prior, hypothesis=hyps_sup)
+
+hyps_rest <- b_logit_sup_v_unsup_w_prior %>%
+  fixef() %>%
+  rownames() %>%
+  purrr::keep(~ !str_detect(., "supervised")) %>%
+  glue("{x} = 0", x=.)
+
+hypothesis(b_logit_sup_v_unsup_w_prior, hypothesis=hyps_rest)
+
+
+```
+
+```{r expt-2-model-plot, fig.width=8.9, fig.height=6.4, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 2.  Red indicates coefficients that are reliably less than zero, and blue indicates reliably greater than zero.}
+
+b_logit_exp2 %>%
+  gather_draws(`b_.*`, regex=TRUE) %>%
+  ungroup() %>%
+  mutate(.variable = factor(str_replace(.variable, "b_", ""),
+                            levels = rownames(fixef(b_logit_exp2)))) %>%
+  group_by(.variable) %>%
+  mutate(p_gt_zero = mean(.value > 0)) %>%
+  ggplot(aes(x=.value, y=.variable, fill=p_gt_zero)) +
+  geom_halfeyeh(relative_scale = 2) +
+  scale_fill_gradient2("p(β > 0)", midpoint=0.5, mid=gray(0.9)) +
+  geom_vline(xintercept = 0, linetype=3)
+
+```
