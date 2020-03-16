@@ -406,12 +406,12 @@ n_excl_cond <- excluded %>%
 ```
 
 `r n_total` participants were recruited via Amazon's Mechanical Turk. Participants were
-paid \$2.00 for participation, which took about 20 minutes. We excluded participants
+paid \$2.00 for participation, which took about 20 minutes.  Participants were excluded
 who participated more than once ($n=`r n_subj_repeat`$) or who failed to
 classify VOTs reliably ($n=`r n_subj_bad`$; $n=`r n_both`$ for both reasons).
-We defined reliable classification as accuracy of at least 80% at 0 and 70ms
-VOT. Because some conditions had few stimuli with these VOTs, we extrapolated
-participants' responses using a logistic generalized linear model (GLM).  Excluded
+Reliable classification is defined as accuracy of at least 80% at 0 and 70ms
+VOT. Because some conditions had few stimuli with these VOTs, 
+participants' responses were extrapolated using a logistic generalized linear model (GLM).  Excluded
 participants were roughly equally distributed across conditions (maximum of 
 `r last(n_excl_cond$n)` in `r last(n_excl_cond$bvotCond)`ms /b/ VOT condition,
 and minimum of `r first(n_excl_cond$n)` in `r first(n_excl_cond$bvotCond)`ms /b/
@@ -441,7 +441,7 @@ assigned to one of five accent conditions ([@Fig:vot-dists-exp1]).
 
 ### Materials
 
-The audio and visual stimuli we used were identical to those in
+The audio and visual stimuli were identical to those in
 @Clayards2008. Three /b/-/p/ minimal pair audio continua were synthesized using
 the 1988 Klatt synthesizer [@Klatt1980], by manipulating VOT in 10ms increments
 (either adding voicing before the stop burst to create negative VOTs, or
@@ -1993,7 +1993,7 @@ means (from 40 to 130ms VOT), unlike Experiment 1 which maintained a constant
 separation between /b/ and /p/ mean VOT of 40ms.  Note that the condition with
 /b/ mean of 10ms and /p/ mean of 50ms VOT is the same as in Experiment 1.  This
 condition was included to provide a way of comparing with Experiment 1, since
-the design of Experiment 4 required a change in procedure (which we discuss
+the design of Experiment 4 required a change in procedure (which I discuss
 next).
 
 ### Procedure: assessing category boundaries
@@ -2014,7 +2014,7 @@ that they had entered the test phase. Of course, if listeners are actually (as
 hypothesized) _learning_ these distributions, their behavior may well change
 as they proceed through the test phase, gradually erasing any effect of the
 differences in the exposure distributions. Thus, when analyzing data from the
-test phase, whenever possible we limit ourselves to the early parts of the test
+test phase, whenever possible analyses are focused on the early parts of the test
 phase, when listeners behavior should be minimally affected by the change in
 distributions.
 
@@ -2028,7 +2028,7 @@ halfway through the first third of the post-test.[^why-not-beginning]
 
 [^why-not-beginning]: The predictions from a regression model are more uncertain
     and more driven by noise at the extreme ranges of continuous predictors,
-    like trial number. Thus we use the point one-sixth into the post-test to estimate
+    like trial number. Thus I use estimated value at the trial that is one-sixth into the post-test to estimate
     classification functions, rather than the very beginning, because it is
     _close_ to the beginning of the post test, but not so close that the
     predictions are substantially affected by the extra instability of the
@@ -2068,7 +2068,7 @@ active_time <- supunsup::separatemeans %>%
 A total of `r n_total4` participants were recruited via Amazon's Mechanical
 Turk.  Subjects were paid \$2.50 for participation.  The task took subjects
 about 25 minutes to complete (because of the additional post-test, discussed
-next).  As in Experiment 1, we excluded subjects ($n=`r n_excl4 %$% sum(n)`$)
+next).  As in Experiment 1, subjects were excluded ($n=`r n_excl4 %$% sum(n)`$)
 who failed to classify words with unambiguous VOTs reliably during exposure (not
 post-test, see above).  After exclusion, `r n_clean4 %$% sum(n)` subjects
 remained for analysis (no subjects had previously participated in one of our VOT
