@@ -107,11 +107,11 @@
 ** TODO speed of learning in expt 2
    just look at whether there's an interaction between trial and supervision.
 ** TODO editing misc
-*** I vs. we
+*** DONE I vs. we
 *** what about things babies are bad at/don't lose?
-babies are bad at some things and some things never get constrained, cf clicks
-     Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
-     acquisition is unconstrained or give some caveats
+    "babies are bad at some things and some things never get constrained, cf clicks
+    Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
+    acquisition is unconstrained or give some caveats"
 *** when does the "three cluster" stuff come in?
     Elika thought that in model, exp 4, and gen disc was too much.  "cut/smooth/etc"
 * TODO more literature to consider
