@@ -183,13 +183,21 @@ make_stancode(f2_int, d2, family=bernoulli(), prior=beta_prior)
 
 b_logit_sup_v_unsup_w_prior <- readRDS("b_logit_sup_v_unsup_w_prior.rds")
 
-hyps <- b_logit_sup_v_unsup_w_prior %>%
-  rownames() %>%
+hyps_sup <- b_logit_sup_v_unsup_w_prior %>%
   fixef() %>%
+  rownames() %>%
   purrr::keep(~ str_detect(., "supervised")) %>%
   glue("{x} = 0", x=.)
 
-hypothesis(b_logit_sup_v_unsup_w_prior, hypothesis=hyps)
+hyps_sup_test <- hypothesis(b_logit_sup_v_unsup_w_prior, hypothesis=hyps_sup)
+
+hyps_rest <- b_logit_sup_v_unsup_w_prior %>%
+  fixef() %>%
+  rownames() %>%
+  purrr::keep(~ !str_detect(., "supervised")) %>%
+  glue("{x} = 0", x=.)
+
+hypothesis(b_logit_sup_v_unsup_w_prior, hypothesis=hyps_rest)
 
 ################################################################################
 # non-linear trial effects
