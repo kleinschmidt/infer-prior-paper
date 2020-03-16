@@ -865,7 +865,7 @@ n_excl_cond_2 <- excluded_exp2 %>%
 
 ### Procedure
 
-```{r exp2-label-dists, fig.width=9, fig.height=4.5, fig.cap='Distribution of labeled and unlabeled trials in Experiment 2.  These conditions have the same number of labeled and unlabeled trials, but differ in how they are assigned to VOTs.  In the "mixed" condition, most VOTs occurred in a mixture of labeled and un-labeled trials.  In the "separated" condition, each VOT always occurred as either labeled or unlabeled.  Because no difference was found between learning in these conditions, they are analyzed together.'}
+```{r exp2-label-dists, fig.width=9, fig.height=4.5, fig.cap="Distribution of labeled and unlabeled trials in Experiment 2.  These conditions have the same number of labeled and unlabeled trials, but differ in how they are assigned to VOTs.  In the \"mixed\" condition, most VOTs occurred in a mixture of labeled and un-labeled trials.  In the \"separated\" condition, each VOT always occurred as either labeled or unlabeled.  Because no difference was found between learning in these conditions, they are analyzed together."}
 
 data_exp2 %>%
   mutate(supCond = fct_recode(supCond, separated="supervised")) %>%
@@ -1035,7 +1035,7 @@ expt2_bounds_fixef_samples %>%
 
 ```
 
-```{r expt2-class-funs, fig.cap='Classification functions from semi-supervised distributional learning.  As for Experiment 1 (Figure -@fig:exp1-results), individual subjects categorization functions (fine colored lines) are intermediate between the ideal boundary given a typical talker's distributions (skinny, black dashed lines), and the ideal boundary for the exposure distributions (heavy colored dashed lines).', fig.width=8.5, fig.height=3}
+```{r expt2-class-funs, fig.cap="Classification functions from semi-supervised distributional learning.  As for Experiment 1 (Figure -@fig:exp1-results), individual subjects categorization functions (fine colored lines) are intermediate between the ideal boundary given a typical talker's distributions (skinny, black dashed lines), and the ideal boundary for the exposure distributions (heavy colored dashed lines).", fig.width=8.5, fig.height=3}
 
 ggplot(expt2_class_bysub, aes(x=vot, color=vot_cond)) +
   geom_line(data=.%>%filter(block==3), aes(y=Estimate, group=subject), alpha=0.2) +
@@ -1056,7 +1056,7 @@ ggplot(expt2_class_bysub, aes(x=vot, color=vot_cond)) +
 
 ```
 
-```{r expt2-bounds, fig.cap='Providing 50% labeled trials during distributional learning makes no difference in listener\'s category boundaries (Experiment 2, solid voilins/points) compared to purely unsupervised learning (Experiment 1, outlined violins/points, re-plotted from @fig:expt1-boundaries).  For ease of comparison with results from Experiment 1, the same axis limits are used as @fig:expt1-boundaries; this lead to exclusion from the figure of five listeners with boundaries greater than 50ms (2 in the 20ms /b/ condition, 3 in the 30ms /b/ condition).  All participants are included in the regression model from which the fixed effects boundaries are estimated (points/lines).'}
+```{r expt2-bounds, fig.cap="Providing 50% labeled trials during distributional learning makes no difference in listener's category boundaries (Experiment 2, solid voilins/points) compared to purely unsupervised learning (Experiment 1, outlined violins/points, re-plotted from @fig:expt1-boundaries).  For ease of comparison with results from Experiment 1, the same axis limits are used as @fig:expt1-boundaries; this lead to exclusion from the figure of five listeners with boundaries greater than 50ms (2 in the 20ms /b/ condition, 3 in the 30ms /b/ condition).  All participants are included in the regression model from which the fixed effects boundaries are estimated (points/lines)."}
 
 expt2_bounds_bysub %>%
   filter(block==3) %>%
