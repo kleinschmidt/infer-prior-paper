@@ -81,8 +81,8 @@
 *** TODO compute savage-dickey bayes factor for sup vs. unsup
     can do this using BRMS, as long as you use ~sample_prior=TRUE~.  Then use
     ~hypothesis(varname = 0)~ etc.  (from this [[https://vuorre.netlify.com/post/2017/03/21/bayes-factors-with-brms/][blog post]])
-
-    WIP in [[file:models/brms_regressions.R::b_logit_sup_v_unsup_w_prior <- brm(f2_int,][brms_regression.R]]
+**** DONE WIP in [[file:models/brms_regressions.R::b_logit_sup_v_unsup_w_prior <- brm(f2_int,][brms_regression.R]]
+**** TODO write up in text
 ** TODO edit intro
 ** DONE modeling ("experiment" 3)
 *** DONE Results: write up inferred beliefs.

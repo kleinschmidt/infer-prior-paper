@@ -946,17 +946,22 @@ data_exp2_mod <- supunsup::supunsup_clean %>%
 
 ```{r exp2-regression, dependson=c("exp2-regression-data")}
 
-f_noint <- respP ~ 0 + bvotCond * supervised * vot_s * trial_s +
+f2_int <- respP ~ bvotCond * supervised * vot_s * trial_s +
   (1 + vot_s | subject)
 
-## b_logit_exp2 <- brm(f_noint,
-##                data = d2,
-##                family = bernoulli(),
-##                chains=4,
-##                iter=1000)
+beta_prior <- set_prior("student_t(3, 0, 1)", class="b")
 
-## saveRDS(b_logit_exp2, "models/brm_logistic_sup_v_unsup.rds")
-b_logit_exp2 <- readRDS("models/brm_logistic_sup_v_unsup.rds")
+## b_logit_sup_v_unsup_w_prior <- brm(f2_int,
+##                                    data = d2,
+##                                    family = bernoulli(),
+##                                    chains = 4,
+##                                    prior = beta_prior,
+##                                    iter = 1000,
+##                                    sample_prior = "yes")
+
+## saveRDS(b_logit_sup_v_unsup_w_prior, "models/b_logit_sup_v_unsup_w_prior.rds")
+
+b_logit_exp2 <- readRDS("models/b_logit_sup_v_unsup_w_prior.rds")
 
 exp2_blocks <-
   data_exp2_mod %>%
