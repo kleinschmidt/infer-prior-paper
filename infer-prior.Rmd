@@ -816,7 +816,10 @@ is consistent with belief updating starting from common prior beliefs.
 
 In this experiment, some trials are presented with _label_ information, which
 indicates _which_ member of the /b/-/p/ minimal pair the speaker intended to
-produce.
+produce.  The goal of this experiment is to investigate whether the constraints
+on distributional learning observed in Experiment 1 are due to the unsupervised
+nature of the distributional learning task.  Adding labels to some of the trials
+may improve the degree of learning, or the speed, or both.
 
 ## Methods
 
