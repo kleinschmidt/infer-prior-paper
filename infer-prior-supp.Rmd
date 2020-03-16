@@ -102,3 +102,45 @@ b_logit_exp1 %>%
   geom_vline(xintercept = 0, linetype=3)
 
 ```
+
+
+# Experiment 2
+
+The regression model for Experiment 2 was another Bayesian logistic
+mixed-effects regression model, fit with `brms` [@Burkner2017], using the
+following formula:
+
+```
+respP ~ bvotCond * supervised * vot_s * trial_s + (1 + vot_s | subject)
+```
+
+This includes a main effect and all interactions with `supervised`, which codes
+whether a given subject was in the supervised (0) or unsupervised (1)
+condition.  All other variables were coded as in Experiment 1.
+
+Only unlabeled trials were used to estimate the model, since responses to
+labeled trials were nearly always consistent with the label and hence
+uninformative about the listener's classification function at that point.
+
+In order to calculate Bayes factors for the null hypothesis of no effect of
+supervision vs. the alternative for some possibly non-zero effect via the
+Savage-Dickey method [@Wagenmakers2010], I had to specify a proper prior on beta
+coefficients.  By default, `brms` uses an improper (uniform) prior over the
+whole real number line, which does not assign a finite, positive probability to
+any value.  I chose a Student's $t$ distributions with 3 degrees of freedom,
+mean 0, and scale of 1 (`student_t(3, 0, 1)` in the `brms` syntax).  This
+particular prior is a good choice in this case because it has heavy tails and
+therefore does not meaningfully constrain parameter estimates in the presence of
+sufficient data, yet still assigns a reasonably high prior probability to 0,
+which corresponds to the null hypothesis of zero effect of the corresponding
+parameter.  This is important for the Savage-Dickey method because it uses the
+ratio between the prior and posterior probability assigned to the parameter
+value corresponding to the null hypothesis as a means of estimating the Bayes
+factor (e.g., support of the evidence for or against the null hypothesis).  If
+the prior is so spread out that it assigns very low probability to the null
+hypothesis parameter value, then any data that leads to an estimate anywhere
+near the null hypothesis parameter value will be interpreted as evidence in
+favor of the null.  In this case, using a prior that assigns a relatively high
+probability to the null hypothesis parameter value creates a relatively
+_conservative_ test of support for the null hypothesis.
+
