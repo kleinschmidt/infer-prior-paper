@@ -281,7 +281,11 @@ In order to probe the possible constraints on distributional learning,
 Experiment 1 measures listener's distributional learning of a range of bimodal
 distributions of voice-onset time (VOT).  These distributions vary in how
 similar they are to a typical American English talker (Figure
--@fig:vot-dists-exp1).
+-@fig:vot-dists-exp1).  Each distribution has the same variance and separation
+between the VOT clusters (40ms), but the overall VOTs are shifted up or down in
+10ms increments.  Previous results have shown that listeners are sensitive to
+such shifts in distributions [@Munson2011], but have not systematically explored
+the wide range of shifts used here.
 
 ```{r data-exp1}
 
@@ -1187,7 +1191,7 @@ condition level (fixed effect boundaries) and the subject level (distribution of
 participants' boundaries), distributional learning leads to the same shift in
 category boundaries regardless of whether all trials are unlabled (Experiment 1)
 or half labeled (Experiment 2).  This in turn suggests that the discrepancy
-between listeners learned boundaries and the boundary implied by the exposure
+between listeners' learned boundaries and the boundary implied by the exposure
 distribution is _not_ due to uncertainty about the whether any particular VOT
 was intended to be a /b/ or a /p/.  This is somewhat surprising, given that in
 the extremely shifted 30ms /b/, 70ms /p/ condition most of the tokens from the
@@ -1208,7 +1212,7 @@ trials where the presence of labels on other trials seems to make no difference.
 Another possibility is that even without labels, listeners are able to pick up
 on the distributions they are exposed to, and so labeling some of the trials as
 a clue to which distribution they come from doesn't provide any additional
-information.  If this is the case, how can the discrepancy between the
+information.  If this is the case, how can we explain the discrepancy between the
 boundaries implied by those distributions and the boundaries listeners actually
 learned?  Experiment 3 addresses this question via computational modeling.
 
@@ -1221,39 +1225,50 @@ they were exposed to.  On the other hand, providing listeners extra
 information---in the form of category labels for half the VOTs they heard---did
 not have any effect on distributional learning.  This suggests that listeners
 _know_ the distributions that the exposure talker produces, but they just don't
-_believe_ them.  Circumstantial evidence to this effect comes from the fact that
+_believe_ them, and hedge their bets by erring in the direction of a typical
+talker's boundary.  Circumstantial evidence to this effect comes from the fact that
 the category boundaries that listeners _do_ use appear to be a compromise
 between the category boundaries derived from the VOT distributions for the
 exposure talker and those produced by a typical talker of American English.
 
-In this experiment I use a computational model to explore the possibility that
-listeners start at some common starting point and update their beliefs based on
-experience with the current talker.  Specifically, I use a model based on the
+In this experiment I use a computational model to explore this possibility in
+more detail.  Specifically, I use a model inspired by the
 ideal adapter framework [@Kleinschmidt2015b], which is based on the idea that
 listeners maintain uncertain beliefs about the distribution of cues
-corresponding to each phonetic category.  Crucially, according to the ideal
+corresponding to each phonetic category, and update this beliefs incrementally
+based on their recent experience.  Crucially, according to the ideal
 adapter, when listeners encounter an unfamiliar talker, they initially entertain
-a set of prior beliefs about the phonetic cue distributions that an unfamiliar
+a set of prior beliefs about the range of different phonetic cue distributions that an unfamiliar
 talker is likely to produce, which takes into account the variability across
 talkers that they have previously experience, and any available socio-indexical
 information that may be informative about this talker's cue distributions
-[@Kleinschmidt2019].  After direct experience with that talker, a listener will
+[@Kleinschmidt2015b; @Kleinschmidt2019].  After direct experience with a talker, a listener will
 _update_ their beliefs about that talker's cue distributions, bringing them into
 better alignment with the cue distributions that the talker has actually
 produced.
 
-As a result, at any given point a listener's beliefs about that talker's cue
-distributions will be a _compromise_ between what they expected a priori, and
-the distributions they have actually encountered.  When a listener has limited
-experience with that particular talker, or especially strong, specific prior
-expectations, this compromise will be especially obvious.  One prediction of the
-ideal adapter is that listeners' prior expectations should be calibrated to the
-level (and type) of talker variability they have actually encountered.  Because
-there's relatively little variability across talkers in VOT distributions for
-word-initial stops [@Kleinschmidt2019], this is exactly such a case where
-listeners might be expected to bring strong prior expectations and hence show a
-clear compromise between those prior expectations and the distributions that
-they encounter in these experiments.
+Why is this type of model a plausible explanation of the results of Experiments
+1 and 2?  First, the process of belief updating means that at any given point a
+listener's beliefs about that talker's cue distributions will be a _compromise_
+between what they expected a priori, and the distributions they have actually
+encountered.  When a listener has limited experience with a particular
+talker, or especially strong, specific prior expectations, this compromise will
+be especially obvious because their prior beliefs will be more informative
+relative to their recent, direct experience with the talker.
+
+Second, one prediction of the ideal adapter is that listeners' prior
+expectations should be calibrated to the level (and type) of talker variability
+they have actually encountered [@Kleinschmidt2015b].  In this framework, the
+prior beliefs that listeners start from are based on listeners' expectations, on
+the one hand, about what a _typical talker_ will produce, and on the other hand,
+how _consistent_ talkers are in their realization of the given phonetic cue
+distributions.  In the case of VOT distributions for word-initial stop voicing,
+there is relatively little variability across talkers in VOT distributions
+[@Kleinschmidt2019], the distributional learning experiments here are exactly
+the kind of situations where listeners might be
+expected to bring strong prior expectations and hence show a clear compromise
+between those prior expectations and the distributions that they encounter in
+the experiments.
 
 
 
@@ -1262,13 +1277,18 @@ they encounter in these experiments.
 I use a Bayesian belief updating model, where listeners begin the experiment
 with a shared set of prior beliefs about the mean and variance of the VOT
 distributions for /b/ and /p/, and update these beliefs according to Bayes rule
-based on the VOTs they hear in the experiment.
+based on the VOTs they hear in the experiment.[^model-theory]
+
+[^model-theory]: Note that, as in @Kleinschmidt2015b, this _model_ is an
+    instantiation of only a _component_ of the ideal adapter _theory_---the
+    process of evidence accumulation within a single context---and does not
+    stand in for the entire theory.
 
 Specifically, a listener's uncertain beliefs about the mean and variance of each
 category (/b/ and /p/) are represented as Normal-Inverse Chi squared
 distribution.  At the beginning of the experiment, every listener has the same
 prior beliefs, expressed in the model as parameters for the _expected_ mean and
-variance ($\mu_{0}$ and $\sigma^2_0$), and for the _strength_ of these beliefs
+variance ($\mu_{0}$ and $\sigma^2_0$), and for their _confidence_ in these beliefs
 ($\kappa_0$ for the mean and $\nu_0$ for the variance).  These confidence
 parameters are "pseudocounts", in that they are equivalent to assuming that the
 listener's expectations about the category mean is based on $\kappa_0$ prior
@@ -1310,7 +1330,8 @@ Bayes' rule.
 
 In actually implementing this model, I make a number of simplifying assumptions
 for the sake of tractability.  First, and most importantly, I provide the model
-with the mean and standard deviation of the two VOT distributions.  This
+with the observed mean and standard deviations of the two exposure VOT
+distributions ($\bar x$ and $s$ above).  This
 substantially simplifies the complexity of the learning problem: in order to
 model _unsupervised_ learning, a Bayesian model needs to average predicted
 behavior over distributional learning given each possible way that all the
@@ -1334,15 +1355,19 @@ The free parameters of this model were the prior expected mean and variance of
 /b/ and /p/, and the mean and variance prior pseudocounts (which were assumed to
 be the same for /b/ and /p/ because pilot simulations suggested it was not
 possible to reliably identify both).  I also included a guessing rate parameter,
-which captured the fact that many listeners never reach floor or ceiling and
-thus may be guessing on a proportion of trials.
+which captured the fact that many listeners never reach floor or ceiling even
+for unambiguous high/low VOTs, and thus may be guessing on a proportion of
+trials.
 
 The model was fit to data from Experiment 1 (unsupervised distributional
-learning) using a custom Stan model [@Carpenter2017].  The trials were divided
-up into six blocks of equal length (37 trials).  Responses in each block in each
-distribution condition were predicted based on updated beliefs at the halfway
-point of the block, using the sufficient statistics of that distribution
-condition.
+learning) with the [`beliefupdatr`
+package](https://github.com/kleinschmidt/beliefupdatr), which includes a Stan
+[@Carpenter2017] implementation of this belief updating model and a convenient
+`R` [@RCoreTeam2017] interface.
+The trials were divided up into six blocks of equal length
+(37 trials).  Responses in each block in each distribution condition were
+predicted based on updated beliefs at the halfway point of the block, using the
+sufficient statistics of that distribution condition.
 
 No "random effects" (hierarchical effects by subject) were included.  This is a
 difficult choice to make.  On the one hand, there likely _are_ differences in
@@ -1469,7 +1494,7 @@ data_exp1 %>%
                   stat="summary", fun.data="mean_cl_boot") +
   facet_grid(.~vot_cond) +
   labs(title = "Belief updating model",
-       subtitle = "Classification function versus behavioral data for final 6th of trials in Experiment 1",
+       subtitle = "Compared with behavioral data for final 6th of trials in Experiment 1",
        x = "VOT (ms)",
        y = "Probability /p/ response")
 
@@ -1528,7 +1553,7 @@ distributions for /b/ and /p/.
 
 Figure -@fig:mod-vs-behav-class-funs shows the belief-updating model's predicted
 classification functions in the final sixth of trials (186--222) in the
-experiment, along with the average probability of /p/ response (plus
+experiment, along with the average probability of a /p/ response for each VOT (plus
 bootstrapped 95% CI over listeners).  Qualitatively, the model provides a good
 fit to the overall classification functions for each VOT condition, and the
 estimated boundaries align well with the observed boundaries in each case.
