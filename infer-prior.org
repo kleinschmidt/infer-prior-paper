@@ -1,4 +1,5 @@
 
+
 * todos
 ** TODO finalize data analysis
 *** DONE follow-up modeling analyses
@@ -108,11 +109,11 @@
    just look at whether there's an interaction between trial and supervision.
 ** TODO editing misc
 *** DONE I vs. we
-*** what about things babies are bad at/don't lose?
+*** TODO what about things babies are bad at/don't lose?
     "babies are bad at some things and some things never get constrained, cf clicks
     Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
     acquisition is unconstrained or give some caveats"
-*** when does the "three cluster" stuff come in?
+*** TODO when does the "three cluster" stuff come in?
     Elika thought that in model, exp 4, and gen disc was too much.  "cut/smooth/etc"
 * TODO more literature to consider
 ** TODO Mechanisms of learning
@@ -120,6 +121,10 @@
    error-driven and reinforcement learnig in these supervised cue-reweighting
    designs.  They MENTION distributional learning in their overview of
    frameworks but don't seem to talk much more about it...
+   
+   they basically rule out dist learning as a mechanism because there's no
+   modality sensitivity without worrying about whether you'd expect to find
+   any.  really need to do that supervised vs. unsupervised DL paper...
 ** Bozena's paper with Roger
    Esp. 2014
 ** Jessamyn Schertz papers
@@ -130,7 +135,6 @@
    categories)
 
    Japanese r-l
-
 ** TODO Diehl papers
 ** TODO Holt follow-ups to Idemaru and Holt 2011
 ** DONE Chladkova et al. 2017: unsupervised "recalibration"
@@ -161,6 +165,9 @@
    I've incorporated some of these refs...
 ** TODO Cristia meta-analysis of dist learning acquisition papers
    this is @Cristia2018a
+
+   put this in the intro?  where I talk about the fact that infants and adults
+   both show evidence of distributional learning
 * DONE decide which data goes in this paper
   One of the issues I keep coming back to is the question of *which data to
   discuss in this paper*.  A priori, my strong preferences is *all of it*.
