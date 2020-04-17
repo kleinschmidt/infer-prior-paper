@@ -105,7 +105,7 @@
     of materials to the discussion for expt 4.  So I need to go read that and
     see what it all needs.
 ** TODO regression tables for an appendix/supplementary material
-** TODO speed of learning in expt 2
+** DONE speed of learning in expt 2
    just look at whether there's an interaction between trial and supervision.
 ** TODO editing misc
 *** DONE I vs. we
@@ -116,6 +116,7 @@
 *** TODO when does the "three cluster" stuff come in?
     Elika thought that in model, exp 4, and gen disc was too much.  "cut/smooth/etc"
 * TODO more literature to consider
+** DONE Cheyenne's dissertation
 ** TODO Mechanisms of learning
    @Harmon2019: follow up of the Idemaru and Holt studies trying to tease apart
    error-driven and reinforcement learnig in these supervised cue-reweighting
