@@ -1097,14 +1097,28 @@ expt2_bounds_bysub %>%
 
 ```
 
-```{r exp2-sup-effects, eval=FALSE}
-b_logit_exp2 %>%
-  gather_draws(`b_.*supervised.*`, regex=TRUE) %>%
-  group_by(.variable) %>%
-  mutate(p_gt_zero = mean(.value > 0)) %>%
-  ggplot(aes(x=.value, y=.variable, fill=qlogis(p_gt_zero))) +
-  geom_halfeyeh() +
-  scale_fill_gradient2(mid = gray(0.9), limits=c(-4, 4))
+```{r exp2-sup-effects}
+
+hyps_sup <- b_logit_exp2 %>%
+  fixef() %>%
+  rownames() %>%
+  purrr::keep(~ str_detect(., "supervised")) %>%
+  glue("{x} = 0", x=.)
+
+hyps_sup_test <- hypothesis(b_logit_exp2, hypothesis=hyps_sup)
+
+n_weak <- sum(hyps_sup_test$hypothesis$Evid.Ratio < 3.2)
+n_strong <- sum(hyps_sup_test$hypothesis$Evid.Ratio >= 3.2)
+n_total <- nrow(hyps_sup_test$hypothesis)
+
+hyps_rest <- b_logit_exp2 %>%
+  fixef() %>%
+  rownames() %>%
+  purrr::keep(~ !str_detect(., "supervised")) %>%
+  glue("{x} = 0", x=.)
+
+hypothesis(b_logit_exp2, hypothesis=hyps_rest)
+
 ```
 
 First, listeners were highly sensitive to the labels on labeled trials,
@@ -1134,14 +1148,27 @@ semi-supervised overlap for all VOT conditions, indicating that the inclusion of
 labeled trials makes no reliable difference in distributional learning, at least
 at the trial where these boundaries are estimated.
 
-Similarly, the 95% credible intervals for all fixed effects coefficients
-involving the supervision condition include 0, suggesting that the presence of
-labeled trials makes no difference in the baseline, strength, or time course of
-distributional learning.
+Similarly, by a variety of measures, the estimates of the regression
+coefficients themselves suggest that the addition of labeling information did
+not change listeners distributional learning.  First, the 95% credible intervals
+for all fixed effects coefficients involving the supervision condition
+include 0.  Second, the Bayes Factors (BFs) for the null hypotheses that each of
+the regression coefficients involving the supervision condition is exactly zero
+suggest that the data provide either weak
+($1 < BF < 3.2$, `r n_weak` out of `r n_total` predictors) 
+or "substantial" 
+($BF \geq 3.2$, `r n_strong` of `r n_total`) 
+evidence in favor of the null [using the somewhat arbitrary cutoff of
+@Kass1995].  By both standards, the addition of labeling information has little
+to no effect on the overall amount of learning in each condition individually,
+does not affect category boundary steepness (interactions with VOT), and does
+not change the speed of learning speed (interactions with trial number).
 
-The condition that comes the closest to showing any effect is the 30ms /b/, 70ms
+Based on the category boundaries themselves, the condition that comes the
+closest to showing any effect is the 30ms /b/, 70ms
 /p/ VOT, which is the most extreme shift relative to standard VOT distributions.
-However, the fixed effect boundaries in this condition may have been biased by
+However, the boundaries in this condition are highly variable across subjects,
+and moreover the group-level boundaries in this condition may have been biased by
 the presence of three outlier participants with unreliable responses which leads to
 very shallow classification functions and very high estimated boundaries
 (greater than 50ms; see Figure -@fig:expt2-class-funs).  These participants
