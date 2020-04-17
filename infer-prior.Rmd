@@ -139,7 +139,7 @@ formant frequencies, etc.) compared with exposure to a unimodal
 distribution [e.g. @Escudero2011; @Goudbeek2008;
 @Maye2000; @Maye2002; @Feldman2013b]. Another set of findings shows that
 adult listeners can adapt to changes in the means and/or variances of
-the cue distributions for known phonetic categories [e.g.,
+the cue distributions for known phonetic categories [e.g.
 @Clayards2008; @Theodore2015; @Theodore2019; @Colby2018; @Chladkova2017;
 Schrieber2013].
 What both of these sets of findings have in common is that listeners
@@ -223,10 +223,10 @@ context that these sounds occur in, like the fact that sounds are embedded in
 words, which infants begin to learn early, in parallel with the phonetic
 categories of their language [@Bergelson2012].  While this kind of
 "self-supervision" can serve as an important additional source of information in
-distributional learnign [@Feldman2013b; @Feldman2013], it is much weaker than
+distributional learning [@Feldman2013b; @Feldman2013], it is much weaker than
 the richer, less uncertain circumstantial evidence that adults can draw on from
 the lexicon, pragmatic context, phonotactics, etc.  These contextual sources
-often provide a great deal information about the intended category for a
+often provide a great deal of information about the intended category for a
 particular cue value, which makes the distributional learning problem of
 adaptation often (but not always) effectively a supervised learning problem.
 
@@ -276,10 +276,12 @@ distributions that a typical talker of American English will produce.
     TODO: point out connection with recalibration (-10, 30 vs. 30, 70)...or
     maybe in Expt 2 intro??
  -->
+
 In order to probe the possible constraints on distributional learning,
 Experiment 1 measures listener's distributional learning of a range of bimodal
 distributions of voice-onset time (VOT).  These distributions vary in how
-similar they are to a typical American English talker.
+similar they are to a typical American English talker (Figure
+-@fig:vot-dists-exp1).
 
 ```{r data-exp1}
 
@@ -409,7 +411,8 @@ n_excl_cond <- excluded %>%
 paid \$2.00 for participation, which took about 20 minutes.  Participants were excluded
 who participated more than once ($n=`r n_subj_repeat`$) or who failed to
 classify VOTs reliably ($n=`r n_subj_bad`$; $n=`r n_both`$ for both reasons).
-Reliable classification is defined as accuracy of at least 80% at 0 and 70ms
+Reliable classification is defined as accuracy of at least 80% /b/ at 0 and 80%
+/p/ at 70ms
 VOT. Because some conditions had few stimuli with these VOTs, 
 participants' responses were extrapolated using a logistic generalized linear model (GLM).  Excluded
 participants were roughly equally distributed across conditions (maximum of 
@@ -461,15 +464,21 @@ exposure talker's boundary as the "complete learning" baseline.
 
 Each subject's classification function was estimated with a Bayesian multilevel
 (mixed-effect) logistic regression, using the `brms` package [@Burkner2017] for
-`R` [@RCoreTeam2017].  This approach simultaneously estimates the group-level
+`R` [@RCoreTeam2017].[^expt1-formula]  This approach simultaneously estimates the group-level
 effects of the experimental manipulation (VOT shift condition) on the /b/-/p/
 category boundary location and sharpness, and each individual participants'
 boundary locations and slopes.  A multilevel approach like this has the benefit
 of properly accounting for and balancing the joint uncertainty about the group-
-and individual-level effects [@Gelman2007].[^shrinkage] The advantage of using a
-Bayesian approach in this case, over standard mixed-effects models as fit with
+and individual-level effects [@Gelman2007].[^shrinkage]  A specific advantage of a
+Bayesian approach, over standard mixed-effects models as fit with
 `lme4`, is that the Bayesian approach allows for direct estimates of
 subject-level effects (i.e., category boundaries), with associated uncertainty.
+
+[^expt1-formula]: The model formula was `respP ~ 1 + bvotCond * vot_s *
+    trial_s + (1 + vot_s | subject)`, where `respP` is a binary variable with 0
+    for a /b/ response and 1 for /p/, `bvotCond` is the exposure condition
+    (treatment-coded), and `vot_s` and `trial_s` are the centered and scaled VOT
+    and number of each trial, respectively.
 
 [^shrinkage]: One effect of using a multilevel approach is that the estimate of
     each subject's boundary is "shrunk" towards the group-level estimate.  This
@@ -739,7 +748,8 @@ boundary for each condition, and the corresponding confidence intervals are the
 Visual inspection shows that the group-level posterior distributions of the
 boundaries are almost entirely non-overlapping with their
 most-similar/neighboring conditions (all $`r ex1_pval_str`$), even though the
-_subject_-level distributions do overlap (as shown by the colored violins).
+distributions of individual subjects' boundaries _do_ overlap (as shown by the
+colored violins).
 
 [^bayes_p]: The $p$ values reported here are Bayesian $p$ values, or the
     posterior probability that the relevant statement holds conditional on the
@@ -757,8 +767,7 @@ perfectly correspond to the ideal category boundary for the VOT distributions
 they were exposed to (thick dashed colored lines).  Specifically, listeners seem
 to _undershoot_ the ideal category boundary, and their categorizations functions
 lie between the ideal boundary for the exposure talker and the boundary
-corresponding to a typical talker of American English (thin black colored
-lines).
+corresponding to a typical talker of American English (thin black lines).
 
 The undershoot is largest in absolute terms for the most shifted distributions,
 with the boundary for the 30, 70ms VOT condition undershooting by 
@@ -770,7 +779,7 @@ with the boundary for the 30, 70ms VOT condition undershooting by
 
 These results indicate two things.  First, like many other studies
 [e.g. @Chladkova2017; @Clayards2008; @Theodore2015; @Theodore2019; @Colby2018],
-I found evidence for distributional learning: listeners _do_ change how they
+I found evidence for distributional learning by adults: listeners _do_ change how they
 categorize sounds as voiced or unvoiced due to exposure to different VOT
 distributions.  Second, this learning is not _complete_, in the sense that
 listeners' voiced-unvoiced boundary does not exactly match the boundary implied
@@ -798,7 +807,7 @@ shifted, most tokens will fall into one of the two pre-existing distributions
 (see @Fig:vot-dists-exp1): in the condition with the highest positive shift
 (30ms /b/, 70ms /p/), 73% of all tokens from the lower cluster would be
 classified as /p/ according to a typical talker's distributions.  Thus, what
-what intended to be two separate clusters of VOTs---one for /b/ and
+was intended to be two separate clusters of VOTs---one for /b/ and
 one for /p/---may instead have been interpreted by listeners as one large
 cluster in the extreme
 conditions, lacking any labels to tell them otherwise.  I address this
@@ -807,8 +816,8 @@ possibility in Experiment 2, by providing labels on a portion of trials.
 A second possibility is that listeners are constrained by their prior experience
 with other talkers.  The fact that listeners' category boundaries tend to lie
 between those of a typical talker and the experimental exposure talker suggests
-that this is not implausible.  To assess this possibility more rigorously, after
-Experiment 2 I use a Bayesian belief-updating model of distributional learning
+that this is not implausible.  To assess this possibility more rigorously, in
+Experiment 3 I use a Bayesian belief-updating model of distributional learning
 to investigate whether the pattern of distributional learning across conditions
 is consistent with belief updating starting from common prior beliefs.
 
@@ -819,7 +828,7 @@ indicates _which_ member of the /b/-/p/ minimal pair the speaker intended to
 produce.  The goal of this experiment is to investigate whether the constraints
 on distributional learning observed in Experiment 1 are due to the unsupervised
 nature of the distributional learning task.  Adding labels to some of the trials
-may improve the degree of learning, or the speed, or both.
+might improve the degree of learning, the speed of learning, or both.
 
 ## Methods
 
@@ -890,11 +899,11 @@ data_exp2 %>%
 ```
 
 The procedure was identical to that of Experiment 1, with one change.  Half of
-the trials were _unlabeled_ as in Experiment 1: the response options were the
-/b/ and /p/ ends of the continuum for that trial's word were present (e.g.,
-"beach" and "peach").  The other half the trials were _labeled_: if the word was
+the trials were _unlabeled_ as in Experiment 1: pictures for both the 
+/b/ and /p/ members of the minimal pair for that trial's word were available (e.g.,
+"beach" and "peach").  The other half of the trials were _labeled_: if the word was
 drawn from a "beach" to "peach" continuum and the VOT was sampled from the lower
-VOT cluster, than the response options could be "beach" and either "peak" or
+VOT cluster, than one response option would be "beach", and the other either "peak" or
 "peas".  That is, the only response that was compatible with the _rest_ of the
 word had an onset consistent with the VOT cluster that that trial was drawn
 from.
@@ -904,22 +913,24 @@ and unlabeled trials were distributed across VOTs (@Fig:exp2-label-dists).  No
 differences were found between behavior in these conditions so they are analyzed
 analyzed together.[^supconds]
 
-[^supconds]: The two conditions are listed separately in the
+[^supconds]: For the curious---or skeptical reader---the two conditions are
+    listed separately in the
     [`supunsup`](https://github.com/kleinschmidt/phonetic-sup-unsup) R data
-    package.
+    package that accompanies this paper.
 
 <!-- TODO: this should go in a footnote in the introduction -->
 The only other difference with Experiment 1 was that the -10ms, 30ms condition
 was not included.  This is because these two experiments were originally run
-concurrently as a pilot for an imaging study.  The original goal of the
-supervised conditions of Experiment 2 was to see if distributional learning
-could be accelerated by including some labeled trials.  The -10ms, 30ms
-condition of Experiment 1 was run after analyzing data from the other conditions
-Experiments 1 and 2 together.
+concurrently as a pilot for an imaging study, during which the -10ms, 30ms
+condition was not considered.  The original goal of the supervised conditions of
+Experiment 2 was to see if distributional learning could be accelerated by
+including some labeled trials.  The -10ms, 30ms condition of Experiment 1 was
+run later, after analyzing data from the other conditions Experiments 1 and 2
+together.
 
 ### Participants
 
-I recruited `r n_total_2 ` participants via Amazon's Mechanical Turk.  As in
+A total of `r n_total_2 ` participants were recruited via Amazon's Mechanical Turk.  As in
 Experiment 1, participants were paid $2.00 for participation.  Exclusion criteria
 were the same as Experiment 1, and data from `r n_excluded_2` participants were
 excluded from analysis: `r n_subj_repeat_2` for repeated participation
@@ -1110,11 +1121,12 @@ from the Experiment 1 model, and all interactions thereof.  The random effects
 structure was identical to Experment 1.  Because listeners' responses were so
 systematically determined by the label on labeled trials, _only_ unlabeled
 trials were included in the model (all trials from Experiment 1, and half of the
-trial from Experiment 2).
+trials from Experiment 2).
 
 Figure -@fig:expt2-bounds shows the by-subject and overall category boundaries
 for semi-supervised (shaded violins/points) and unsupervised (outlined
-violins/points) distributional learning.  As in @Fig:expt1-boundaries, the
+violins/points, replotted from Figure -@fig:expt1-boundaries) distributional
+learning.  As in @Fig:expt1-boundaries, the
 boundaries estimated from the model for a trial 5/6 of the way to the end of the
 experiment, and the points and lines show the group-level (fixed effects)
 estimates and 95% credible intervals.  The intervals for unsupervised and
