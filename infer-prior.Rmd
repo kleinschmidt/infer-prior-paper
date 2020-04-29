@@ -1802,7 +1802,7 @@ in the variances ($\nu_0 > \kappa_0$) and adapts by shifting.  Nevertheless, the
 "shifting" solution is preferred, with $\nu_0 > \kappa_0$ in the majority of
 MCMC samples (Bayesian $p$ value of `r p_shift`).
 
-```{r inferred-beliefs, fig.width = 7.4, fig.height=5.3, fig.cap="Inferred prior beliefs from belief updating model, compared with prior beliefs estimated by @Kronrod2016.  Inferred priors are derived using the maximum a posteriori (MAP) estimate of the expected prior mean and variance parameters $\\mu_0$, $\\sigma^2_0$."}
+```{r inferred-beliefs, fig.width = 8, fig.height=5, fig.cap="Inferred prior beliefs from belief updating model, compared with prior beliefs estimated by @Kronrod2016.  Inferred priors are derived using the maximum a posteriori (MAP) estimate of the expected prior mean and variance parameters $\\mu_0$, $\\sigma^2_0$ (heavy lines).  To give a sense of the range of uncertainty that the *model* has about listener's prior beliefs based on their behavior in the experiment, also plotted are the prior beliefs from 100 values sampled from the posterior (light lines)."}
 
 map_iter <- spread_draws(fit_inc, lp__) %>%
   arrange(desc(lp__)) %>%
@@ -1826,8 +1826,6 @@ map_prior_stats <-
   inner_join(map_iter, by=".draw") %>%
   select(category, mean=mu_0, sd=sigma_0)
 
-
-
 map_prior_lhood <- 
   map_prior_stats %>%
   stats_to_lhood(noise_sd = 0)  
@@ -1840,6 +1838,7 @@ prior_stats_by_talker %>%
   group_by(source, category, prevoiced) %>%
   stats_to_lhood()
 
+# extract 100 draws and draw lhood functions
 n_prior_samps <- 100
 sampled_prior_lhood <- prior_samples_df %>%
   group_by(.draw) %>%
@@ -1850,12 +1849,15 @@ sampled_prior_lhood <- prior_samples_df %>%
   left_join(spread_draws(fit_inc, lp__))
 
 ggplot(mapping=aes(x=vot, y=lhood, linetype=category, color=source)) +
-  geom_line(data = map_prior_lhood, aes(color="Belief updating model"), size=1) +
-  geom_line(data = prior_lhood, aes(color="Kronrod et al. (2016)"), size=1) +
+  geom_line(data = map_prior_lhood,
+            aes(color="Belief updating model"),
+            size=1) +
+  geom_line(data = prior_lhood,
+            aes(color="Kronrod et al. (2016)"),
+            size=1) +
   geom_line(data = sampled_prior_lhood,
-            aes(group=interaction(.draw, category), alpha=exp(lp__ - max(lp__)),
-                color="Belief updating model"),
-            show.legend = FALSE) +
+            aes(group=interaction(.draw, category), color="Belief updating model"),
+            show.legend = FALSE, alpha=0.1) +
   scale_x_continuous(breaks = seq(-40, 120, by=20)) +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
