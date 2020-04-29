@@ -1741,7 +1741,7 @@ _content_ of those beliefs, and their _strength_.  The strength corresponds to h
 confident the modeled listener is in their prior beliefs, which is represented
 in the model in the prior confidence pseudocounts for the means ($\kappa_0$) and
 variance ($\nu_0$).  These parameters correspond to the number of observations
-required to get to a point where the listener's updated beliefs in equal parts
+required to get to a point where the listener's updated beliefs are in equal parts
 informed by their prior expectations and recent experience.
 
 ```{r confidence-params, fig.width=5.6, fig.height=4.4, fig.cap="Sampled values of prior confidence parameters from belief updating model fit to Experiment 1.  Upper left shows values where $\\kappa_0 < \\nu_0$ (\"shifting\"), and lower right shows values where $\\nu_0 < \\kappa_0$ (\"expanding\").  Red stars show approximate MAP values for each kind of solution (individual sample with the highest posterior)."}
@@ -1799,7 +1799,7 @@ However, as in previous work with similar belief updating models
 bimodal.  One mode that puts more confidence in the means ($\kappa_0 > \nu_0$)
 and adapts mostly by updating beliefs in the variance, while the other puts more
 in the variances ($\nu_0 > \kappa_0$) and adapts by shifting.  Nevertheless, the
-"shifting" solution is preferred, with $\nu_0 < \kappa_0$ in the majority of
+"shifting" solution is preferred, with $\nu_0 > \kappa_0$ in the majority of
 MCMC samples (Bayesian $p$ value of `r p_shift`).
 
 ```{r inferred-beliefs, fig.width = 7.4, fig.height=5.3, fig.cap="Inferred prior beliefs from belief updating model, compared with prior beliefs estimated by @Kronrod2016.  Inferred priors are derived using the maximum a posteriori (MAP) estimate of the expected prior mean and variance parameters $\\mu_0$, $\\sigma^2_0$."}
@@ -1840,11 +1840,21 @@ prior_stats_by_talker %>%
   group_by(source, category, prevoiced) %>%
   stats_to_lhood()
 
+sampled_prior_lhood_200 <- prior_samples_df %>%
+  semi_join(samples) %>%
+  select(.draw, category, mean=mu_0, sd=sigma_0) %>%
+  group_by(.draw) %>%
+  nest() %>%
+  unnest(lhood=map(data, ~ stats_to_lhood(., noise_sd=0))) %>%
+  left_join(spread_draws(fit_inc, lp__))
 
 bind_rows(mutate(map_prior_lhood, source = "Belief updating\nMAP estimate"),
           mutate(prior_lhood, source = "Kronrod et al. (2016)")) %>%
   ggplot(aes(x=vot, y=lhood, linetype=category, color=source)) +
-  geom_line() +
+  geom_line(size=2) +
+  geom_line(data = sampled_prior_lhood_200,
+            aes(group=interaction(.draw, category), alpha=exp(lp__ - max(lp__))),
+            color=1) +
   scale_x_continuous(breaks = seq(-40, 120, by=20)) +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),

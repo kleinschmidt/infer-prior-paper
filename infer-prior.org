@@ -115,6 +115,9 @@
     acquisition is unconstrained or give some caveats"
 *** TODO when does the "three cluster" stuff come in?
     Elika thought that in model, exp 4, and gen disc was too much.  "cut/smooth/etc"
+** TODO quantify model goodness-of-fit
+   Even if this is something as simple as log-likelihood.  talk about
+   "quantitative fit" to the data but there's nothing quantitative about it!!
 * TODO more literature to consider
 ** DONE Cheyenne's dissertation
 ** TODO Mechanisms of learning
