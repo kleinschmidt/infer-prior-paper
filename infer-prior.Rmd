@@ -1802,7 +1802,7 @@ in the variances ($\nu_0 > \kappa_0$) and adapts by shifting.  Nevertheless, the
 "shifting" solution is preferred, with $\nu_0 > \kappa_0$ in the majority of
 MCMC samples (Bayesian $p$ value of `r p_shift`).
 
-```{r inferred-beliefs, fig.width = 8, fig.height=5, fig.cap="Inferred prior beliefs from belief updating model, compared with prior beliefs estimated by @Kronrod2016.  Inferred priors are derived using the maximum a posteriori (MAP) estimate of the expected prior mean and variance parameters $\\mu_0$, $\\sigma^2_0$ (heavy lines).  To give a sense of the range of uncertainty that the *model* has about listener's prior beliefs based on their behavior in the experiment, also plotted are the prior beliefs from 100 values sampled from the posterior (light lines)."}
+```{r inferred-beliefs, fig.width = 8, fig.height=5, fig.cap="Inferred prior beliefs from belief updating model, compared with VOT distributions estimated by @Kronrod2016.  Inferred priors are derived using the maximum a posteriori (MAP) estimate of the expected prior mean and variance parameters $\\mu_0$, $\\sigma^2_0$ (heavy lines).  To give a sense of the range of uncertainty that the *model* has about listener's prior beliefs based on their behavior in the experiment, also plotted are the prior beliefs from 100 values sampled from the posterior (light lines)."}
 
 map_iter <- spread_draws(fit_inc, lp__) %>%
   arrange(desc(lp__)) %>%
