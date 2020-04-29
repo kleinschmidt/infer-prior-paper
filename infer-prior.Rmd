@@ -1248,7 +1248,12 @@ better alignment with the cue distributions that the talker has actually
 produced.
 
 Why is this type of model a plausible explanation of the results of Experiments
-1 and 2?  First, the process of belief updating means that at any given point a
+1 and 2?  First, this same type of model captures the changes in phonetic
+classification that happen during recalibration and selective adaptation
+[@Kleinschmidt2015b] as well as during distributional learning due to different
+VOT distribution variances [@Theodore2019].
+
+Second, the process of belief updating means that at any given point a
 listener's beliefs about that talker's cue distributions will be a _compromise_
 between what they expected a priori, and the distributions they have actually
 encountered.  When a listener has limited experience with a particular
@@ -1256,7 +1261,7 @@ talker, or especially strong, specific prior expectations, this compromise will
 be especially obvious because their prior beliefs will be more informative
 relative to their recent, direct experience with the talker.
 
-Second, one prediction of the ideal adapter is that listeners' prior
+Finally, one prediction of the ideal adapter is that listeners' prior
 expectations should be calibrated to the level (and type) of talker variability
 they have actually encountered [@Kleinschmidt2015b].  In this framework, the
 prior beliefs that listeners start from are based on listeners' expectations, on
