@@ -1977,7 +1977,8 @@ likely to be similar levels of talker variability in such spectral cues.
 
 The evidence presented thus far suggests that adult distributional learning is
 constrained in substantial ways (Experiment 1), that these constraints cannot be
-attributed to uncertainty due to the lack of labeling information (Experiment
+attributed to uncertainty about the intended category due to the minimal pair
+words used (Experiment
 2), and that the observed constraints are at least consistent with belief
 updating starting from a shared set of prior beliefs (Experiment 3).  One
 interpretation of the modeling results from Experiment 3 is that the prior

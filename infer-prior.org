@@ -114,10 +114,17 @@
     Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
     acquisition is unconstrained or give some caveats"
 *** TODO when does the "three cluster" stuff come in?
-    Elika thought that in model, exp 4, and gen disc was too much.  "cut/smooth/etc"
+    Elika thought that in model, exp 4, and gen disc was too much.
+    "cut/smooth/etc"
+
+    It seems out of place in discussion of modeling results...
 ** TODO quantify model goodness-of-fit
    Even if this is something as simple as log-likelihood.  talk about
    "quantitative fit" to the data but there's nothing quantitative about it!!
+** TODO what does belief updating recover from asymetic dists?
+   generate belief updating data given asymmetric priors (e.g., realistic
+   priors) and see whether the model can recover it.  maybe leave this for a
+   separate paper (with unsupervised learning etc.)
 * TODO more literature to consider
 ** DONE Cheyenne's dissertation
 ** TODO Mechanisms of learning
