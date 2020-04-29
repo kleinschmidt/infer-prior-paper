@@ -1904,7 +1904,7 @@ and the learning curves are captured by a Bayesian belief updating model modeled
 on previous work on phonetic recalibration [@Kleinschmidt2015b].  This suggests
 that despite their superficial differences, both recalibration and
 distributional learning may be reflections of the same underlying process of
-belief updating.
+belief updating [see also @Theodore2019].
 
 ### Content of prior beliefs
 
