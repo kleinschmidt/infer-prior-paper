@@ -1840,21 +1840,22 @@ prior_stats_by_talker %>%
   group_by(source, category, prevoiced) %>%
   stats_to_lhood()
 
-sampled_prior_lhood_200 <- prior_samples_df %>%
-  semi_join(samples) %>%
-  select(.draw, category, mean=mu_0, sd=sigma_0) %>%
+n_prior_samps <- 100
+sampled_prior_lhood <- prior_samples_df %>%
   group_by(.draw) %>%
+  select(.draw, category, mean=mu_0, sd=sigma_0) %>%
   nest() %>%
+  sample_n(n_prior_samps) %>%
   unnest(lhood=map(data, ~ stats_to_lhood(., noise_sd=0))) %>%
   left_join(spread_draws(fit_inc, lp__))
 
-bind_rows(mutate(map_prior_lhood, source = "Belief updating\nMAP estimate"),
-          mutate(prior_lhood, source = "Kronrod et al. (2016)")) %>%
-  ggplot(aes(x=vot, y=lhood, linetype=category, color=source)) +
-  geom_line(size=2) +
-  geom_line(data = sampled_prior_lhood_200,
-            aes(group=interaction(.draw, category), alpha=exp(lp__ - max(lp__))),
-            color=1) +
+ggplot(mapping=aes(x=vot, y=lhood, linetype=category, color=source)) +
+  geom_line(data = map_prior_lhood, aes(color="Belief updating model"), size=1) +
+  geom_line(data = prior_lhood, aes(color="Kronrod et al. (2016)"), size=1) +
+  geom_line(data = sampled_prior_lhood,
+            aes(group=interaction(.draw, category), alpha=exp(lp__ - max(lp__)),
+                color="Belief updating model"),
+            show.legend = FALSE) +
   scale_x_continuous(breaks = seq(-40, 120, by=20)) +
   theme(axis.title.y = element_blank(),
         axis.ticks.y = element_blank(),
@@ -1863,13 +1864,16 @@ bind_rows(mutate(map_prior_lhood, source = "Belief updating\nMAP estimate"),
         legend.position=c(1,1),
         legend.justification=c(1,1)
         ) +
-  labs(title = "Inferred prior beliefs")
+  labs(title = "Inferred prior beliefs",
+       subtitle = "Maximum a posteriori beliefs and 100 samples from belief updating model")+
+  scale_color_discrete("") +
+  scale_linetype_discrete("")
 
 ```
 
 Figure -@fig:inferred-beliefs shows the prior expected VOT distributions for /b/
 and /p/ that are most likely given the distributional learning behavior (maximum
-a posteriori/MAP).  The belief updating model recovers distributions that are
+a posteriori/MAP), along with .  The belief updating model recovers distributions that are
 similar but not identical to those estimated by @Kronrod2016 (based on
 classification and discrimination data, assuming that /b/ has a mean VOT of 0
 ms).  The inferred distribution for /p/ has a slightly lower mean but very
