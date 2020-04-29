@@ -1884,6 +1884,12 @@ the variance of the two distributions is quite similar, and the difference
 between the prior means for /b/ and /p/ is very close to 40ms, the difference
 between the cluster means of the _exposure_ distributions.
 
+Also shown in Figure -@fig:inferred-beliefs are 100 samples from the
+distribution of prior beliefs given listeners' behavior in Experiment 1.  This
+shows that the behavior does not uniquely constrain these prior beliefs, and is
+instead compatible with belief updating starting from prior beliefs with a range
+of means and variances.
+
 ## Discussion
 
 The results of the belief updating modeling show that the pattern of constrained
