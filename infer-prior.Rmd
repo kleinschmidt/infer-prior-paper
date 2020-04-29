@@ -1920,6 +1920,7 @@ classification data in order to estimate listeners' beliefs about the underlying
 variances of voiced and voiceless stops (in addition to the sensory uncertainty
 associated with VOT itself).
 
+<!-- TODO: yeah this is way out of place here... -->
 A further complication comes from the fact that the belief updating model
 assumes that there are exactly two clusters, one for voiced /b/ and the other
 for voiceless /p/.  In reality, word-initial voicing in American English is
@@ -1936,25 +1937,27 @@ and /p/.
 ### Strength of prior beliefs
 
 The belief updating model also suggests that these prior beliefs are relatively
-strong, with listeners updating their beliefs as if they were based on
-$2-5\times$ more VOT samples prior than they would encounter during the
-experiment itself.  This is in stark contrast to the results of a similar belief
-updating model of recalibration [@Kleinschmidt2015b], which found that listeners
-have relatively _weak_ prior beliefs.  That model was mathematically the
-same---updating Normal-Inverse $\chi^2$ prior beliefs about cue
-distributions---and the number of trials in the experiments were similar (about
-200), but @Kleinschmidt2015b found prior pseudocounts on the order of 10s of
-observations, rather than 100s like the current study.  Why this discrepancy?
-One possibility is that @Kleinschmidt2015b fit that model to data from a
-phonetic recalibration study, where listeners repeatedly hear stimuli chosen to
-be acoustically ambiguous between /aba/ and /ada/, paired with a label of some
-kind of label, like a visual cue to the articulation [@Bertelson2003;
-@Vroomen2007].  Experiment 2 found that providing labeling information did not
-appreciably change the speed or completeness of distributional learning, but
-it's possible that the targeting of specifically ambiguous stimuli rather than
-the wider range of stimuli used here could explain the difference [although the
-fact that exposure to prototypical stimuli leads to equally rapid belief
-updating suggests this is unlikely; @Kleinschmidt2015b].
+strong, with listeners acting as if their prior beliefs were based on
+$2-5\times$ more VOT samples prior than they actually encounter during the
+experiment itself.  This is in stark contrast to the results of the same belief
+updating model applied to /b/-/d/ recalibration [@Kleinschmidt2015b], which
+found that listeners have relatively _weak_ prior beliefs.  Despite the fact
+that the number of trials in the experiments were similar (about 200),
+@Kleinschmidt2015b found that recalibration of /b/-/d/ was best explained by
+prior beliefs that were 10 times weaker than here (prior pseudocounts on the
+order of 10s of observations, rather than 100s like the current results).  Why
+this discrepancy?  One possibility is the different learning tasks: in a
+recalibration tasks like that being modeled by @Kleinschmidt2015b, listeners
+repeatedly hear stimuli chosen to be acoustically ambiguous (between /aba/ and
+/ada/ in this case), paired with a label of some kind of label [like a visual
+cue to the articulatory gesture; @Bertelson2003; @Vroomen2007].  While my
+Experiment 2 found that providing labeling information did not appreciably
+change the speed or completeness of distributional learning, it's possible that
+by targeting ambiguous stimuli specifically---rather than the wider range of
+stimuli used here---could lead to more reliance on labeling information
+[although the fact that exposure to not-fully-ambiguous or even prototypical
+stimuli leads to equally rapid belief updating suggests this is unlikely;
+@Kleinschmidt2015b].
 
 Another posibility, proposed by @Kleinschmidt2015b, is that the strength of
 listeners' prior beliefs about a particular cue distribution is related to how
