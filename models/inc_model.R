@@ -95,32 +95,36 @@ lapse_rate_samples <-
 ## man it's already real slow and we're talking like millions of rows of a
 ## tibble so... not optimisic that will work well.
 
-## class_fun_samples <-
-##   updated_samples_df %>%
-##   group_by(.draw) %>%
-##   nest() %>%
-##   sample_n(200) %>%
-##   unnest() %>%
-##   mutate(mean=mu_n, sd=sigma_n) %>%
-##   select(.draw, block_num, bvotCond, category, mean, sd) %>%
-##   group_by(.draw, bvotCond, block_num) %>%
-##   do(stats_to_lhood(., noise_sd=0)) %>%
-##   lhood_to_classification() %>%
-##   left_join(lapse_rate_samples) %>%
-##   mutate(prob_p = (1-lapse_rate)*prob_p + lapse_rate/2)
+## okay it DOES work but I made a big error and was using ALL VOTs .......
 
-## ll_by_sub_draw <- data_exp1 %>%
-##   group_by(subject, bvotCond, block_num=ntile(trial, 6)) %>%
-##   summarise(n_p = sum(respP), n_resp = n()) %>%
-##   left_join(class_fun_samples) %>%
-##   group_by(subject, .draw) %>%
-##   summarise(loglik = sum(dbinom(n_p, size=n_resp, prob=prob_p, log=TRUE)))
+class_fun_samples <-
+  updated_samples_df %>%
+  group_by(.draw) %>%
+  nest() %>%
+  sample_n(200) %>%
+  unnest() %>%
+  mutate(mean=mu_n, sd=sigma_n) %>%
+  select(.draw, block_num, bvotCond, category, mean, sd) %>%
+  group_by(.draw, bvotCond, block_num) %>%
+  do(stats_to_lhood(., noise_sd=0)) %>%
+  lhood_to_classification() %>%
+  left_join(lapse_rate_samples) %>%
+  mutate(prob_p = (1-lapse_rate)*prob_p + lapse_rate/2)
 
-## loooo <- ll_by_sub_draw %>%
-##   spread(.draw, loglik) %>%
-##   select(-subject) %>%
-##   t() %>%
-##   loo()
+ll_by_sub_draw <- data_exp1 %>%
+  group_by(subject, vot, bvotCond, block_num=ntile(trial, 6)) %>%
+  summarise(n_p = sum(respP), n_resp = n()) %>%
+  left_join(class_fun_samples) %>%
+  group_by(subject, .draw) %>%
+  summarise(loglik = sum(dbinom(n_p, size=n_resp, prob=prob_p, log=TRUE)))
+
+loooo <- ll_by_sub_draw %>%
+  spread(.draw, loglik) %>%
+  ungroup() %>%
+  select(-subject) %>%
+  as.matrix() %>%
+  t() %>%
+  loo()
 
 ## some visualizations
 
