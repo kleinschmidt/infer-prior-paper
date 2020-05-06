@@ -91,10 +91,6 @@ lapse_rate_samples <-
 
 ## loo
 
-## this doens't work: just a bunch of NaNs...maybe I need to do more samples but
-## man it's already real slow and we're talking like millions of rows of a
-## tibble so... not optimisic that will work well.
-
 ## okay it DOES work but I made a big error and was using ALL VOTs .......
 
 class_fun_samples <-
@@ -125,6 +121,13 @@ loooo <- ll_by_sub_draw %>%
   as.matrix() %>%
   t() %>%
   loo()
+
+### comparing with a GLM/logit model:
+
+# needs data_exp1_mod from infer-prior.Rmd but you get the idea.....
+glm_logit = brm(respP ~ 1 + bvotCond * vot_s * trial_s, data = data_exp1_mod, family=bernoulli(), chains=4, iter=1000)
+ll_glm <- log_lik(glm_logit, )
+ll_glm_bysub <- map(unique(data_exp1_mod$subject), ~ data_exp1_mod$subject == .x) %>% lift(cbind)(.) %>% {ll_glm %*% .};
 
 ## some visualizations
 
