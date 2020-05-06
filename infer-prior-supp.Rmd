@@ -70,7 +70,7 @@ beta_name_subs <- list(
   c(":", " : "),
   c("vot_s", "VOT"),
   c("trial_s", "Trial"),
-  c("bvotCond", "/b/ VOT "),
+  c("bvotCond", "/b/ VOT ")
   )
 
 clean_beta <-
@@ -164,13 +164,13 @@ _conservative_ test of support for the null hypothesis.
 
 b_logit_exp2 <- readRDS("models/b_logit_sup_v_unsup_w_prior.rds")
 
-hyps_sup <- b_logit_sup_v_unsup_w_prior %>%
+hyps_sup <- b_logit_exp2 %>%
   fixef() %>%
   rownames() %>%
   purrr::keep(~ str_detect(., "supervised")) %>%
   glue("{x} = 0", x=.)
 
-hyps_sup_test <- hypothesis(b_logit_sup_v_unsup_w_prior, hypothesis=hyps_sup)
+hyps_sup_test <- hypothesis(b_logit_exp2, hypothesis=hyps_sup)
 
 hyps_rest <- b_logit_sup_v_unsup_w_prior %>%
   fixef() %>%
@@ -195,6 +195,10 @@ b_logit_exp2 %>%
   ggplot(aes(x=.value, y=.variable, fill=p_gt_zero)) +
   geom_halfeyeh(relative_scale = 2) +
   scale_fill_gradient2("p(β > 0)", midpoint=0.5, mid=gray(0.9)) +
-  geom_vline(xintercept = 0, linetype=3)
+  geom_vline(xintercept = 0, linetype=3) +
+  ## geom_density(data = prior_samples(b_logit_exp2, pars = "b"),
+  ##              mapping = aes(x=b, y = ..density..),
+  ##              fill = NA,
+  ##              color="black", )
 
 ```
