@@ -1986,6 +1986,7 @@ beliefs that the model infers as the starting point for distributional learning
 actually correspond to the real contents of listener's prior beliefs.  This
 final experiment serves as a stronger test of this idea, by testing
 distributional learning with an even wider range of exposure distributions.
+<!-- TODO: this is premature... -->
 The results of this study suggest that the modeling results from Experiment 3
 should be interpreted with some caution, and more specifically suggests that the
 ability of a belief updating model to provide insight into listeners'
@@ -1993,6 +1994,7 @@ prior beliefs is determined in equally large part by the assumptions of the
 model and the structure of variation in the exposure distributions that provide
 input to the model.
 
+<!-- TODO: also this -->
 There are two concrete reasons why the inferred prior beliefs from the belief
 updating model might not reflect listeners actual prior beliefs, or even provide
 a particularly good account of their behavior in slightly different
@@ -2010,6 +2012,7 @@ That is, the two-component model may over-estimate the extent to which
 exposure to a distribution with large negative VOTs would cause American English
 listeners to adjust their categorization boundary.
 
+<!-- TODO: all of these are discussion -->
 The second reason is that the model assigns independent prior beliefs to /b/ and
 /p/, whereas in reality there is _structure_ in the way these categories' VOT
 distributions vary across talkers [@Chodroff2017].  If listeners expect
@@ -2022,6 +2025,7 @@ VOT cluster means were perfectly correlated across conditions in Experiment 1,
 since the difference between the high and low VOT clusters was 40ms in every
 exposure condition.
 
+<!-- TODO: need a BIT of justification here but not SO MUCH as above... -->
 To address both of these, Experiment 4 examines distributional learning to
 bimodal VOT distributions where the /b/ and /p/ distributions do not vary in
 lock-step as in Experiment 1 and 2, and moroever feature a larger range of both
@@ -2062,7 +2066,7 @@ exp4_blocks <-
 
 ## Methods
 
-```{r exposure-dists-exp4, fig.width=10, fig.height=3, fig.cap="In Experiment 4, each subject heard a talker that produced one of these five VOT distributions. The variance of each category was constant across conditions, but the means varied semi-independently."}
+```{r exposure-dists-exp4, fig.width=10, fig.height=3, fig.cap="In Experiment 4, each subject heard a talker that produced one of these five VOT distributions. The variance of each category was constant across conditions and the same as in Experiments 1 and 2, but the means varied semi-independently.  The first four conditions had a mean /p/ VOT of 50ms, with /b/ mean from -80 to 10ms VOT.  The 10ms /b/, 50ms /p/ condition was the same exposure distributions as in Experiment 1.  The final condition had means of 10ms for /b/ and 80ms for /p/.  Distributions for a typical talker are shown in dashed lines."}
 
 sepmeans %>%
   left_join(sepmeans_conds) %>%
@@ -2096,8 +2100,7 @@ means (from 40 to 130ms VOT), unlike Experiment 1 which maintained a constant
 separation between /b/ and /p/ mean VOT of 40ms.  Note that the condition with
 /b/ mean of 10ms and /p/ mean of 50ms VOT is the same as in Experiment 1.  This
 condition was included to provide a way of comparing with Experiment 1, since
-the design of Experiment 4 required a change in procedure (which I discuss
-next).
+the design of Experiment 4 required a change in procedure (discussed next).
 
 ### Procedure: assessing category boundaries
 
