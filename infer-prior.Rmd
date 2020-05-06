@@ -1988,58 +1988,47 @@ likely to be similar levels of talker variability in such spectral cues.
 The evidence presented thus far suggests that adult distributional learning is
 constrained in substantial ways (Experiment 1), that these constraints cannot be
 attributed to uncertainty about the intended category due to the minimal pair
-words used (Experiment
-2), and that the observed constraints are at least consistent with belief
-updating starting from a shared set of prior beliefs (Experiment 3).  One
-interpretation of the modeling results from Experiment 3 is that the prior
-beliefs that the model infers as the starting point for distributional learning
-actually correspond to the real contents of listener's prior beliefs.  This
-final experiment serves as a stronger test of this idea, by testing
-distributional learning with an even wider range of exposure distributions.
-<!-- TODO: this is premature... -->
-The results of this study suggest that the modeling results from Experiment 3
-should be interpreted with some caution, and more specifically suggests that the
-ability of a belief updating model to provide insight into listeners'
-prior beliefs is determined in equally large part by the assumptions of the
-model and the structure of variation in the exposure distributions that provide
-input to the model.
+words used (Experiment 2), and that the observed constraints are at least
+consistent with belief updating starting from a shared set of prior beliefs
+(Experiment 3).  One interpretation of the modeling results from Experiment 3 is
+that the prior beliefs that the model infers as the starting point for
+distributional learning actually correspond to the real contents of listener's
+prior beliefs.  However, despite the fact that some of the VOT distributions
+tested thus far deviate substantially from a typical talker of American English,
+in reality they cover only a rather narrow range of possible VOT distributions.
 
-<!-- TODO: also this -->
-There are two concrete reasons why the inferred prior beliefs from the belief
-updating model might not reflect listeners actual prior beliefs, or even provide
-a particularly good account of their behavior in slightly different
-distributional learning circumstances.  The first is that American English word
-initial stop voicing is actually characterized by _three_ clusters: positive
-VOTs (aspirated) which are perceived as /p/, VOTs of approximately zero, and
-negative VOTs (prevoicing), which are both perceived as /b/ [@Lisker1964;
-@Baese-Berk2009].  The belief updating model assumes there are only two
-clusters, and so any large negative VOTs would result, in the model, in large
-negative shifts in the low-VOT cluster (which starts near zero, according to the
-results of Experiment 3).  However, if listners actually use a three-component
-model, then negative VOTs might be assigned to a prevoiced cluster, leaving the
-un-aspirated cluster relatively unchanged and little to no change in boundary.
-That is, the two-component model may over-estimate the extent to which
-exposure to a distribution with large negative VOTs would cause American English
-listeners to adjust their categorization boundary.
+In this final experiment, I test listeners' distributional learning from
+distributions that vary more dramatically, in two ways.  First, I include
+distributions with large negative VOTs.  On the one hand, negative VOTs
+(prevoicing) are common cross-linguistically, and are also produced by many
+speakers of American English in word-initial voiced stops [@Goldrick2013;
+@Lisker1964].  On the other hand, word-initial voiced stops are canonically
+analyzed as un-aspirated un-voiced stops with VOTs around zero, and American
+English listeners have difficulty in recalibrating their classification
+boundaries to negatively-shifted VOT distributions [@Sumner2011], so there may
+be less flexibility in how they are interpreted relative to positive VOTs.
 
-<!-- TODO: all of these are discussion -->
-The second reason is that the model assigns independent prior beliefs to /b/ and
-/p/, whereas in reality there is _structure_ in the way these categories' VOT
-distributions vary across talkers [@Chodroff2017].  If listeners expect
-correlated variation in, for example, the mean VOT of /b/ and the mean VOT of
-/p/ across talkers, then there may in fact be _stronger_ than predicted
-constraints on learning pairs of distributions that deviate from the expected
-pattern of correlation (e.g., higher-than-expected /b/ but lower-than-expected
-/p/).  This possibility is exacerbated by the fact that the variation in the two
-VOT cluster means were perfectly correlated across conditions in Experiment 1,
-since the difference between the high and low VOT clusters was 40ms in every
-exposure condition.
+Second, in Experiments 1 and 2 the means of the two VOT distributions vary in
+lock-step.  There is some evidence from production data [@Chodroff2017] that the
+means of different VOT distributions may be positively correlated across talkers
+in this way.  If listeners are sensitive to this structured variation across
+talkers, it may result in additional constraints on distributional learning not
+detectable with the range of distributions tested in Experiments 1 and 2.
 
-<!-- TODO: need a BIT of justification here but not SO MUCH as above... -->
-To address both of these, Experiment 4 examines distributional learning to
-bimodal VOT distributions where the /b/ and /p/ distributions do not vary in
-lock-step as in Experiment 1 and 2, and moroever feature a larger range of both
-negative and positiev VOTs across conditions.
+In both cases, the belief-updating model from Experiment 3 does not include
+these possible constraints.  In the first case, it assumes that there are
+exactly and only two VOT distributions, and cannot account for the fact that in
+reality there are three clusters of VOT of word-initial stops in American
+English, with means that are negative (prevoiced), approximately zero
+(un-aspirated), and positive (aspirated).  In the second case, the model assumes
+that the priors on the VOT distributions for /b/ and /p/ are _independent_, and
+thus by design cannot capture additional constraints on distributional learning
+that might arise from experience with correlated variability across different
+phonetic categories.
+
+Thus, this final experiment provides a challenging test of the ability of the
+prior beliefs inferred from the pattern of distributional learning for various
+distributions in Experiment 1 to _generalize_ to quite different situations.
 
 ```{r sepmeans-data}
 
