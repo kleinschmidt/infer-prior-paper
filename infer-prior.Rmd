@@ -2203,11 +2203,11 @@ active_time <- supunsup::separatemeans %>%
 A total of `r n_total4` participants were recruited via Amazon's Mechanical
 Turk.  Subjects were paid \$2.50 for participation.  The task took subjects
 about 25 minutes to complete (because of the additional post-test, discussed
-next).  As in Experiment 1, subjects were excluded ($n=`r n_excl4 %$% sum(n)`$)
-who failed to classify words with unambiguous VOTs reliably during exposure (not
-post-test, see above).  After exclusion, `r n_clean4 %$% sum(n)` subjects
-remained for analysis (no subjects had previously participated in one of our VOT
-studies).  Subjects were evenly distributed across conditions (range of 
+above).  As in Experiment 1, subjects were excluded
+who failed to classify words with unambiguous VOTs reliably during exposure
+($n=`r n_excl4 %$% sum(n)`$).  After exclusion, `r n_clean4 %$% sum(n)` subjects
+remained for analysis (no subjects had previously participated in previous
+experiments).  Subjects were evenly distributed across conditions (range of
 `r n_clean4 %$% min(n)` to `r n_clean4 %$% max(n)` per condition).
 
 ```{r sepmeans-regression}
@@ -2250,7 +2250,7 @@ sepmeans_class_bysub <-
 
 
 
-```{r sepmeans-results, fig.width=10, fig.height=3, fig.cap="Results from experiment 4" }
+```{r sepmeans-results, fig.width=10, fig.height=3, fig.cap="Classification functions from Experiment 4.  Fine lines show individual subjects' classification functions (estimated based on random effects/subject-level predictors in the Bayesian mixed effects model) and thick solid lines show the group-level estimates (based on the fixed effects).  Thick colored dashed lines show the ideal categorization function given the exposure distributions, and the thin black dashed lines show the categorization function for a typical talker." }
 
 sepmeans_exposure_stats <- sepmeans %>%
   filter(!is_test) %>%
@@ -2315,9 +2315,11 @@ conditions of Experiment 4 to measure listeners' category boundaries.  As Figure
 -@fig:plot-sepmeans-bounds shows, listeners in the 10, 50ms condition from
 Experiment 4 produced very similar---if somewhat more variable---category
 boundaries in the post-test (filled violin) compared with the boundaries
-measured during exposure in the 10, 50ms condition from Experiment 1 (empty
-violin).  There is also more uncertainty associated with the estimates of the
-population-level fixed-effects boundaries as well (the filled vs. open white
+measured in the 10, 50ms condition Experiment 1 (empty
+violin), despite the fact that the Experiment 4 boundaries were measured during
+post-test and the Experiment 1 boundaries during
+exposure.  There is also more uncertainty associated with the estimates of the
+group-level (fixed-effects) boundaries as well (the filled vs. open white
 circles and associated credible intervals), even though the estimates themselves
 are largely in agreement (27 vs. 28ms VOT).  On the one hand, this validates the
 use of the post-test procedure in Experiment 4 as a way of measuring the outcome
@@ -2364,20 +2366,24 @@ boundaries) and not particularly reliable (going in the expected direction with
 only $p=`r boundary_diff_p_vals[['p']][1]`$[^bayes_p2] for the -20ms vs. -50ms
 /b/ conditions and $p=`r boundary_diff_p_vals[['p']][3]`$ for -50ms vs. -80ms
 /b/).  Even comparing the -80ms /b/ and -20ms /b/ conditions, the difference
-between the boundaries is more reliable but still small in absolute terms, only
+between the boundaries is more reliable but still small in absolute terms and
+with a credible interval which contains 0, only
 `r boundary_diff_p_vals[['mean_ci']][2]`.
 
 [^bayes_p2]: As above, these are Bayesian posterior $p$ values, or the
     proportion of posterior samples in which the inferred boundary was higher
     for the condition with the higher exposure mean.
 
-However, this lack of robust distributional learning is not unique to large
+However, this lack of robust distributional learning in this experiment is not
+unique to large
 negative VOTs.  The 10ms /b/, 80ms /p/ mean condition also produces comparably
 small shifts in category boundaries compared with the 10ms /b/, 50ms /p/
 condition, with a posterior mean difference between the population-level
-boundaries of only `r boundary_diff_p_vals[['mean_ci']][4]`.
+boundaries of only `r boundary_diff_p_vals[['mean_ci']][4]`.  Compare this with 
+the 15ms difference between the boundaries implied by the exposure distributions
+(30ms vs. 45ms VOT).
 
-```{r plot-sepmeans-bounds, fig.cap="/b/-/p/ category boundaries from Experiment 4.  Violins show distributions of subject's boundaries (estimated based on Bayesian mixed effect logistic regression) and points/CIs show the posterior mean and 95% CI for the group-level (fixed effect) estimate from the same regression.  Subjects boundaries from the Experiment 1 condition with the same exposure statistics are shown in outline, and are quite close to the results from Experiment 4 (if less variable).  Note that the position of the 'complete learning' boundaries (thick dashed lines; based on the exposure statistics) are much more extreme than in Experiment 1, reflecting the more extreme shifts in the distributions that listeners experience in Experiment 4."}
+```{r plot-sepmeans-bounds, fig.cap="/b/-/p/ category boundaries from Experiment 4.  Violins show distributions of subject's boundaries (estimated based on Bayesian mixed effect logistic regression) and points/CIs show the posterior mean and 95% CI for the group-level (fixed effect) estimate from the same regression.  Subjects' boundaries from the Experiment 1 condition with the same exposure statistics are shown in outline, and are quite close to the results from Experiment 4 (if less variable).  Note that the position of the 'complete learning' boundaries (thick dashed lines; based on the exposure statistics) are much more extreme than in Experiment 1, reflecting the more extreme shifts in the distributions that listeners experience in Experiment 4."}
 
 sepmeans_bounds_bysub %>%
   filter(block==1) %>%
@@ -2540,6 +2546,9 @@ two most extreme negative VOT conditions, makes very vague predictions.
 
 ## Discussion
 
+<!-- TODO: I don't think this framing is quite right...there's quite a lot of -->
+<!-- similarity between these two sets of results!  qualitatively consistent -->
+<!-- with failure to adapt to extreme shifts... -->
 The results of Experiment 4 differ in at least two important ways from the
 results of Experiments 1 and 2.  First, there was less distributional learning
 overall.  Second, the particular pattern of distributional learning across
@@ -2563,6 +2572,8 @@ VOT classification compared with other exposure distributions.  But in
 Experiment 4, the differences between the /b/-/p/ boundaries in the conditions
 with negative VOTs did not differ reliably from each other.
 
+<!-- TODO: talk about prevoicing here. -->
+
 ```{r expt4-error-rates}
 
 max_error_perc <- 
@@ -2582,7 +2593,7 @@ they were manipulated independently.  Varying the means of each cluster together
 maximizes the necessity of a boundary shift, since failure to shift the boundary
 would result in a large increase in the rate of errors given the implied
 category assignments from the clusters.  Exposure distributions where only *one*
-cluster deviates from listeners expectations does not *require* as large of a
+cluster deviates from listeners expectations do not *require* as large of a
 shift in the boundary between /b/ and /p/ in order to achieve a low recognition
 error.  In fact, for all the exposure distributions tested in Experiment 4,
 continuing to use the ideal boundary for a "typical talker" would yield low
@@ -2602,7 +2613,7 @@ which was flat between -10ms and 50ms.  Thus, it's possible that distributional
 learning continued throughout the test phase, undoing some of what listeners had
 learned from the earlier bimodal distributions (and indeed there is some
 evidence that the small differences between conditions present at the beginning
-of the test phase gradually disappear, see Supplementary Table -@tab:exp4-reg).
+of the test phase gradually disappear, see Supplementary Materials).
 
 More generally, the bimodal exposure distributions in Experiment 4 provide no
 direct evidence about how the range of VOTs during test (-10ms to 50ms VOT)
@@ -2647,6 +2658,7 @@ for future work, and finally the caveats given a final Experiment 4, which
 suggests that the constraints on distributional learning of VOT/voicing may be
 more complex than revealed in the first three experiments.
 
+<!-- TODO move this section to end -->
 ## Implications for future work
 
 The first, most general implication of these results is that they suggest a view
@@ -2693,7 +2705,8 @@ the linguistic structure [for a recent review, see @Johnson2020].
 This possibility raises two related sets of questions for future research: (1)
 what distributions of talkers' accents are *available* for learning, and (2) do
 listeners' distributional learning biases and constraints reflect such
-distributions across talkers that they have experienced?
+meta-distributions (distributions of accents across talkers) that they have
+experienced?
 
 ### What distributions are available to learn?
 
@@ -2779,6 +2792,7 @@ incorrect.  In the following section, I discuss a number of reasons why this
 model may have failed to generalize (in addition to the reasons discussed in
 Experiment 4 itself).
 
+<!-- TODO move this up -->
 ## Is distributional learning really belief updating?
 
 Without the data from Experiment 4, the evidence from Experiments 1-3 seems to

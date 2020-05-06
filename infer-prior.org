@@ -132,6 +132,9 @@
    priors) and see whether the model can recover it.  maybe leave this for a
    separate paper (with unsupervised learning etc.)
 * TODO more literature to consider
+** TODO "what is optimal" (benefit/cost/accuracy tradeoff)
+   @Tavoni2019, related to changes in boundaries contrasted with error rates in
+   discussion of Experiment 4.
 ** DONE Cheyenne's dissertation
 ** TODO Mechanisms of learning
    @Harmon2019: follow up of the Idemaru and Holt studies trying to tease apart
