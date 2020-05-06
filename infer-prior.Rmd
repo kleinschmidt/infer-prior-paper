@@ -1136,10 +1136,20 @@ included data from _both_ Experiments 1 and 2 in order to directly assess
 effects of supervised learning on the strength and time course of learning.
 This model included fixed effects for supervision condition, all fixed effects
 from the Experiment 1 model, and all interactions thereof.  The random effects
-structure was identical to Experment 1.  Because listeners' responses were so
+structure was identical to Experment 1.[^expt2-formula]  Because listeners' responses were so
 systematically determined by the label on labeled trials, _only_ unlabeled
 trials were included in the model (all trials from Experiment 1, and half of the
 trials from Experiment 2).
+
+[^expt2-formula]: The model formula was `respP ~ 1 + bvotCond * supervised *
+  vot_s * trial_s + (1 + vot_s | subject)`.  As in Experiment 1, VOT and trial
+  number were centered and scaled to have zero mean and unit variance.  Default
+  treatment contrasts were used for `supervised` and `bvotCond`, with the base
+  levels being `supervised` and /b/ mean VOT of 0ms, respectively.  Default
+  priors were used except for the addition of a Student's $t$ prior for the
+  regression coefficients ($\beta$s) with 3 degrees of freedom, mean 0, and
+  scale of 1 (`student_t(3, 0, 1)` in the `brms` syntax); for discussion of this
+  see the supplementary material.
 
 Figure -@fig:expt2-bounds shows the by-subject and overall category boundaries
 for semi-supervised (shaded violins/points) and unsupervised (outlined
@@ -2057,6 +2067,14 @@ post_test_len <-
   filter(subject==first(subject)) %>%
   nrow()
 
+post_test_len_each <-
+  sepmeans_test %>%
+  filter(subject==first(subject)) %>%
+  group_by(vot) %>%
+  tally() %>%
+  pull(n) %>%
+  unique()
+
 exp4_blocks <-
   sepmeans_test %>%
   group_by(block=ntile(trial, 6)) %>%
@@ -2108,7 +2126,8 @@ The procedure was identical to Experiment 1, with one exception. After
 completing the 222 trial exposure phase as in Experiment 1, listeners completed
 a test phase in order to assess their category boundaries. This phase consisted
 of `r post_test_len` additional trials with VOTs evenly distributed from -10 to
-50ms in 10ms steps. This additional phase was necessary because of the large
+50ms in 10ms steps (`r post_test_len_each` each). This additional phase was
+necessary because of the large
 separation between /b/ and /p/ clusters in the exposure distributions meant that
 in most conditions there were no trials with VOTs anywhere near the predicted
 (or typical) boundaries.
@@ -2125,16 +2144,26 @@ phase, when listeners behavior should be minimally affected by the change in
 distributions.
 
 As in Experiment 1, listeners' adaptation was evaluated via their classification
-functions, estimated with a hierarchical Bayesian logistic regression model.  In
+functions, estimated with a hierarchical Bayesian logistic regression model via
+`brms` [@Burkner2017].  In
 addition to VOT, a predictor for trial was also included, in order to account
-for any (un-)learning effects that might happen during post-test.  In order to
+for any (un-)learning effects that might happen during post-test, as well as all
+interactions between these and condition.[^expt4-formula]  In order to
 visualize the fitted classification functions and to estimate listeners'
 category boundaries, I used the classification function estimates from the trial
 halfway through the first third of the post-test.[^why-not-beginning]
 
+[^expt4-formula]: The complete formula for the model was `respP ~ 1 + vot_cond *
+    vot_s * trial_s + (1 + vot_s | subject)`.  As before, VOT and trial were
+    centered and scaled to have zero mean and unit variance.  Because the
+    regression coefficients were not directly interpreted (the fitted category
+    boundaries used instead), the default (treatment) coding was used for
+    condition.  The default priors for parameters were used.
+
 [^why-not-beginning]: The predictions from a regression model are more uncertain
     and more driven by noise at the extreme ranges of continuous predictors,
-    like trial number. Thus I use estimated value at the trial that is one-sixth into the post-test to estimate
+    like trial number. Thus I use estimated value at the trial that is one-sixth
+    into the post-test to estimate
     classification functions, rather than the very beginning, because it is
     _close_ to the beginning of the post test, but not so close that the
     predictions are substantially affected by the extra instability of the
