@@ -2538,6 +2538,30 @@ two most extreme negative VOT conditions, makes very vague predictions.
 <!-- TODO: I don't think this framing is quite right...there's quite a lot of -->
 <!-- similarity between these two sets of results!  qualitatively consistent -->
 <!-- with failure to adapt to extreme shifts... -->
+
+<!-- I think the interesting thing here is that on the one hand, there's not a -->
+<!-- lot of learnign even though these distributions diverge quite a lot from -->
+<!-- what I've been calling the "typical" distributions.  on the other hand, for -->
+<!-- the negative VOTs they're really not all that different from what someone -->
+<!-- might normally produce and so don't really REQUIRE updating.  -->
+
+<!-- the other interesting thing is whether this is consistent with teh story -->
+<!-- I've been telling about dist learning being constrained based on prior -->
+<!-- experience: the distributions diverge a lot so there should be strong -->
+<!-- cosntraints so not a lot of learning. OR, distributions are consistent and -->
+<!-- so don't REQUIRE a lot of learning. -->
+
+The results of Experiment 4 suggest that, on the one hand, distributional
+learning is constrained by prior experience with other talkers, consistent with
+Experiments 1, and 2.  On the other hand, the particular prior beliefs
+that the simple belief updating model 
+
+
+...reasonable assumptions mathematically but seems like they don't reflect the
+actual constraints.  mismatch between assumptions OR between exposure dists
+
+
+
 The results of Experiment 4 differ in at least two important ways from the
 results of Experiments 1 and 2.  First, there was less distributional learning
 overall.  Second, the particular pattern of distributional learning across
