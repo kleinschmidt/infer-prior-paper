@@ -4,5 +4,6 @@
 
 options(renv.settings.snapshot.type = "all")
 options(renv.config.auto.snapshot = FALSE)
+options(renv.config.synchronized.check = FALSE)
 
 source("renv/activate.R")
