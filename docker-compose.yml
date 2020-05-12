@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  r:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: infer-prior
+    container_name: infer-prior
+    volumes:
+      - .:/paper
+      - renv:/paper/renv
+    command: tail -F /dev/null
+
+volumes:
+  renv:

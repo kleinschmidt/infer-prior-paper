@@ -1,7 +1,9 @@
 FROM rocker/verse:3.6.3
 
-COPY ./packrat/packrat.lock packrat/
+WORKDIR /paper
+RUN Rscript -e "install.packages(\"renv\"); renv::consent(TRUE); renv::init(bare = TRUE)"
 
-RUN Rscript -e "install.packages(\"packrat\", repos = \"https://cran.rstudio.com/\")" && \
-        Rscript -e "library(packrat); packrat::init(infer.dependencies=FALSE)" && \
-        Rscript -e "packrat::restore()"
+COPY install.r install.r
+RUN Rscript install.r
+
+VOLUME /paper/renv
