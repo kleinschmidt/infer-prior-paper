@@ -2551,6 +2551,37 @@ two most extreme negative VOT conditions, makes very vague predictions.
 <!-- cosntraints so not a lot of learning. OR, distributions are consistent and -->
 <!-- so don't REQUIRE a lot of learning. -->
 
+<!-- more: reasons we might have observed relatively low levels of -->
+<!-- distributional learning: -->
+<!-- 1. learned dists but doesn't affect classification (three clusters?) -->
+<!-- 2. so different from typical talker that didn't believe dists -->
+<!-- 3. did learn but "un-learned" during test phase -->
+
+<!-- none of these seems like it can be the whole story...(1) doesn't explain -->
+<!-- why you don't see much learning in the 10/80 condition (although maybe -->
+<!-- there's something there with limited benefit to shifting boundary?), (2) -->
+<!-- doesn't square with the belief updating model not predicting the -->
+<!-- constraints (but maybe that's just because the range of dists tested in the -->
+<!-- first experiment is too narrow), (3) doesn't square with the fact that you -->
+<!-- get very similar boundaries for the 10/50 condition.-->
+
+On the one hand, the results from Experiment 4 are qualitatively consistent with
+the earlier experiments: distributional learning is constrained, and the minimal
+learning (change in category boundaries) observed here is consistent with the
+large differences between the exposure distributions and a typical talker's VOT
+distributions.  On the other hand, the quantitative predictions of a Bayesian
+belief updating model---based on the pattern of learning observed in Experiment
+1---do not predict the limited learning observed here.  This suggests that
+either there are other constraints involved, that there are important
+methodological differences between these studies, that the belief updating
+hypothesis is wrong, or that technical assumptions made in formulating the
+belief-updating model are be wrong.
+
+
+
+
+
+
 The results of Experiment 4 suggest that, on the one hand, distributional
 learning is constrained by prior experience with other talkers, consistent with
 Experiments 1, and 2.  On the other hand, the particular prior beliefs
@@ -2806,7 +2837,7 @@ model may have failed to generalize (in addition to the reasons discussed in
 Experiment 4 itself).
 
 <!-- TODO move this up -->
-## Is distributional learning really belief updating?
+## Is distributional learning (Bayesian) belief updating?
 
 Without the data from Experiment 4, the evidence from Experiments 1-3 seems to
 only support the idea that constraints on distributional learning arise from
@@ -2835,14 +2866,14 @@ need to be correct (or close enough) to generalize successfully.  That is, this
 comparison tests not only whether the overall belief updating hypothesis
 correct, but also that the particular belief updating _model_ which instantiates
 this hypothesis is a sufficiently close approximation to the actual processes
-that listeners are engaging during distributional learning.  The failure of the
-belief updating model (and the prior beliefs inferred from it) to generalize to
-learning of a different set of distributions in Experiment 4 could reflect the
-failure of assumptions made in the modeling process as well.
+of distributional learning.  The mismatch between the
+belief updating model's predictions and the results of Experiment 4 could be due
+to technical assumptions made in the modeling process, rather than the belief
+updating theory per se.
 
 One suspect assumption that the model makes is that talkers' productions can be
-characterized as two clusters of VOT, which are normal distributions.  However,
-even though American English has two phonemic voicing categories, many talkers
+characterized as two VOT clusters, which are normal distributions.  However,
+even though American English has two phonemic voicing _categories_, many talkers
 produce three distinct _clusters_ of VOTs, with a single long-lag VOT cluster
 for voiceless (aspirated) stops, and two clusters for voiced/unaspirated stops:
 one with a mean around 0ms VOT and low variance (short-lag), and another with a
@@ -2856,9 +2887,9 @@ predict little change in the voiced/voicess response boundary.  Testing this in
 an implemented model presents a number of technical challenges.  Not least among
 them is the fact that the model presented here assumes that the cluster labels
 of each token are known.  This assumption massively simplifies the inference in
-the model, and is reasonable given that the bimodal structure of the exposure
-distributions is extremely clear and that Experiment 2 found that providing
-cluster labels for half the tokens led to no change in distributional learning.
+the model, and is reasonable given not only that the bimodal structure of the exposure
+distributions is extremely clear, but also that Experiment 2 found that providing
+cluster labels to many tokens led to no change in distributional learning.
 But it's unclear what the cluster labels should be when there are three clusters
 (two for for phonemically voiced stops), so I leave exploring this possibility
 for future work.
