@@ -11,6 +11,8 @@ services:
       - .:/paper
       - renv:/paper/renv
     command: tail -F /dev/null
+    ports:
+      - "2222:22"
 
 volumes:
   renv:
