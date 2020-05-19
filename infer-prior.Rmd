@@ -2945,8 +2945,8 @@ belief-updating model as a mind-reading tool or even as an explanation of
 distributional learning, it also provides a number of potential directions for
 future work, both computationally (e.g., investigating the consequences of the
 various simplifications made here) and empirically [e.g., investigating learning
-from even more exotic distributions, cues, and training regimes; see @Harmon2019
-for work in this direction].
+from even other distributions, with multiple cues, and under varying training
+regimes; see @Harmon2019 for work in this direction].
 
 # Conclusion
 
