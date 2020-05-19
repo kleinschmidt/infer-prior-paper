@@ -2593,39 +2593,7 @@ English.  In particular, some conditions included large negative VOTs, for which
 little distributional learning was observed.  The lack of reliable
 distributional learning from negative VOTs is consistent with @Sumner2011, who
 also found that negative VOTs failed to produce large shifts in category
-boundaries except in a few particular presentation orders.
-
-Moreover, the belief updating model assumes that talkers' productions can be
-characterized as two VOT clusters.  However,
-even though American English has two phonemic voicing _categories_, many talkers
-produce three distinct _clusters_ of VOTs, with a single long-lag VOT cluster
-for voiceless (aspirated) stops, and two clusters for voiced/unaspirated stops:
-one with a mean around 0ms VOT and low variance (short-lag), and another with a
-large negative mean VOT and high variance (pre-voiced) [e.g. @Lisker1964;
-@Goldrick2013].  In an ideal listener model with three clusters, the short-lag
-cluster would largely determine the voiced/voiceless category boundary, since
-the pre-voiced and short-lag clusters are both phonemically voiced.
-A belief-updating model that does not know the true cluster for each observed
-VOT would likely assign large negative VOTs to the pre-voiced cluster [see
-e.g. @Kleinschmidt2015b eq. 7, p. 155], leading to minimal change in beliefs
-about the un-aspirated cluster and hence minimal changes in categorization.
-
-Testing this in an implemented model presents a number of technical challenges.
-Not least among them is the fact that the model presented in Experiment 3 is not
-a fully ideal adapter which classifies and adapts tokens at the same time, but
-rather assumes that the cluster labels of each token are known.  This assumption
-massively simplifies the inference in the model, and is reasonable given not
-only that the bimodal structure of the exposure distributions is extremely
-clear, but also that Experiment 2 found that providing cluster labels to many
-tokens led to no change in distributional learning.  But it's unclear what the
-cluster labels should be when there are three clusters (two for for phonemically
-voiced stops), so I leave exploring this possibility for future work.  One
-promising direction would be to use sequential Monte Carlo algorithms to
-approximate the online inference required to simultaneously classify and adapt
-[see e.g. @Kleinschmidt2018a; @Sanborn2010].
-
-
-<!-- TODO: talk about prevoicing here. -->
+boundaries except in a few particular presentation orders.  However, the 
 
 ```{r expt4-error-rates}
 
@@ -2745,7 +2713,44 @@ some relevant specific assumptions of the model itself.
 
 ### Potential points of failure in the belief updating model
 
-The other major architectural assumption of the belief updating model which may
+One of the basic assumptions of the belief updating model tested here is that
+there are exactly two clusters of VOTs for word initial stops: one corresponding
+to the voiced stop /b/ and a second for voiceless /p/.
+However,
+even though American English has two phonemic voicing _categories_, many talkers
+produce three distinct _clusters_ of VOTs, with a single long-lag VOT cluster
+for voiceless (aspirated) stops, and _two_ clusters for phonemically voiced stops:
+one with a mean around 0ms VOT and low variance (short-lag), and another with a
+large negative mean VOT and high variance (pre-voiced) [e.g. @Lisker1964;
+@Goldrick2013].  In an ideal listener model with these three VOT clusters, the short-lag
+cluster would largely determine the voiced/voiceless category boundary, since
+the pre-voiced and short-lag clusters are both phonemically voiced.
+When presented with un-labeled VOTs, a fully ideal adapter model would
+simultaneously classify VOTs and update beliefs about the underlying
+distributions, weighted by how likely each distribution is to explain that
+observation [see e.g. @Kleinschmidt2015b eq. 7, p. 155].  Starting from prior
+beliefs absed on a typical talker of American English, such a model
+would likely assign large negative VOTs to the pre-voiced cluster, leading to
+minimal change in beliefs about the un-aspirated cluster and hence minimal
+changes in categorization.
+
+While this is a conceptually straightforward prediction of the theory that
+distributional learning is a form of Bayesian belief-updating, testing this in
+an implemented model presents a number of technical challenges.
+Not least among them is the fact that the model presented in Experiment 3 is not
+a fully ideal adapter which classifies and adapts tokens at the same time, but
+rather assumes that the cluster labels of each token are known.  This assumption
+massively simplifies the inference in the model, and is reasonable given not
+only that the bimodal structure of the exposure distributions is extremely
+clear, but also that Experiment 2 found that providing cluster labels to many
+tokens led to no change in distributional learning.  But it's unclear what the
+cluster labels should be when there are three clusters (two for for phonemically
+voiced stops), so I leave exploring this possibility for future work.  One
+promising direction would be to use sequential Monte Carlo algorithms to
+approximate the online inference required to simultaneously classify and adapt
+[see e.g. @Kleinschmidt2018a; @Sanborn2010].
+
+The other major simplifying assumption of the belief updating model which may
 be suspect is the *form* of the prior beliefs themselves.  Specifically, the model
 assumes that the prior beliefs about /b/ and /p/ are _independent_, and that
 each distribution has a _conjugate prior_.  @Chodroff2017 found strong
