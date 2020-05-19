@@ -2764,7 +2764,6 @@ of listeners' prior beliefs.  Furthermore, the use of a _conjugate_ prior
 relationships between expectations about within- and between-talker variance in
 VOT.
 
-
 ### Long-term trajectory of distributional learning
 
 Finally, a more serious problem for the belief updating model used here is the
@@ -2812,7 +2811,6 @@ present in the environment, and if different aspects of the linguistic
 generative model have different amounts and kinds of variability, we should
 expect adaptation to have different characteristics as well.
 
-<!-- TODO move this section to end -->
 ## Implications for future work
 
 The first, most general implication of these results is that they suggest a view
@@ -2922,9 +2920,9 @@ specfic expectations about the mean and variance of the VOT distributions for
 learning.
 
 However, in practice, these inferences are rather more tenuous than we might
-like, since they depend on all of the various assumptions that the model makes
-in linking behavior to the cognitive variables of interest.  These assumptions
-can be fundamental to the logical structure of the model, but they can also be
+like, since as discussed above they depend on all of the various assumptions that the _model_ makes
+in linking behavior to the cognitive variables of interest.  Some assumptions
+are fundamental to the logical structure of the model, but some are
 simplifications made for reasons of mathematical or computational tractability.
 For instance, one important assumption was that no information about the actual
 underlying distributions of VOTs for /b/ and /p/ (or their variability across
@@ -2942,9 +2940,13 @@ distributions an unfamiliar talker is likely to produce, then it should be able
 to predict distributional learning even to distributions it was not trained on.
 This was clearly not the case in Experiment 4, which means that one or more of
 the many linking hypotheses connecting this model to the experimental data is
-incorrect. 
-
-<!-- TODO: something a bit more optimistic here? -->
+incorrect.  While this calls for some caution in using such a Bayesian
+belief-updating model as a mind-reading tool or even as an explanation of
+distributional learning, it also provides a number of potential directions for
+future work, both computationally (e.g., investigating the consequences of the
+various simplifications made here) and empirically [e.g., investigating learning
+from even more exotic distributions, cues, and training regimes; see @Harmon2019
+for work in this direction].
 
 # Conclusion
 
