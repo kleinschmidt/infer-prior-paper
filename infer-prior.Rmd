@@ -127,7 +127,7 @@ accommodating talker variabiltiy is also, at a computational level, a problem of
 learning the speaker- or context-specific probabilistic relationships between
 observable cues and underlying linguistic structures.  This similarity is
 demonstrated by the computational modeling which shows that both acquisition
-[@McMurray2009; @Vallabha2007; @Feldman2013; but see @Hitczenko2018] and rapid
+[@McMurray2009b; @Vallabha2007; @Feldman2013; but see @Hitczenko2018] and rapid
 adaptation [@Kleinschmidt2015b; @Theodore2019] can be treated as forms of
 distributional learning.
 
