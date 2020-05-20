@@ -83,7 +83,7 @@
     can do this using BRMS, as long as you use ~sample_prior=TRUE~.  Then use
     ~hypothesis(varname = 0)~ etc.  (from this [[https://vuorre.netlify.com/post/2017/03/21/bayes-factors-with-brms/][blog post]])
 **** DONE WIP in [[file:models/brms_regressions.R::b_logit_sup_v_unsup_w_prior <- brm(f2_int,][brms_regression.R]]
-**** TODO write up in text
+**** DONE write up in text
 ** TODO edit intro
    mostly done here...need to incorporate a bit more literature I think though.
 ** DONE modeling ("experiment" 3)
@@ -114,11 +114,13 @@
     "babies are bad at some things and some things never get constrained, cf clicks
     Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
     acquisition is unconstrained or give some caveats"
-*** TODO when does the "three cluster" stuff come in?
+*** DONE when does the "three cluster" stuff come in?
     Elika thought that in model, exp 4, and gen disc was too much.
     "cut/smooth/etc"
 
     It seems out of place in discussion of modeling results...
+
+    I put it in the GD. and pointer in the expt 4 discussion
 ** TODO quantify model goodness-of-fit
    Even if this is something as simple as log-likelihood.  talk about
    "quantitative fit" to the data but there's nothing quantitative about it!!
@@ -132,11 +134,11 @@
    priors) and see whether the model can recover it.  maybe leave this for a
    separate paper (with unsupervised learning etc.)
 * TODO more literature to consider
-** TODO "what is optimal" (benefit/cost/accuracy tradeoff)
+** DONE "what is optimal" (benefit/cost/accuracy tradeoff)
    @Tavoni2019, related to changes in boundaries contrasted with error rates in
    discussion of Experiment 4.
 ** DONE Cheyenne's dissertation
-** TODO Mechanisms of learning
+** DONE Mechanisms of learning
    @Harmon2019: follow up of the Idemaru and Holt studies trying to tease apart
    error-driven and reinforcement learnig in these supervised cue-reweighting
    designs.  They MENTION distributional learning in their overview of
@@ -160,7 +162,7 @@
 ** DONE Chladkova et al. 2017: unsupervised "recalibration"
 
    Do lexically driven re-tuning with non-words.  Shifted i/e and good e/i.
-** Schweinhart, Shafto, and Essock 2017
+** DONE Schweinhart, Shafto, and Essock 2017
    Adapt to orientation distributions, basically the same finding as Idemaru and
    Holt (2011).
 ** Language learning review anon

@@ -2566,11 +2566,11 @@ two most extreme negative VOT conditions, makes very vague predictions.
 <!-- get very similar boundaries for the 10/50 condition.-->
 
 On the one hand, the results from Experiment 4 are qualitatively consistent with
-the earlier experiments: distributional learning is constrained, and the minimal
+the earlier experiments: distributional learning is constrained, and the limited
 learning (change in category boundaries) observed here is consistent with the
 large differences between the exposure distributions and a typical talker's VOT
-distributions.  On the other hand, there was _some_ distributional learning even
-for the most shifted distributions in Experiments 1 and 2, whereas in this
+distributions.  On the other hand, in Experiments 1 and 2 there was _some_
+distributional learning even for the most shifted distributions, whereas in this
 experiment exposure to increasingly negative VOTs led to minimal (and
 statistically unreliable) changes in listeners' category boundaries.  Likewise,
 there was also little difference in category boundaries after exposure to a /p/
@@ -2593,7 +2593,10 @@ English.  In particular, some conditions included large negative VOTs, for which
 little distributional learning was observed.  The lack of reliable
 distributional learning from negative VOTs is consistent with @Sumner2011, who
 also found that negative VOTs failed to produce large shifts in category
-boundaries except in a few particular presentation orders.  However, the 
+boundaries except in a few particular presentation orders.  Moreover, as I
+discuss below, the belief updating model makes a basic assumption that there are
+exactly two clusters of VOT for word-initial stops, which may prevent it from
+effectively predicting the (lack of) distributional learning of negative VOTs.
 
 ```{r expt4-error-rates}
 
@@ -2918,6 +2921,13 @@ Second, the model tells us something about the *content* of those beliefs, the
 specfic expectations about the mean and variance of the VOT distributions for
 /b/ and /p/ that are most consistent with the overall pattern of distributional
 learning.
+
+<!-- I'm trying to add soemthing about the input data to the model... -->
+<!-- 
+However, as the results from Experiment 4 show, the generalizability of the
+inference such a model makes are limited by a number of factors.  These include
+both fundamental theoretical assumptions
+ -->
 
 However, in practice, these inferences are rather more tenuous than we might
 like, since as discussed above they depend on all of the various assumptions that the _model_ makes
