@@ -125,9 +125,20 @@ ll_by_sub_draw <- data_exp1 %>%
   summarise(n_p = sum(respP), n_resp = n()) %>%
   left_join(class_fun_samples) %>%
   group_by(subject, .draw) %>%
-  summarise(loglik = sum(dbinom(n_p, size=n_resp, prob=prob_p, log=TRUE)))
+  summarise(loglik_binom = sum(dbinom(n_p, size=n_resp, prob=prob_p, log=TRUE)),
+            loglik_bernoulli = sum(log(prob_p)*n_p + log(1-prob_p)*(n_resp-n_p)))
 
-loooo <- ll_by_sub_draw %>%
+loo_binom <- ll_by_sub_draw %>%
+  select(.draw, loglik = loglik_binom) %>%
+  spread(.draw, loglik) %>%
+  ungroup() %>%
+  select(-subject) %>%
+  as.matrix() %>%
+  t() %>%
+  loo()
+
+loo_bernoulli <- ll_by_sub_draw %>%
+  select(.draw, loglik = loglik_bernoulli) %>%
   spread(.draw, loglik) %>%
   ungroup() %>%
   select(-subject) %>%
@@ -138,9 +149,34 @@ loooo <- ll_by_sub_draw %>%
 ### comparing with a GLM/logit model:
 
 # needs data_exp1_mod from infer-prior.Rmd but you get the idea.....
-glm_logit = brm(respP ~ 1 + bvotCond * vot_s * trial_s, data = data_exp1_mod, family=bernoulli(), chains=4, iter=1000)
+data_exp1_mod <- data_exp1 %>%
+  ungroup() %>%
+  mutate(vot_s = (vot - mean(vot)) / sd(vot),
+         trial_s = (trial - mean(trial)) / sd(trial))
+
+library(brms)
+glm_logit = brm(respP ~ 1 + bvotCond * vot_s * trial_s, data = data_exp1_mod, family=bernoulli(), chains=4, iter=4000)
+
 ll_glm <- log_lik(glm_logit, )
-ll_glm_bysub <- map(unique(data_exp1_mod$subject), ~ data_exp1_mod$subject == .x) %>% lift(cbind)(.) %>% {ll_glm %*% .};
+
+ll_glm_bysub <- map(unique(data_exp1_mod$subject), ~ data_exp1_mod$subject == .x) %>%
+  lift(cbind)(.) %>% {ll_glm %*% .};
+
+loo(ll_glm_bysub)
+
+
+# compare LL for subjects across 
+ll_by_sub_draw %>%
+  select(.draw, loglik = loglik_bernoulli) %>%
+  spread(.draw, loglik) %>%
+  right_join(tibble(subject = unique(data_exp1_mod$subject))) %>%
+  ungroup() %>%
+  select(-subject) %>%
+  as.matrix() %>%
+  t() %>%
+  apply(2, mean) %>%
+  plot(apply(ll_glm_bysub,2,mean))
+
 
 ## some visualizations
 
