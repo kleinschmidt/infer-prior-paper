@@ -13,6 +13,8 @@ library(rstan)
 library(tidybayes)
 options(mc.cores = parallel::detectCores())
 
+library(loo)
+
 ## devtools::install_github('kleinschmidt/daver')
 library(daver)
 
@@ -93,22 +95,33 @@ lapse_rate_samples <-
 
 ## okay it DOES work but I made a big error and was using ALL VOTs .......
 
-class_fun_samples <-
+class_fun_samples <- 
   updated_samples_df %>%
-  group_by(.draw) %>%
-  nest() %>%
-  sample_n(200) %>%
-  unnest() %>%
-  mutate(mean=mu_n, sd=sigma_n) %>%
-  select(.draw, block_num, bvotCond, category, mean, sd) %>%
-  group_by(.draw, bvotCond, block_num) %>%
-  do(stats_to_lhood(., noise_sd=0)) %>%
-  lhood_to_classification() %>%
-  left_join(lapse_rate_samples) %>%
-  mutate(prob_p = (1-lapse_rate)*prob_p + lapse_rate/2)
+  ungroup() %>%
+  transmute(.draw, vot_cond, block_num, mu=mu_n, sigma2=sigma_n^2, kappa=kappa_n, nu=nu_n, category) %>%
+  crossing(data_exp1 %>% group_by(vot) %>% summarise()) %>%
+  mutate(lhood = d_nix2_predict(vot, list(mu=mu, sigma2=sigma2, kappa=kappa, nu=nu))) %>%
+  select(-mu, -sigma2, -kappa, -nu) %>%
+  spread(key = category, value = lhood) %>%
+  left_join(select(lapse_rate_samples, lapse_rate, .draw, block_num)) %>%
+  mutate(prob_p = (1-lapse_rate) * p / (p+b) + lapse_rate/2) %>%
+  select(-lapse_rate)
+
+## class_fun_samples_normal <- 
+##   updated_samples_df %>%
+##   ungroup() %>%
+##   transmute(.draw, vot_cond, block_num, mean=mu_n, sd=sigma_n, category) %>%
+##   crossing(data_exp1 %>% group_by(vot) %>% summarise()) %>%
+##   mutate(lhood = dnorm(vot, mean, sd)) %>%
+##   select(-mean, -sd) %>%
+##   spread(key = category, value = lhood) %>%
+##   left_join(select(lapse_rate_samples, lapse_rate, .draw, block_num)) %>%
+##   mutate(prob_p = (1-lapse_rate) * p / (p+b) + lapse_rate/2) %>%
+##   select(-lapse_rate)
+
 
 ll_by_sub_draw <- data_exp1 %>%
-  group_by(subject, vot, bvotCond, block_num=ntile(trial, 6)) %>%
+  group_by(subject, vot, vot_cond, block_num=ntile(trial, 6)) %>%
   summarise(n_p = sum(respP), n_resp = n()) %>%
   left_join(class_fun_samples) %>%
   group_by(subject, .draw) %>%
