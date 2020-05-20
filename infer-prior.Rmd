@@ -2535,36 +2535,6 @@ two most extreme negative VOT conditions, makes very vague predictions.
 
 ## Discussion
 
-<!-- TODO: I don't think this framing is quite right...there's quite a lot of -->
-<!-- similarity between these two sets of results!  qualitatively consistent -->
-<!-- with failure to adapt to extreme shifts... -->
-
-<!-- I think the interesting thing here is that on the one hand, there's not a -->
-<!-- lot of learnign even though these distributions diverge quite a lot from -->
-<!-- what I've been calling the "typical" distributions.  on the other hand, for -->
-<!-- the negative VOTs they're really not all that different from what someone -->
-<!-- might normally produce and so don't really REQUIRE updating.  -->
-
-<!-- the other interesting thing is whether this is consistent with teh story -->
-<!-- I've been telling about dist learning being constrained based on prior -->
-<!-- experience: the distributions diverge a lot so there should be strong -->
-<!-- cosntraints so not a lot of learning. OR, distributions are consistent and -->
-<!-- so don't REQUIRE a lot of learning. -->
-
-<!-- more: reasons we might have observed relatively low levels of -->
-<!-- distributional learning: -->
-<!-- 1. learned dists but doesn't affect classification (three clusters?) -->
-<!-- 2. so different from typical talker that didn't believe dists -->
-<!-- 3. did learn but "un-learned" during test phase -->
-
-<!-- none of these seems like it can be the whole story...(1) doesn't explain -->
-<!-- why you don't see much learning in the 10/80 condition (although maybe -->
-<!-- there's something there with limited benefit to shifting boundary?), (2) -->
-<!-- doesn't square with the belief updating model not predicting the -->
-<!-- constraints (but maybe that's just because the range of dists tested in the -->
-<!-- first experiment is too narrow), (3) doesn't square with the fact that you -->
-<!-- get very similar boundaries for the 10/50 condition.-->
-
 On the one hand, the results from Experiment 4 are qualitatively consistent with
 the earlier experiments: distributional learning is constrained, and the limited
 learning (change in category boundaries) observed here is consistent with the
