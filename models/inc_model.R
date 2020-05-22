@@ -154,7 +154,8 @@ loo_bernoulli <- loo(ll_bernoulli_mat)
 data_exp1_mod <- data_exp1 %>%
   ungroup() %>%
   mutate(vot_s = (vot - mean(vot)) / sd(vot),
-         trial_s = (trial - mean(trial)) / sd(trial))
+         trial_s = (trial - mean(trial)) / sd(trial),
+         block = as.factor(ntile(trial, 6)))
 
 library(brms)
 glm_logit = brm(respP ~ 1 + bvotCond * vot_s * trial_s, data = data_exp1_mod, family=bernoulli(), chains=4, iter=4000)
@@ -190,10 +191,36 @@ ll_glm_lapsing_bysub <- map(unique(data_exp1_mod$subject), ~ data_exp1_mod$subje
 
 loo_glm_lapsing_bysub <- loo(ll_glm_lapsing_bysub)
 
-loo_compare(loo_bernoulli, loo_glm_lapsing_bysub)
+print(loo_compare(loo_bernoulli, loo_glm_lapsing_bysub, loo_glm_bysub), simplify=FALSE)
 
 # no even worse: some are over 1 now.  oh well.  the comparison is closer too
 # but that's not surprising.
+#
+# okay but what's the point of all this?  to show that the belief updating model
+# fits well...and this is an extremely stringent baseline to compare with.  a
+# basic test is just that it fits better than some null model like a single
+# classification function with no learning, or even just a "constant
+# probability" model.
+
+glm_logit_byblock <-
+  brm(respP ~ 1 + bvotCond * vot_s * block,
+      data = data_exp1_mod,
+      family=bernoulli(),
+      chains=4, iter=1000)
+
+saveRDS(glm_logit_byblock, "expt1_glm_logit_byblock.rds")
+
+## TODO: set theta by block 
+## glm_logit_byblock_lapsing <-
+##   brm(bf(respP ~ 1,
+##          mu1 ~ 1 + bvotCond * vot_s * block,
+##          mu2 ~ 1),
+##       family = mixture(bernoulli(), bernoulli()),
+##       data = data_exp1_mod,
+##       chains=4, iter=1000)
+
+## saveRDS(glm_logit_byblock_lapsing, "expt1_glm_logit_byblock_lapsing.rds")
+
 
 
 
