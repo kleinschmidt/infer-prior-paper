@@ -1,6 +1,6 @@
 ---
-Title: What constrains distributional learning in adults?
-Author: Dave Kleinschmidt
+title: What constrains distributional learning in adults?
+author: Dave F. Kleinschmidt
 bibliography: /home/dave/Documents/papers/zotero.bib
 output:
     html_document:
@@ -15,6 +15,9 @@ output:
     pdf_document:
         md_extensions: +implicit_figures
         keep_tex: true
+        latex_engine: xelatex
+        template: apa6.template.tex
+        citation_package: biblatex
         pandoc_args:
         - --filter
         - pandoc-crossref
@@ -2590,8 +2593,9 @@ from the clusters.  Exposure distributions where only *one* cluster deviates
 from listeners expectations do not *require* as large of a shift in the boundary
 between /b/ and /p/ in order to achieve a low recognition error.  In fact, for
 all the exposure distributions tested in Experiment 4, continuing to use the
-ideal boundary for a "typical talker" would yield low error rates (less than `r
-max_error_perc` in all conditions; see Figure -@fig:exposure-dists-exp4).  Thus
+ideal boundary for a "typical talker" would yield low error rates (less than 
+`r max_error_perc` 
+in all conditions; see Figure -@fig:exposure-dists-exp4).  Thus
 the potential benefit of distributional learning was lower in this experiment
 than in Experiments 1 and 2.  If listeners are doing boundedly rational belief
 updating under some kind of resource constraints, distributional learning might
