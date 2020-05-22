@@ -128,23 +128,25 @@ ll_by_sub_draw <- data_exp1 %>%
   summarise(loglik_binom = sum(dbinom(n_p, size=n_resp, prob=prob_p, log=TRUE)),
             loglik_bernoulli = sum(log(prob_p)*n_p + log(1-prob_p)*(n_resp-n_p)))
 
-loo_binom <- ll_by_sub_draw %>%
+ll_binom_mat <- ll_by_sub_draw %>%
   select(.draw, loglik = loglik_binom) %>%
   spread(.draw, loglik) %>%
   ungroup() %>%
   select(-subject) %>%
   as.matrix() %>%
-  t() %>%
-  loo()
+  t()
 
-loo_bernoulli <- ll_by_sub_draw %>%
+loo_binom <- loo(ll_binom_mat)
+
+ll_bernoulli_mat <- ll_by_sub_draw %>%
   select(.draw, loglik = loglik_bernoulli) %>%
   spread(.draw, loglik) %>%
   ungroup() %>%
   select(-subject) %>%
   as.matrix() %>%
-  t() %>%
-  loo()
+  t()
+
+loo_bernoulli <- loo(ll_bernoulli_mat)
 
 ### comparing with a GLM/logit model:
 
@@ -157,12 +159,42 @@ data_exp1_mod <- data_exp1 %>%
 library(brms)
 glm_logit = brm(respP ~ 1 + bvotCond * vot_s * trial_s, data = data_exp1_mod, family=bernoulli(), chains=4, iter=4000)
 
+saveRDS(glm_logit, "expt1_glm_logit.rds")
+
 ll_glm <- log_lik(glm_logit, )
 
 ll_glm_bysub <- map(unique(data_exp1_mod$subject), ~ data_exp1_mod$subject == .x) %>%
   lift(cbind)(.) %>% {ll_glm %*% .};
 
-loo(ll_glm_bysub)
+loo_glm_bysub <- loo(ll_glm_bysub)
+
+loo_compare(loo_bernoulli, loo_glm_bysub)
+
+# pareto k param is high for GLM, maybe because of lapsing?  what if I try the
+# mixture model for a more robust fit?
+
+glm_logit_lapsing <-
+  brm(bf(respP ~ 1,
+         mu1 ~ 1 + vot_cond * vot_s * trial_s,
+         mu2 ~ 1),
+      family = mixture(bernoulli(), bernoulli()),
+      data = data_exp1_mod,
+      chains = 4, iter = 1000)
+
+saveRDS(glm_logit_lapsing, "expt1_glm_logit_lapsing.rds")
+
+ll_glm_lapsing <- log_lik(glm_logit_lapsing, )
+
+ll_glm_lapsing_bysub <- map(unique(data_exp1_mod$subject), ~ data_exp1_mod$subject == .x) %>%
+  lift(cbind)(.) %>% {ll_glm_lapsing %*% .};
+
+loo_glm_lapsing_bysub <- loo(ll_glm_lapsing_bysub)
+
+loo_compare(loo_bernoulli, loo_glm_lapsing_bysub)
+
+# no even worse: some are over 1 now.  oh well.  the comparison is closer too
+# but that's not surprising.
+
 
 
 # compare LL for subjects across 
