@@ -210,16 +210,16 @@ glm_logit_byblock <-
 
 saveRDS(glm_logit_byblock, "expt1_glm_logit_byblock.rds")
 
-## TODO: set theta by block 
-## glm_logit_byblock_lapsing <-
-##   brm(bf(respP ~ 1,
-##          mu1 ~ 1 + bvotCond * vot_s * block,
-##          mu2 ~ 1),
-##       family = mixture(bernoulli(), bernoulli()),
-##       data = data_exp1_mod,
-##       chains=4, iter=1000)
+glm_logit_byblock_lapsing <-
+  brm(bf(respP ~ 1,
+         mu1 ~ 1 + bvotCond * vot_s * block,
+         mu2 ~ 1,
+         theta2 ~ 1 + block),
+      family = mixture(bernoulli(), bernoulli()),
+      data = data_exp1_mod,
+      chains=4, iter=1000)
 
-## saveRDS(glm_logit_byblock_lapsing, "expt1_glm_logit_byblock_lapsing.rds")
+saveRDS(glm_logit_byblock_lapsing, "expt1_glm_logit_byblock_lapsing.rds")
 
 
 
