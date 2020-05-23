@@ -1,6 +1,10 @@
 
 
 * todos
+** TODO prepare for submission
+*** TODO formatting for Cognition
+*** TODO final copy-editing
+*** TODO cover letter
 ** DONE finalize data analysis
 *** DONE follow-up modeling analyses
 
@@ -59,7 +63,7 @@
       difference.  Is it actually important?  Just a basic instability in the
       model?
     
-**** TODO fit belief updating model to supervised
+**** TODO (FUTURE) fit belief updating model to supervised
      To be able to make the contrast with aba-ada recal.
 *** DONE analyze results with Bayesian logistic regression
 
@@ -128,8 +132,22 @@
    Can do LOO for this I think, I think I'm getting something reasonable by just
    using ~loo~ on the talker-level log-likelihood.  but need to be careful that
    we're comparing apples to apples (I think we are, since I'm not collapsing
-   across VOTs but not sure...)
-** TODO what does belief updating recover from asymetic dists?
+   across VOTs but not sure...).
+
+   Okay I've double checked that and it looks reasonable...trouble is that the
+   LOO values are maybe too variable to compare across models (and all the
+   baseline GLM models I've fit have pareto k params that are high so not
+   great).  but it's just a matter of what baseline model we're using for the
+   comparison.  the model clearly does a good job in absolute terms, it's just a
+   question of whether it does a good job relative to particular baselines.
+   Here are some baselines that seem reasonable:
+
+   - null model (intercept only)
+   - logistic regression (linear trial effects, like the data analysis)
+   - lapsing logistic regression (linear trial effects; variable lapse rate)
+
+   
+** TODO (FUTURE) what does belief updating recover from asymetic dists?
    generate belief updating data given asymmetric priors (e.g., realistic
    priors) and see whether the model can recover it.  maybe leave this for a
    separate paper (with unsupervised learning etc.)
