@@ -233,6 +233,14 @@ glm_logit_lapsing_variable <-
       data = data_exp1_mod,
       chains=4, iter=1000)
 saveRDS(glm_logit_lapsing_variable, "expt1_glm_logit_lapsing_variable.rds")
+## much better
+
+ll_glm_lapsing_var <- log_lik(glm_logit_lapsing_variable, )
+
+ll_glm_lapsing_var_bysub <- map(unique(data_exp1_mod$subject), ~ data_exp1_mod$subject == .x) %>%
+  lift(cbind)(.) %>% {ll_glm_lapsing_var %*% .};
+
+loo_glm_lapsing_var_bysub <- loo(ll_glm_lapsing_var_bysub)
 
 
 
