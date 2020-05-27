@@ -72,6 +72,7 @@ library(supunsup)
 
 library(rstan)
 library(brms)
+library(loo)
 library(tidybayes)
 
 library(cowplot)
@@ -145,7 +146,7 @@ distribution [e.g. @Escudero2011; @Goudbeek2008;
 adult listeners can adapt to changes in the means and/or variances of
 the cue distributions for known phonetic categories [e.g.
 @Clayards2008; @Theodore2015; @Theodore2019; @Colby2018; @Chladkova2017;
-@Schrieber2013].
+@Schreiber2013].
 What both of these sets of findings have in common is that listeners
 pick up on the distributions of cues without any explicit instruction
 about the itended category label associated with each token. For
