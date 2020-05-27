@@ -2,6 +2,9 @@
 
 * todos
 ** TODO prepare for submission
+*** TODO title and abstract
+*** TODO author note
+    acknoledge diss committee, funding (Florian R1, GRFP/NRSA)
 *** TODO formatting for Cognition
 *** TODO final copy-editing
 *** TODO cover letter
@@ -141,10 +144,12 @@
    comparison.  the model clearly does a good job in absolute terms, it's just a
    question of whether it does a good job relative to particular baselines.
    Here are some baselines that seem reasonable:
-
-   - null model (intercept only)
-   - logistic regression (linear trial effects, like the data analysis)
-   - lapsing logistic regression (linear trial effects; variable lapse rate)
+*** TODO Fit baseline models
+    - null model (intercept only)
+    - logistic regression (linear trial effects, like the data analysis)
+    - lapsing logistic regression (linear trial effects; variable lapse rate)
+*** TODO incorporate into text
+    overall LL, LOOIC/elpd.
 
    
 ** TODO (FUTURE) what does belief updating recover from asymetic dists?
