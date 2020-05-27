@@ -1407,15 +1407,69 @@ reader to explore the consequences of alternative choices.
 TODO: link?
 -->
 
+### Model evaluation
+
+The goodness-of-fit is evaluated using the PSIS-LOO method of @Vehtari2017.
+This method approximates leave-one-out cross-validation to provide an estimate
+of the out-of-sample prediction error from the posterior samples of the model.
+This provides a goodness-of-fit measurement that penalizes overly complex models
+in a way that is directly (approximately) related to their inability to
+generalize beyond the data they were fit to, and as such is a more robust
+measure for comparing between different models than indirect metrics like AIC or
+BIC which rely on counting numbers of parameters or WAIC/DIC which are hard to
+estimate reliably from posterior samples [see @Vehtari2017 for more discussion].
+Because data was nested within subject, I used subjects as the cross-validation
+units (instead of individual trial responses).  I report the expected
+log-posterior density in the form of LOOIC, which is on the deviance scale ($-2$
+times the log-likelihood) like AIC.  On this scale, lower is better,
+corresponding to higher predictive log likelihood (better-fitting or more
+parsimonious models).  Finally, because these are estimated from a finite
+datset, there is uncertainty associated with them (and the differences between
+models), which is indicated by the standard error of the estimate (or
+difference).
+
+The belief updating model was compared with two other models via LOOIC [both fit
+via `brms`, @Burkner2017].  The first was a "null model" with a constant
+probability of responding /p/.  The second was a baseline model similar to the
+logistic regression model used to analyze the data above, with two differences
+to make it a suitable baseline.  First, because the belief-updating model fit
+all subjects with a single set of prior beliefs, the baseline model included no
+random effect, while maintaining the fixed effects structure (condition, trial,
+VOT, and their interactions).  Second, because the belief-updating model
+included a "guessing rate" parameter that varied over the experiment, the
+baseline model also included a variable guessing rate (via a `brms` `mixture`
+family with varying weight).  As in the belief updating model, the guessing rate
+was allowed to vary freely over the six blocks of 37 trials.
+
 ## Results
 
-The belief updating model can be evaluated in a number of ways.  First, I
-discuss the _outcome_ of distributional learning predicted by the model: does
-the model capture the classification functions that listeners use at the end of
-the experiment?  Second, I look at the _time course_ of the learning that the
-model takes: does it capture the how classification functions _change_ with
-increasing exposure to the experimental distributions?  Third, and finally, I
-will examine whether the shared prior beliefs---the starting point for belief
+The belief updating model can be evaluated in a number of ways.  At the most
+basic level, it quantiatively fits the data well, as shown by Table -@tbl:loo-tab.
+The LOOIC for the model is better (lower) than the LOOIC of two baseline models:
+conclusively so for the null, intercept-only model model, and numerically better
+for the more sophisticated baseline model, although the SE of that difference is
+large so it is not possible to say conclusively.[^aic-uncertainty] Still, the
+belief updating model fits the data as well as or better than the logistic
+regression baseline despite having many fewer free parameters (excepting the
+common lapse rate parameters, 6: prior mean and variance for two categories, and
+prior confidence in mean and variance; versus 20: a separate bias and VOT slope
+for each of five conditions, plus linear change in these with trial).
+
+[^aic-uncertainty]: Although note that any difference---especially one on the
+    order observed here---using analogous model-comparison statistics like AIC,
+    BIC, etc. is traditionally treated as evidence in favor of the lower scoring
+    model, despite the fact that all of these scores are uncertain estimates
+    based on a finite set of data.  LOOIC is in this way a more honest measure
+    in that it makes it straightforward to get an approximate measure of how
+    stable it is as an estimate.
+
+Next I will show three ways of evaluating the model's fit _qualitatively_.
+First, I discuss the _outcome_ of distributional learning predicted by the
+model: does the model capture the classification functions that listeners use at
+the end of the experiment?  Second, I look at the _time course_ of the learning
+that the model takes: does it capture the how classification functions _change_
+with increasing exposure to the experimental distributions?  Third, and finally,
+I will examine whether the shared prior beliefs---the starting point for belief
 updating in the model---match the distributions produced by a typical talker of
 American English.
 
@@ -1531,19 +1585,34 @@ loo_glm_intercept_only <- loo(ll_glm_intercept_only_mat)
 
 ```
 
-The first way to evaluate the model is how well it fits the data, compared to
-various possible baseline models.  For this purpose I use a method which
-approximates leave-one-out cross-validation to provide an estimate of the
-out-of-sample prediction error from the posterior samples of the model
-[PSIS-LOO, @Vehtari2017].  This provides a goodness-of-fit measurement that
-penalizes overly complex models in a way that is directly (approximately)
-related to their inability to generalize beyond the data they were fit to, and
-as such is a more robust measure for comparing between different models than
-metrics like AIC or BIC which rely on counting numbers of parameters [see
-@Vehtari2017 for more discussion].  Because data was nested within subject, I
-used subjects as the cross-validation units (instead of individual trial
-responses).
+```{r loo-tab, tbl.cap="LOOIC values for the belief updating model and two baselines (lapsing logistic regression and a null, intercept-only model).  The individual LOOIC values are shown as well as the difference between the belief updating model and the others, along with the standard errors of the estimates associated with each.", results='asis'}
 
+format_loo <- function(myloo) {
+  looic <- myloo$estimates['looic', 'Estimate']
+  looic_se <- myloo$estimates['looic', 'SE']
+  glue("{round(looic)} ($\\pm$ {round(looic_se)})")
+}
+
+loo_comp <- loo::loo_compare(
+  list(
+    "Belief updating"=loo_bernoulli,
+    "Baseline (logistic)"=loo_glm_lapsing_var_bysub,
+    "Null (intercept-only)"=loo_glm_intercept_only
+  )
+)
+
+loo_comp_tab <- abs(-2 * loo_comp[, c('elpd_loo', 'se_elpd_loo', 'elpd_diff', 'se_diff')])
+loo_comp_tab[loo_comp_tab == 0] <- NA
+
+options("knitr.kable.NA"="")
+knitr::kable(
+  loo_comp_tab,
+  col.names=c("LOOIC", "(SE)", "LOOIC diff.", "(SE)"),
+  format.args = list(big.mark = ",", scientific = FALSE),
+
+)
+
+```
 
 ```{r mod-class-funs, dependson=c("infer-prior")}
 
