@@ -1489,6 +1489,44 @@ ll_bernoulli_mat <- ll_by_sub_draw %>%
 
 loo_bernoulli <- loo(ll_bernoulli_mat)
 
+```
+
+```{r loo-glm-baselines}
+
+# convert a sample-by-trial matrix of log likelihoods to a sample-by-subject
+# matrix with ✨linear algebra✨
+trials_by_subjects <-
+  map(unique(data_exp1_mod$subject), ~ data_exp1_mod$subject == .x) %>%
+  lift(cbind)(.)
+
+# first baseline: lapsing logistic regression with same variable lapse rate (by block)
+## glm_logit_lapsing_variable <-
+##   brm(bf(respP ~ 1,
+##          mu1 ~ 1 + bvotCond * vot_s * trial_s,
+##          mu2 ~ 1,
+##          theta2 ~ 1 + block),
+##       family = mixture(bernoulli(), bernoulli()),
+##       data = data_exp1_mod,
+##       chains=4, iter=1000)
+## saveRDS(glm_logit_lapsing_variable, "models/expt1_glm_logit_lapsing_variable.rds")
+
+glm_logit_lapsing_variable <- readRDS("models/expt1_glm_logit_lapsing_variable.rds")
+
+ll_glm_lapsing_var <- log_lik(glm_logit_lapsing_variable)
+ll_glm_lapsing_var_bysub <- ll_glm_lapsing_var %*% trials_by_subjects
+
+loo_glm_lapsing_var_bysub <- loo(ll_glm_lapsing_var_bysub)
+
+# second baseline: null model with intercept only
+## glm_intercept_only <-
+##   brm(respP ~ 1, family=bernoulli(), data = data_exp1_mod, chains=4, iter=1000)
+## saveRDS(glm_intercept_only, "models/expt1_glm_intercept_only.rds")
+glm_intercept_only <- readRDS("models/expt1_glm_intercept_only.rds")
+
+ll_glm_intercept_only <- log_lik(glm_intercept_only, )
+ll_glm_intercept_only_mat <- ll_glm_intercept_only %*% trials_by_subjects
+
+loo_glm_intercept_only <- loo(ll_glm_intercept_only_mat)
 
 ```
 

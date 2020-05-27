@@ -47,7 +47,7 @@ conditions_exp1 <-
 data_exp1 %<>% left_join(conditions_exp1)
 
 ## subject reducer mat: convert trial log lik to subject log lik
-subj_reducer <-
+trials_by_subjects <-
   map(unique(data_exp1_mod$subject), ~ data_exp1_mod$subject == .x) %>%
   lift(cbind)(.)
 
@@ -68,7 +68,7 @@ saveRDS(glm_logit, "expt1_glm_logit.rds")
 
 ll_glm <- log_lik(glm_logit, )
 
-ll_glm_bysub <- ll_glm * subj_reducer
+ll_glm_bysub <- ll_glm * trials_by_subjects
 
 loo_glm_bysub <- loo(ll_glm_bysub)
 
@@ -89,7 +89,7 @@ saveRDS(glm_logit_lapsing, "expt1_glm_logit_lapsing.rds")
 
 ll_glm_lapsing <- log_lik(glm_logit_lapsing, )
 
-ll_glm_lapsing_bysub <- ll_glm_lapsing %*% subj_reducer
+ll_glm_lapsing_bysub <- ll_glm_lapsing %*% trials_by_subjects
 
 loo_glm_lapsing_bysub <- loo(ll_glm_lapsing_bysub)
 
@@ -138,7 +138,7 @@ saveRDS(glm_logit_lapsing_variable, "expt1_glm_logit_lapsing_variable.rds")
 
 ll_glm_lapsing_var <- log_lik(glm_logit_lapsing_variable, )
 
-ll_glm_lapsing_var_bysub <- ll_glm_lapsing_var %*% subj_reducer
+ll_glm_lapsing_var_bysub <- ll_glm_lapsing_var %*% trials_by_subjects
 
 loo_glm_lapsing_var_bysub <- loo(ll_glm_lapsing_var_bysub)
 
@@ -149,11 +149,8 @@ glm_intercept_only <-
 saveRDS(glm_intercept_only, "expt1_glm_intercept_only.rds")
 
 ll_glm_intercept_only <- log_lik(glm_intercept_only, )
-
-ll_glm_intercept_only_mat <- ll_glm_intercept_only %*% subj_reducer
-
-(loo_glm_intercept_only <- loo(ll_glm_intercept_only_mat))
-
+ll_glm_intercept_only_mat <- ll_glm_intercept_only %*% trials_by_subjects
+loo_glm_intercept_only <- loo(ll_glm_intercept_only_mat)
 
 # compare LL for subjects across 
 ll_by_sub_draw %>%
