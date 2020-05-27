@@ -158,6 +158,7 @@ data_exp1_mod <- data_exp1 %>%
          block = as.factor(ntile(trial, 6)))
 
 library(brms)
+
 glm_logit = brm(respP ~ 1 + bvotCond * vot_s * trial_s, data = data_exp1_mod, family=bernoulli(), chains=4, iter=4000)
 
 saveRDS(glm_logit, "expt1_glm_logit.rds")
@@ -210,6 +211,7 @@ glm_logit_byblock <-
 
 saveRDS(glm_logit_byblock, "expt1_glm_logit_byblock.rds")
 
+# Rhats are way high for this model... 
 glm_logit_byblock_lapsing <-
   brm(bf(respP ~ 1,
          mu1 ~ 1 + bvotCond * vot_s * block,
@@ -221,6 +223,16 @@ glm_logit_byblock_lapsing <-
 
 saveRDS(glm_logit_byblock_lapsing, "expt1_glm_logit_byblock_lapsing.rds")
 
+# let's try linear trial + lapsing by block
+glm_logit_lapsing_variable <-
+  brm(bf(respP ~ 1,
+         mu1 ~ 1 + bvotCond * vot_s * trial_s,
+         mu2 ~ 1,
+         theta2 ~ 1 + block),
+      family = mixture(bernoulli(), bernoulli()),
+      data = data_exp1_mod,
+      chains=4, iter=1000)
+saveRDS(glm_logit_lapsing_variable, "expt1_glm_logit_lapsing_variable.rds")
 
 
 
