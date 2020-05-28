@@ -1442,38 +1442,6 @@ baseline model also included a variable guessing rate (via a `brms` `mixture`
 family with varying weight).  As in the belief updating model, the guessing rate
 was allowed to vary freely over the six blocks of 37 trials.
 
-## Results
-
-The belief updating model can be evaluated in a number of ways.  At the most
-basic level, it quantiatively fits the data well, as shown by Table -@tbl:loo-tab.
-The LOOIC for the model is better (lower) than the LOOIC of two baseline models:
-conclusively so for the null, intercept-only model model, and numerically better
-for the more sophisticated baseline model, although the SE of that difference is
-large so it is not possible to say conclusively.[^aic-uncertainty] Still, the
-belief updating model fits the data as well as or better than the logistic
-regression baseline despite having many fewer free parameters (excepting the
-common lapse rate parameters, 6: prior mean and variance for two categories, and
-prior confidence in mean and variance; versus 20: a separate bias and VOT slope
-for each of five conditions, plus linear change in these with trial).
-
-[^aic-uncertainty]: Although note that any difference---especially one on the
-    order observed here---using analogous model-comparison statistics like AIC,
-    BIC, etc. is traditionally treated as evidence in favor of the lower scoring
-    model, despite the fact that all of these scores are uncertain estimates
-    based on a finite set of data.  LOOIC is in this way a more honest measure
-    in that it makes it straightforward to get an approximate measure of how
-    stable it is as an estimate.
-
-Next I will show three ways of evaluating the model's fit _qualitatively_.
-First, I discuss the _outcome_ of distributional learning predicted by the
-model: does the model capture the classification functions that listeners use at
-the end of the experiment?  Second, I look at the _time course_ of the learning
-that the model takes: does it capture the how classification functions _change_
-with increasing exposure to the experimental distributions?  Third, and finally,
-I will examine whether the shared prior beliefs---the starting point for belief
-updating in the model---match the distributions produced by a typical talker of
-American English.
-
 ```{r infer-prior}
 
 ## options(mc.cores = parallel::detectCores())
@@ -1585,6 +1553,39 @@ ll_glm_intercept_only_mat <- ll_glm_intercept_only %*% trials_by_subjects
 loo_glm_intercept_only <- loo(ll_glm_intercept_only_mat)
 
 ```
+
+## Results
+
+The belief updating model can be evaluated in a number of ways.  At the highest
+level, it quantiatively fits the data well, as shown by Table -@tbl:loo-tab.
+The LOOIC for the model is better (lower) than the LOOIC of two baseline models:
+conclusively so for the null, intercept-only model, and numerically better
+for the logistic regression baseline, although the SE of that difference is
+large so it is not possible to say conclusively.[^aic-uncertainty] Whether or
+not the difference is conclusive, the
+belief updating model fits the data as well as or better than the logistic
+regression baseline despite having many fewer free parameters (excepting the
+common lapse rate parameters, 6: prior mean and variance for two categories, and
+prior confidence in mean and variance; versus 20: a separate bias and VOT slope
+for each of five conditions, plus linear change in these with trial).
+
+[^aic-uncertainty]: Although note that any difference---especially one on the
+    order observed here---using analogous model-comparison statistics like AIC,
+    BIC, etc. is traditionally treated as evidence in favor of the lower scoring
+    model, despite the fact that all of these scores are uncertain estimates
+    based on a finite set of data.  LOOIC is in this way a more honest measure
+    in that it makes it straightforward to get an approximate measure of how
+    stable this estimate is.
+
+Next I will show three ways of evaluating the model's fit _qualitatively_.
+First, I discuss the _outcome_ of distributional learning predicted by the
+model: does the model capture the classification functions that listeners use at
+the end of the experiment?  Second, I look at the _time course_ of the learning
+that the model takes: does it capture the how classification functions _change_
+with increasing exposure to the experimental distributions?  Third, and finally,
+I will examine whether the shared prior beliefs---the starting point for belief
+updating in the model---match the distributions produced by a typical talker of
+American English.
 
 ```{r loo-tab, tbl.cap="LOOIC values for the belief updating model and two baselines (lapsing logistic regression and a null, intercept-only model).  The individual LOOIC values are shown as well as the difference between the belief updating model and the others, along with the standard errors of the estimates associated with each.", results='asis'}
 
