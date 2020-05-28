@@ -14,6 +14,7 @@ output:
         - pandoc-crossref
     pdf_document:
         md_extensions: +implicit_figures
+        fig_crop: false
         keep_tex: true
         latex_engine: xelatex
         template: apa6.template.tex
