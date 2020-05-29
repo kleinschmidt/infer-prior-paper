@@ -1,3 +1,10 @@
+---
+title: |
+  Supplementary information for "What constrains distributional learning
+  in adults"
+author: Dave F. Kleinschmidt
+---
+
 ```{r knitr-setup, warning=FALSE, message=FALSE, error=FALSE, echo=FALSE, results='hide'}
 
 library(knitr)
@@ -47,6 +54,7 @@ library(supunsup)
 library(rstan)
 library(brms)
 library(tidybayes)
+library(ggridges)
 
 library(cowplot)
 theme_set(cowplot::theme_cowplot() +
@@ -70,12 +78,28 @@ beta_name_subs <- list(
   c(":", " : "),
   c("vot_s", "VOT"),
   c("trial_s", "Trial"),
-  c("bvotCond", "/b/ VOT ")
+  c("bvotCond", "/b/ VOT="),
+  c("supervisedunsupervised", "unsupervised")
   )
 
-clean_beta <-
-  . %>%
-  str_replace_multi(beta_name_subs)
+clean_beta <- function(x) str_replace_multi(x, beta_name_subs, replace_all = TRUE)
+
+gather_betas <- function(fit) {
+  beta_levels <- rownames(fixef(fit))
+  fit %>%
+    gather_draws(`b_.*`, regex=TRUE) %>%
+    ungroup() %>%
+    mutate(.variable = factor(clean_beta(str_replace(.variable, "b_", "")),
+                              levels = rev(clean_beta(beta_levels))))
+}
+
+scale_beta_gt0 <- 
+  scale_fill_gradient2("p(β > 0)",
+                       midpoint=0.5,
+                       mid=gray(0.9),
+                       low=scales::muted("blue"),
+                       high=scales::muted("red"))
+
 
 ```
 
@@ -103,19 +127,18 @@ summary(b_logit_exp1)
 
 ```
 
-```{r expt-1-model-plot, fig.width=8.9, fig.height=6.4, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 1.  Red indicates coefficients that are reliably less than zero, and blue indicates reliably greater than zero.}
+```{r expt-1-model-plot, fig.width=9.4, fig.height=5.7, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 1.  Red indicates coefficients that are reliably greater than zero, and blue indicates reliably less than zero.}
 
 b_logit_exp1 %>%
-  gather_draws(`b_.*`, regex=TRUE) %>%
-  ungroup() %>%
-  mutate(.variable = factor(str_replace(.variable, "b_", ""),
-                            levels = rownames(fixef(b_logit_exp1)))) %>%
+  gather_betas() %>%
   group_by(.variable) %>%
   mutate(p_gt_zero = mean(.value > 0)) %>%
   ggplot(aes(x=.value, y=.variable, fill=p_gt_zero)) +
-  geom_halfeyeh(relative_scale = 2) +
-  scale_fill_gradient2("p(β > 0)", midpoint=0.5, mid=gray(0.9)) +
-  geom_vline(xintercept = 0, linetype=3)
+  geom_density_ridges(relative_scale = 2) +
+  scale_beta_gt0 +
+  geom_vline(xintercept = 0, linetype=3) +
+  labs(x = "β (log-odds of /p/ response)",
+       y = "")
 
 ```
 
@@ -164,41 +187,50 @@ _conservative_ test of support for the null hypothesis.
 
 b_logit_exp2 <- readRDS("models/b_logit_sup_v_unsup_w_prior.rds")
 
-hyps_sup <- b_logit_exp2 %>%
+hyps <-
+  b_logit_exp2 %>%
   fixef() %>%
   rownames() %>%
-  purrr::keep(~ str_detect(., "supervised")) %>%
-  glue("{x} = 0", x=.)
+  tibble(beta = .,
+         clean_beta = clean_beta(.),
+         hyp = glue("{x} = 0", x=.),
+         hyp_paren = glue("({x}) = 0", x=.))
 
-hyps_sup_test <- hypothesis(b_logit_exp2, hypothesis=hyps_sup)
+hyps_test <-
+  hypothesis(b_logit_exp2, hypothesis=hyps$hyp)
 
-hyps_rest <- b_logit_sup_v_unsup_w_prior %>%
-  fixef() %>%
-  rownames() %>%
-  purrr::keep(~ !str_detect(., "supervised")) %>%
-  glue("{x} = 0", x=.)
-
-hypothesis(b_logit_sup_v_unsup_w_prior, hypothesis=hyps_rest)
-
+hyps_tbl <-
+  hyps_test$hypothesis %>%
+  inner_join(hyps, by=c("Hypothesis"="hyp_paren"))
 
 ```
 
-```{r expt-2-model-plot, fig.width=8.9, fig.height=6.4, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 2.  Red indicates coefficients that are reliably less than zero, and blue indicates reliably greater than zero.}
+```{r expt-2-model-plot, fig.width=15.0, fig.height=4.8, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 2.  Color shows the Bayes Factor from the Savage-Dickey test for the null hypothesis that $\beta=0$: values greater than 1 (shown in blue) indicate evidence in favor of the null (no effect), while values less than 1 (in red) indicate evidence against the null (any non-zero effect; many very small Bayes Factors have been squished to 0.01 for the purposes of visualization).  Note that VOT and trial are centered (mean 0) and scaled (variance 1).  The left panel shows the effects for all terms not involving the `unsupervised` predictor (compare with effects from Experiment 1 in Figure -@fig:expt-1-model-plot), while the right panel shows the corresponding interactions between these terms and the `unsupervised` predictor (e.g., change in effects between supervised conditions from Experiment 2 and unsupervised Experiment 1)."}
+
+# hypothesis can generate negative values for very small BFs
+bf_cleanup <- function(x) {
+  ifelse(abs(x) < 1e-10, abs(x), x)
+}
 
 b_logit_exp2 %>%
-  gather_draws(`b_.*`, regex=TRUE) %>%
-  ungroup() %>%
-  mutate(.variable = factor(str_replace(.variable, "b_", ""),
-                            levels = rownames(fixef(b_logit_exp2)))) %>%
+  gather_betas() %>%
   group_by(.variable) %>%
-  mutate(p_gt_zero = mean(.value > 0)) %>%
-  ggplot(aes(x=.value, y=.variable, fill=p_gt_zero)) +
-  geom_halfeyeh(relative_scale = 2) +
-  scale_fill_gradient2("p(β > 0)", midpoint=0.5, mid=gray(0.9)) +
+  mutate(p_gt_zero = mean(.value > 0),
+         unsup = ifelse(str_detect(.variable, "unsupervised"),
+                        "Unsupervised-supervised differences",
+                        "Main effects (supervised baseline)")) %>%
+  left_join(transmute(hyps_tbl, .variable=factor(clean_beta, levels=levels(.$.variable)), BF=Evid.Ratio)) %>%
+  ggplot(aes(x=.value, y=.variable, fill=bf_cleanup(BF))) +
+  stat_density_ridges(from=-3, to=5, color="gray50") +
+  scale_fill_gradient2("BF(β=0)", midpoint=0,
+                       limits=exp(c(-2,1) * log(12.5)),
+                       oob = scales::squish,
+                       trans = "log10") +
   geom_vline(xintercept = 0, linetype=3) +
-  ## geom_density(data = prior_samples(b_logit_exp2, pars = "b"),
-  ##              mapping = aes(x=b, y = ..density..),
-  ##              fill = NA,
-  ##              color="black", )
+  labs(x = "β (log-odds of /p/ response)",
+       y = "",
+       title = "Regression coefficients from Experiment 2") +
+  facet_wrap(.~unsup, scales="free_y")
 
 ```
+
