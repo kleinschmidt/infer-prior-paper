@@ -3,6 +3,24 @@ title: |
   Supplementary information for "What constrains distributional learning
   in adults"
 author: Dave F. Kleinschmidt
+bibliography: /home/dave/Documents/papers/zotero.bib
+output:
+  html_document:
+    code_folding: hide
+    keep_md: true
+    md_extensions: +implicit_figures
+    pandoc_args:
+    - --filter
+    - pandoc-crossref
+  pdf_document:
+    md_extensions: +implicit_figures
+    fig_crop: false
+    keep_tex: true
+    latex_engine: xelatex
+    citation_package: biblatex
+    pandoc_args:
+    - --filter
+    - pandoc-crossref
 ---
 
 ```{r knitr-setup, warning=FALSE, message=FALSE, error=FALSE, echo=FALSE, results='hide'}
@@ -55,6 +73,8 @@ library(rstan)
 library(brms)
 library(tidybayes)
 library(ggridges)
+
+library(kableExtra)
 
 library(cowplot)
 theme_set(cowplot::theme_cowplot() +
@@ -120,14 +140,43 @@ trial number, each standardized to have mean 0 and variance 1.
 This formula generates fixed effects for all main effects of condition, VOT, and
 trial, all two-way interactions, and the three-way interaction.
 
-```{r expt-1-model-table, results="raw"}
+```{r expt-1-model-table, results="asis"}
 
 b_logit_exp1 <- readRDS("models/brm_logistic_exp1.rds")
-summary(b_logit_exp1)
+exp1_max_rhat <- format(max(rhat(b_logit_exp1)), digits=3)
+
+ex1_summary <- summary(b_logit_exp1)
+
+summary_to_tibble <- function(x) {
+  x %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var="Coefficient") %>%
+    transmute(Coefficient=clean_beta(Coefficient), Estimate, `l-95% CI`, `u-95% CI`)
+}
+
+fixef_tab <- ex1_summary$fixed %>%
+  summary_to_tibble()
+
+tabs <-
+  ex1_summary$random %>%
+  set_names(., glue("Random effects: {names(.)}")) %>%
+  c(list("Fixed effects (β)"=ex1_summary$fixed), .) %>%
+  map(summary_to_tibble)
+
+kable(bind_rows(tabs),
+      caption = "Bayesian mixed-effects logistic regression coefficients from Experiment 1") %>%
+  pack_rows(index = map(tabs, nrow))
 
 ```
 
-```{r expt-1-model-plot, fig.width=9.4, fig.height=5.7, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 1.  Red indicates coefficients that are reliably greater than zero, and blue indicates reliably less than zero.}
+Table 1 shows the fixed-effects regression coefficients for the fixed effects
+and standard deviations/correlations for the random effects, along with the 95%
+credible intervals for each parameter.  All $\hat{R} < `r exp1_max_rhat`$
+indicating good convergence.  [Figure @fig:expt-1-model-plot] visualizes the
+posterior distributions of the fixed effects coefficients, with color indicating
+how reliably they are greater than or less than zero.
+
+```{r expt-1-model-plot, fig.width=9.4, fig.height=5.7, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 1.  Red indicates coefficients that are reliably greater than zero, and blue indicates reliably less than zero."}
 
 b_logit_exp1 %>%
   gather_betas() %>%
@@ -160,6 +209,8 @@ condition.  All other variables were coded as in Experiment 1.
 Only unlabeled trials were used to estimate the model, since responses to
 labeled trials were nearly always consistent with the label and hence
 uninformative about the listener's classification function at that point.
+
+## Prior for Bayes Factors
 
 In order to calculate Bayes factors for the null hypothesis of no effect of
 supervision vs. the alternative for some possibly non-zero effect via the
@@ -199,13 +250,66 @@ hyps <-
 hyps_test <-
   hypothesis(b_logit_exp2, hypothesis=hyps$hyp)
 
+format_bf <- function(x) {
+  ifelse(
+    x > 100, ">100",
+    ifelse(
+      x < 0.01, "<0.01",
+      signif(x, digits=2)
+    )
+  )
+}
+
 hyps_tbl <-
   hyps_test$hypothesis %>%
-  inner_join(hyps, by=c("Hypothesis"="hyp_paren"))
+  inner_join(hyps, by=c("Hypothesis"="hyp_paren")) %>%
+  mutate(`BF (β=0)` = format_bf(Evid.Ratio))
 
 ```
 
-```{r expt-2-model-plot, fig.width=15.0, fig.height=4.8, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 2.  Color shows the Bayes Factor from the Savage-Dickey test for the null hypothesis that $\beta=0$: values greater than 1 (shown in blue) indicate evidence in favor of the null (no effect), while values less than 1 (in red) indicate evidence against the null (any non-zero effect; many very small Bayes Factors have been squished to 0.01 for the purposes of visualization).  Note that VOT and trial are centered (mean 0) and scaled (variance 1).  The left panel shows the effects for all terms not involving the `unsupervised` predictor (compare with effects from Experiment 1 in Figure -@fig:expt-1-model-plot), while the right panel shows the corresponding interactions between these terms and the `unsupervised` predictor (e.g., change in effects between supervised conditions from Experiment 2 and unsupervised Experiment 1)."}
+## Results
+
+```{r expt-2-model-table, results="asis"}
+
+exp2_max_rhat <- format(max(rhat(b_logit_exp2)), digits=3)
+
+ex2_summary <- summary(b_logit_exp2)
+
+ex2_tabs <-
+  ex2_summary$random %>%
+  set_names(., glue("Random effects: {names(.)}")) %>%
+  c(list("Fixed effects (β)"=ex2_summary$fixed), .) %>%
+  map(summary_to_tibble)
+
+options(knitr.kable.NA="")
+
+ex2_tabs %>%
+  bind_rows() %>%
+  left_join(select(hyps_tbl, Coefficient=clean_beta, `BF (β=0)`)) %>%
+  kable(caption = "Bayesian mixed-effects logistic regression coefficients from Experiment 2") %>%
+  kable_styling(full_width = FALSE) %>%
+  pack_rows(index = map(ex2_tabs, nrow))
+
+```
+
+Table 2 shows the fixed effects coefficients and random effects standard
+deviations and correlations, along with their 95% credible intervals.  As
+before, all $\hat{R} < `r exp2_max_rhat`$ indicating good convergence of the
+sampler.  [Figure @fig:expt-2-model-plot] shows the posterior distributions of
+the fixed effects, with color indicating the Bayes Factor evidence for or
+against the null hypothesis of $\beta = 0$.  The left panel shows the "basic"
+fixed effects for exposure distribution, VOT, and trial, along with the
+intercept.  Because the default treatment coding was used, these correspond to
+the corresponding effects in the supervised conditions (Experiment 2 data).  The
+right panel shows the corresponding interactions of the `unsupervised` predictor
+with these terms, which correspond to the change in the size or direction of
+these effects between Experiment 2 and the unsupervised Experiment 1.  All of
+these are clustered around zero, and moreover the Bayes Factors are all greater
+than 1, indicating evidence in favor of the null hypothesis of zero differences
+between supervised and unsupervised distributional learning in these
+experiments.
+
+```{r expt-2-model-plot, fig.width=15.0, fig.height=4.8, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 2.  Color shows the Bayes Factor from the Savage-Dickey test for the null hypothesis that $\\beta=0$: values greater than 1 (shown in blue) indicate evidence in favor of the null (no effect), while values less than 1 (in red) indicate evidence against the null (any non-zero effect; many very small Bayes Factors have been squished to 0.01 for the purposes of visualization).  Note that VOT and trial are centered (mean 0) and scaled (variance 1).  The left panel shows the effects for all terms not involving the `unsupervised` predictor (compare with effects from Experiment 1 in Figure -@fig:expt-1-model-plot), while the right panel shows the corresponding interactions between these terms and the `unsupervised` predictor (e.g., change in effects between supervised conditions from Experiment 2 and unsupervised Experiment 1)."}
 
 # hypothesis can generate negative values for very small BFs
 bf_cleanup <- function(x) {
