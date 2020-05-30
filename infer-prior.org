@@ -128,7 +128,7 @@
     It seems out of place in discussion of modeling results...
 
     I put it in the GD. and pointer in the expt 4 discussion
-** TODO quantify model goodness-of-fit
+** DONE quantify model goodness-of-fit
    Even if this is something as simple as log-likelihood.  talk about
    "quantitative fit" to the data but there's nothing quantitative about it!!
    
@@ -144,11 +144,13 @@
    comparison.  the model clearly does a good job in absolute terms, it's just a
    question of whether it does a good job relative to particular baselines.
    Here are some baselines that seem reasonable:
-*** TODO Fit baseline models
+*** DONE Fit baseline models
     - null model (intercept only)
     - logistic regression (linear trial effects, like the data analysis)
     - lapsing logistic regression (linear trial effects; variable lapse rate)
-*** TODO incorporate into text
+*** MAYBE fit additional baseline models
+    Like a static logistic regression sort of model...
+*** DONE incorporate into text
     overall LL, LOOIC/elpd.
 
    
