@@ -338,3 +338,61 @@ b_logit_exp2 %>%
 
 ```
 
+# Experiment 4
+
+As with the previous experiments, the data from the 70-trial test phase was
+analyzed with a Bayesian mixed-effects logistic regression via `brms`
+[@Burkner2017].  Recall that this test phase followed a 222-trial exposure phase
+(as in Experiments 1 and 2), and that the change from exposure to test was
+implicit, un-cued, and not in any way easily detectable by the listeners.
+
+The model was identical to that from Experiment 1, with the exception that the
+variable coding for exposure condition was called `vot_cond` since it needed to
+include both the /b/ and /p/ mean VOT since they varied independently and some
+conditions with different /b/ means had the same /p/ mean (and vice versa).  As
+before, VOT and trial number were centered and scaled to have unit variance.
+
+```
+respP ~ 1 + vot_cond * vot_s * trial_s + (1 + vot_s | subject)
+```
+
+One important difference in interpreting the regression coefficients is that the
+trial number was with respect to the 70 trials of the *test* phase, rather than
+the exposure phase as in Experiments 1 and 2.  Thus, while the main effects and
+interactions with `trial_s` in the earlier models indicate learning or build-up
+effects, here they capture how listeners behavior changed over the course of the
+post-exposure test block.  So the opposite signs of the main effects of VOT
+condition (mostly negative, indiciating stronger /b/-bias or higher boundaries
+for conditions with higher VOT conditions as expected) and the corresponding VOT
+condition-by-trial interactions (mostly positive) means that over the course of
+the test phase, the differences between conditions got smaller.  That is, the
+opposite signs of the interactions with trial and their corresponding main
+effects show evidence of "unlearning", or "re-learning" during the test phase,
+where listeners' category boundaries converge after 70 trials of exposure to the
+same flat VOT distribution (from -10ms VOT to 50ms VOT).
+
+```{r expt4, results="asis"}
+
+b_logit_exp4 <- readRDS("models/brm_logistic_expt4.rds")
+
+b_logit_exp4 %>%
+  fixef_ranef_tables() %>%
+  multi_kable(caption = "Bayesian mixed-effects logistic regression coefficients from Experiment 4") %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "condensed")
+
+```
+
+```{r expt-4-model-plot, fig.width=9.4, fig.height=5.7, fig.cap="Posterior distributions for fixed-effects coefficients in Experiment 4.  Red indicates coefficients that are reliably greater than zero, and blue indicates reliably less than zero."}
+
+b_logit_exp4 %>%
+  gather_betas() %>%
+  group_by(.variable) %>%
+  mutate(p_gt_zero = mean(.value > 0)) %>%
+  ggplot(aes(x=.value, y=.variable, fill=p_gt_zero)) +
+  geom_density_ridges(relative_scale = 2) +
+  scale_beta_gt0 +
+  geom_vline(xintercept = 0, linetype=3) +
+  labs(x = "β (log-odds of /p/ response)",
+       y = "")
+
+```
