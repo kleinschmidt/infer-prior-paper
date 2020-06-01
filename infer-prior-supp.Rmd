@@ -75,6 +75,7 @@ library(tidybayes)
 library(ggridges)
 
 library(kableExtra)
+options(knitr.kable.NA="")
 
 library(cowplot)
 theme_set(cowplot::theme_cowplot() +
@@ -99,7 +100,9 @@ beta_name_subs <- list(
   c("vot_s", "VOT"),
   c("trial_s", "Trial"),
   c("bvotCond", "/b/ VOT="),
-  c("supervisedunsupervised", "unsupervised")
+  c("supervisedunsupervised", "unsupervised"),
+  c("vot_cond(-?[0-9]0)([0-9]0)", "VOT /b/=\\1,/p/=\\2"),
+  c("vot_condM", "vot_cond-") # I think str_replace_multi starts at the end...so this happens first
   )
 
 clean_beta <- function(x) str_replace_multi(x, beta_name_subs, replace_all = TRUE)
@@ -120,6 +123,30 @@ scale_beta_gt0 <-
                        low=scales::muted("blue"),
                        high=scales::muted("red"))
 
+summary_to_tibble <- function(x) {
+  x %>%
+    as.data.frame() %>%
+    tibble::rownames_to_column(var="Coefficient") %>%
+    transmute(Coefficient=clean_beta(Coefficient), Estimate, `l-95% CI`, `u-95% CI`)
+}
+
+fixef_ranef_tables <- function(fit) {
+  fit_summary <- summary(fit)
+
+  named <- c(
+    list("Fixed effects (β)"=fit_summary$fixed),
+    fit_summary$random %>% set_names(., glue("Random effects: {names(.)}"))
+  )
+
+  map(named, summary_to_tibble)
+}
+
+multi_kable <- function(named, ...) {
+  named %>%
+    bind_rows() %>%
+    kable(...) %>%
+    pack_rows(index = map(named, nrow))
+}
 
 ```
 
@@ -145,27 +172,10 @@ trial, all two-way interactions, and the three-way interaction.
 b_logit_exp1 <- readRDS("models/brm_logistic_exp1.rds")
 exp1_max_rhat <- format(max(rhat(b_logit_exp1)), digits=3)
 
-ex1_summary <- summary(b_logit_exp1)
-
-summary_to_tibble <- function(x) {
-  x %>%
-    as.data.frame() %>%
-    tibble::rownames_to_column(var="Coefficient") %>%
-    transmute(Coefficient=clean_beta(Coefficient), Estimate, `l-95% CI`, `u-95% CI`)
-}
-
-fixef_tab <- ex1_summary$fixed %>%
-  summary_to_tibble()
-
-tabs <-
-  ex1_summary$random %>%
-  set_names(., glue("Random effects: {names(.)}")) %>%
-  c(list("Fixed effects (β)"=ex1_summary$fixed), .) %>%
-  map(summary_to_tibble)
-
-kable(bind_rows(tabs),
-      caption = "Bayesian mixed-effects logistic regression coefficients from Experiment 1") %>%
-  pack_rows(index = map(tabs, nrow))
+b_logit_exp1 %>%
+  fixef_ranef_tables() %>%
+  multi_kable(caption="Bayesian mixed-effects logistic regression coefficients from Experiment 1") %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "condensed")
 
 ```
 
@@ -275,20 +285,10 @@ exp2_max_rhat <- format(max(rhat(b_logit_exp2)), digits=3)
 
 ex2_summary <- summary(b_logit_exp2)
 
-ex2_tabs <-
-  ex2_summary$random %>%
-  set_names(., glue("Random effects: {names(.)}")) %>%
-  c(list("Fixed effects (β)"=ex2_summary$fixed), .) %>%
-  map(summary_to_tibble)
-
-options(knitr.kable.NA="")
-
-ex2_tabs %>%
-  bind_rows() %>%
-  left_join(select(hyps_tbl, Coefficient=clean_beta, `BF (β=0)`)) %>%
-  kable(caption = "Bayesian mixed-effects logistic regression coefficients from Experiment 2") %>%
-  kable_styling(full_width = FALSE) %>%
-  pack_rows(index = map(ex2_tabs, nrow))
+fixef_ranef_tables(b_logit_exp2) %>%
+  map(left_join, select(hyps_tbl, Coefficient=clean_beta, `BF (β=0)`)) %>%
+  multi_kable() %>%
+  kable_styling(full_width = FALSE, bootstrap_options = "condensed")
 
 ```
 
