@@ -18,9 +18,11 @@ output:
     keep_tex: true
     latex_engine: xelatex
     citation_package: biblatex
+    dev: cairo_pdf
     pandoc_args:
     - --filter
     - pandoc-crossref
+mainfont: "CMU Serif"
 ---
 
 ```{r knitr-setup, warning=FALSE, message=FALSE, error=FALSE, echo=FALSE, results='hide'}
@@ -287,7 +289,7 @@ ex2_summary <- summary(b_logit_exp2)
 
 fixef_ranef_tables(b_logit_exp2) %>%
   map(left_join, select(hyps_tbl, Coefficient=clean_beta, `BF (β=0)`)) %>%
-  multi_kable() %>%
+  multi_kable(caption="Bayesian mixed-effects logistic regression coefficients from Experiment 2, along with Bayes Factors for null hypothesis of β=0") %>%
   kable_styling(full_width = FALSE, bootstrap_options = "condensed")
 
 ```
