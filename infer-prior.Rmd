@@ -923,7 +923,7 @@ and unlabeled trials were distributed across VOTs (@Fig:exp2-label-dists).  No
 differences were found between behavior in these conditions so they are analyzed
 analyzed together.[^supconds]
 
-[^supconds]: For the curious---or skeptical reader---the two conditions are
+[^supconds]: For the curious---or skeptical---reader, the two conditions are
     listed separately in the
     [`supunsup`](https://github.com/kleinschmidt/phonetic-sup-unsup) R data
     package that accompanies this paper.
@@ -2093,20 +2093,6 @@ classification data in order to estimate listeners' beliefs about the underlying
 variances of voiced and voiceless stops (in addition to the sensory uncertainty
 associated with VOT itself).
 
-<!-- TODO: yeah this is way out of place here... -->
-A further complication comes from the fact that the belief updating model
-assumes that there are exactly two clusters, one for voiced /b/ and the other
-for voiceless /p/.  In reality, word-initial voicing in American English is
-characterized by _three_ distinct clusters: aspirated (positive VOT) /p/,
-unaspirated (small or zero VOT) /b/, and prevoiced (negative VOT) /b/
-[@Goldrick2013; @Lisker1964].  This means that listeners are likely to classify
-negative VOTs as /b/ even though an "ideal listener" model that has a
-low-variance /b/ and high-variance /p/ would (counter-intuitively) classify
-those negative VOTs as /p/.  This fact, combined with the equal-variance
-clusters produced during experimental exposure, make it highly unlikely that the
-belief-updating model would infer the correct asymmetry in variance between /b/
-and /p/.
-
 ### Strength of prior beliefs
 
 The belief updating model also suggests that these prior beliefs are relatively
@@ -2252,7 +2238,7 @@ sepmeans %>%
   scale_x_continuous('VOT (ms)') +
   scale_y_continuous('Frequency') +
   labs(title="Experiment 4: VOT distribution conditions",
-       subtitle="Mean VOTs for /b/ and /p/ clusters manipulated separately")
+       subtitle="Mean VOTs for /b/ and /p/ clusters")
 
 
 ```
