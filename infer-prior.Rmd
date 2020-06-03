@@ -129,9 +129,9 @@ acquistion are characterized by initial flexibility, which declines over
 development as the particulars of the native language are acquired. For
 instance, as infants become better at discriminating linguistically
 important sounds in their native language, they simultaneously *lose*
-the ability to discriminate sounds that are important for other
+the ability to discriminate some sounds that are important for other
 languages but not their native language
-[@Best1995; @Kuhl1992; @Werker1984]. Ultimately, people become
+[@Best1995; @Kuhl1992; @Werker1984; but see @Best1988]. Ultimately, people become
 sufficiently inflexible over development that they generally struggle to
 learn another language in adulthood [@Hartshorne2018].
 
@@ -169,7 +169,9 @@ infants and adults) become more sensitive after exposure to a bimodal
 distribution of an acoustic cue (like length, voice-onset time, vowel
 formant frequencies, etc.) compared with exposure to a unimodal
 distribution [e.g. @Escudero2011; @Goudbeek2008;
-@Maye2000; @Maye2002; @Feldman2013b]. Another set of findings shows that
+@Maye2000; @Maye2002; @Feldman2013b], although the evidence that very young
+infants can benefit from this kind of exposure in short laboratory sessions is
+equivocal [@Cristia2018]. Another set of findings shows that
 adult listeners can adapt to changes in the means and/or variances of
 the cue distributions for known phonetic categories [e.g.
 @Clayards2008; @Theodore2015; @Theodore2019; @Colby2018; @Chladkova2017;
