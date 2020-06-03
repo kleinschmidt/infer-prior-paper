@@ -2626,7 +2626,7 @@ predicted_lhood <- updated_nix2_samples %>%
                             do.call(what=rbind))) %>%
   unnest(test_lhood)
 
-lapse_rate_samples <-
+lapse_rate_samples_block6 <-
   rstan::extract(fit_inc, pars='lapse_rate')[[1]][, 6] %>%
   as.numeric() %>%
   tibble(lapse_rate=.) %>%
@@ -2637,7 +2637,7 @@ predicted_prob_p_samples <-
   group_by(bvotCond, pvotCond, trueCat, vot) %>%
   mutate(sample = row_number()) %>%
   spread(trueCat, lhood) %>%
-  left_join(lapse_rate_samples) %>%
+  left_join(lapse_rate_samples_block6) %>%
   mutate(prob_p = p / (b+p),
          prob_p_lapse = prob_p * (1-lapse_rate) + lapse_rate*0.5)
 
