@@ -1,7 +1,7 @@
 ---
 title: What constrains distributional learning in adults?
 author: Dave F. Kleinschmidt
-bibliography: /home/dave/Documents/papers/zotero.bib
+bibliography: [/home/dave/Documents/papers/zotero.bib packages.bib]
 abstract: |
   One of the many remarkable features of human language is it's flexibility:
   during acquisition, any normally-developing human infant can acquire any human
@@ -502,7 +502,7 @@ exposure talker's boundary as the "complete learning" baseline.
 
 Each subject's classification function was estimated with a Bayesian multilevel
 (mixed-effect) logistic regression, using the `brms` package [@Burkner2017] for
-`R` [@RCoreTeam2017].[^expt1-formula]  This approach simultaneously estimates the group-level
+`R` [@R-base].[^expt1-formula]  This approach simultaneously estimates the group-level
 effects of the experimental manipulation (VOT shift condition) on the /b/-/p/
 category boundary location and sharpness, and each individual participants'
 boundary locations and slopes.  A multilevel approach like this has the benefit
@@ -1412,7 +1412,7 @@ The model was fit to data from Experiment 1 (unsupervised distributional
 learning) with the [`beliefupdatr`
 package](https://github.com/kleinschmidt/beliefupdatr), which includes a Stan
 [@Carpenter2017] implementation of this belief updating model and a convenient
-`R` [@RCoreTeam2017] interface.
+`R` [@R-base] interface.
 The trials were divided up into six blocks of equal length
 (37 trials).  Responses in each block in each distribution condition were
 predicted based on updated beliefs at the halfway point of the block, using the
@@ -3138,3 +3138,46 @@ finding that adult distributional learning _is_ constrained, these constraints
 do not appear to arise from the unsupervised nature of distributional learning,
 but rather are consistent with belief updating guided by a listener's prior
 experience with talker variability.
+
+# Acknowledgements
+
+This work was begun during my PhD studies at the University of Rochester and an
+early version formed one chapter of my dissertation.  In addition, some of the
+data reported here was presented at the Annual Meeting of the Cognitive Science
+Society (2015 and 2016).  I gratefully acknowledge my PhD advisor (Florian
+Jaeger), my committee (Dick Aslin, Jeff Runner, and Lori Holt), and Rajeev
+Raizada for their suggestions and careful critiques in the early phases of
+developing this work.
+
+```{r}
+packages = c(
+  'base',
+  'knitr',
+  'rmarkdown',
+  'tidyverse',
+  'dplyr',
+  'glue',
+  'magrittr',
+  'forcats',
+  'rstan',
+  # 'brms',   # JSS cited already
+  'loo',
+  'tidybayes',
+  'ggplot2',
+  'cowplot',
+  'latex2exp'
+)
+
+knitr::write_bib(packages, file="packages.bib")
+citation_strings <- glue("`{pkg}` [@R-{pkg}]", pkg=packages[-1])
+citation_string <- str_c(lift(str_c)(head(citation_strings, -1), sep=", "), ", and ", tail(citation_strings, 1))
+
+```
+
+I am also indebted to the developers and maintainers of the R language
+[@R-base], the Stan language [@Carpenter2017], and the following R
+packages: `brms` [@Burkner2017], `r citation_string`.
+
+This work was supported by an NSF GRFP and NIH NICHD F31 (HD082893) to DFK and
+NIH NICHD R01 (HD075797) to TFJ.
+
