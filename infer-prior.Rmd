@@ -1,7 +1,9 @@
 ---
 title: What constrains distributional learning in adults?
 author: Dave F. Kleinschmidt
-bibliography: [/home/dave/Documents/papers/zotero.bib packages.bib]
+bibliography:
+  - /home/dave/Documents/papers/zotero.bib
+  - packages.bib
 abstract: |
   One of the many remarkable features of human language is it's flexibility:
   during acquisition, any normally-developing human infant can acquire any human
@@ -45,6 +47,7 @@ output:
         pandoc_args:
         - --filter
         - pandoc-crossref
+reference-section-title: "References"
 ---
 
 

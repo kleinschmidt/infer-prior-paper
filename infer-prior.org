@@ -2,10 +2,10 @@
 
 * todos
 ** TODO prepare for submission
-*** TODO title and abstract
-*** TODO author note
+*** DONE title and abstract
+*** DONE author note
     acknoledge diss committee, funding (Florian R1, GRFP/NRSA)
-*** TODO formatting for Cognition
+*** DONE formatting for Cognition
 *** TODO final copy-editing
 *** TODO cover letter
 ** DONE finalize data analysis
@@ -112,12 +112,12 @@
     I've made a good if messy start on the general discussion, and moved a lot
     of materials to the discussion for expt 4.  So I need to go read that and
     see what it all needs.
-** TODO regression tables for an appendix/supplementary material
+** DONE regression tables for an appendix/supplementary material
 ** DONE speed of learning in expt 2
    just look at whether there's an interaction between trial and supervision.
 ** TODO editing misc
 *** DONE I vs. we
-*** TODO what about things babies are bad at/don't lose?
+*** DONE what about things babies are bad at/don't lose?
     "babies are bad at some things and some things never get constrained, cf clicks
     Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
     acquisition is unconstrained or give some caveats"
@@ -210,7 +210,7 @@
    """
 
    I've incorporated some of these refs...
-** TODO Cristia meta-analysis of dist learning acquisition papers
+** DONE Cristia meta-analysis of dist learning acquisition papers
    this is @Cristia2018a
 
    put this in the intro?  where I talk about the fact that infants and adults
