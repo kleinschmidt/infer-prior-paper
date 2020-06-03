@@ -1,12 +1,15 @@
-\documentclass[man,floatsintext,biblatex]{apa6}
+\documentclass[]{article}
 
-\usepackage[american]{babel}
-
+\usepackage[margin=1in]{geometry}
 \usepackage{amsmath}
 
+\usepackage[american]{babel}
+\usepackage[style=apa]{biblatex}
 \usepackage{csquotes}
 \DeclareLanguageMapping{american}{american-apa}
 \addbibresource{$bibliography$}
+
+\usepackage{booktabs}
 
 \usepackage{ifxetex,ifluatex}
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
@@ -60,7 +63,7 @@ $else$
 $endif$
             breaklinks=true}
 
-\usepackage{graphicx,grffile}
+\usepackage{graphicx}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
 \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
@@ -84,20 +87,16 @@ $endif$
 }
 
 \title{$title$}
-\shorttitle{$shorttitle$}
 
 \author{Dave F. Kleinschmidt}
-\affiliation{Princeton University, Princeton Neuroscience Institute; University of Rochester, Department of Brain and Cognitive Sciences}
-
-\abstract{$abstract$}
-$if(authornote)$\authornote{$authornote$}$endif$
-
-% number sections
-\setcounter{secnumdepth}{3}
 
 \begin{document}
 
 \maketitle
+
+\begin{abstract}
+  $abstract$
+\end{abstract}
 
 $body$
 
