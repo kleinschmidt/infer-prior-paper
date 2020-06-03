@@ -291,7 +291,12 @@ similar they are to a typical American English talker (Figure
 between the VOT clusters (40ms), but the overall VOTs are shifted up or down in
 10ms increments.  Previous results have shown that listeners are sensitive to
 such shifts in distributions [@Munson2011], but have not systematically explored
-the wide range of shifts used here.
+the wide range of shifts used here.  While some of these VOT distributions
+deviate substantially from American English, they are not outside the range of
+variation across other languages [see e.g. @Lisker1964; @Cho2019].  Thus, if
+distributional learning by these adult listeners is unconstrainted, their
+category boundaries should be close to the optimal category boundaries for the
+VOT distributions they were exposed to.
 
 ```{r data-exp1}
 
@@ -3077,6 +3082,25 @@ future work, both computationally (e.g., investigating the consequences of the
 various simplifications made here) and empirically [e.g., investigating learning
 from even other distributions, with multiple cues, and under varying training
 regimes; see @Harmon2019 for work in this direction].
+
+### What is the role of specific language experience?
+
+Finally, the evidence I have presented here is *circumstantial*: I observe
+constraints on distributional learning of VOT among American English listeners,
+and I have shown that these constraints are largely *consistent* with
+belief-updating starting from prior beliefs that look very similar to a typical
+talker of American English.  Moreover, the VOT distributions that the American
+English listeners struggled to learn---while atypical of American English---are
+not outside the range of VOT distributions found across languages [@Cho2019;
+@Lisker1964].  However, more work is necessary to show *directly* that it is
+previous experience with other talkers that constrains distributional learning.
+One step in this direction would be comparing learning of the same distributions
+by listeners with differing language experiences, provided that that experience
+differs enough in the relevant cue distributions.  Another important step would
+be showing that specific experience or specific prior expectations can further
+constrain distributional learning, although this may be difficult since the
+strong constraints exhibited in these experiments likely reflect language-level
+priors which cannot be easily or quickly changed [@Kleinschmidt2015b]
 
 # Conclusion
 
