@@ -128,7 +128,7 @@ infant can learn any human language. Human languages vary dramatically
 at every level, including the basic sound systems they use, and the
 human language faculty must be flexible enough to deal with this
 substantial cross-linguistic variability. The first stages of language
-acquistion are characterized by initial flexibility, which declines over
+acquisition are characterized by initial flexibility, which declines over
 development as the particulars of the native language are acquired. For
 instance, as infants become better at discriminating linguistically
 important sounds in their native language, they simultaneously *lose*
@@ -158,7 +158,7 @@ probabilistic relationships between different linguistic and sensory units
 define the structure of the language, and so learning the structure of your
 language requires learning---at least approximately and implicitly---the
 distributions associated with different structures in the language.  Likewise,
-accommodating talker variabiltiy is also, at a computational level, a problem of
+accommodating talker variability is also, at a computational level, a problem of
 learning the speaker- or context-specific probabilistic relationships between
 observable cues and underlying linguistic structures.  This similarity is
 demonstrated by the computational modeling which shows that both acquisition
@@ -181,7 +181,7 @@ the cue distributions for known phonetic categories [e.g.
 @Schreiber2013].
 What both of these sets of findings have in common is that listeners
 pick up on the distributions of cues without any explicit instruction
-about the itended category label associated with each token. For
+about the intended category label associated with each token. For
 example, @Clayards2008 had listeners listen to /b/-/p/ minimal
 pair words (e.g., "beach/peach") with different voice-onset times
 (VOT), and click on a matching picture to indicate which member of the
@@ -201,9 +201,9 @@ not present in their native language. For instance, Japanese listeners
 struggle to discriminate the English /r/-/l/ contrast, which corresponds
 a single category in their native language [@Goto1971; @Miyawaki1975].
 Long-term naturalistic exposure is not sufficient to achieve good
-discrimination of this contrast, even after convserational competence
+discrimination of this contrast, even after conversational competence
 has been achieved [@Takagi1995]. While perception of this contrast can
-be improved somewhat by training, it requries extensive training and
+be improved somewhat by training, it requires extensive training and
 these listeners seldom achieve native-like levels of performance
 [@Bradlow1997].
 
@@ -325,7 +325,7 @@ such shifts in distributions [@Munson2011], but have not systematically explored
 the wide range of shifts used here.  While some of these VOT distributions
 deviate substantially from American English, they are not outside the range of
 variation across other languages [see e.g. @Lisker1964; @Cho2019].  Thus, if
-distributional learning by these adult listeners is unconstrainted, their
+distributional learning by these adult listeners is unconstrained, their
 category boundaries should be close to the optimal category boundaries for the
 VOT distributions they were exposed to.
 
@@ -786,7 +786,7 @@ increasing from each condition to the next with $p > `r min_p_increase`$.[^bayes
 
 A more informative way of answering this question is to look at the _category
 boundary_---the VOT that is ambiguous between /b/ and /p/---corresponding to the
-fixed effects for each exposure condition.  Because trial number was inluded as
+fixed effects for each exposure condition.  Because trial number was included as
 a regressor, trial was fixed at 184 (83% or 5/6 of the 222 total trials).  The
 large white points in Figure [-@fig:expt1-boundaries] show the estimated
 boundary for each condition, and the corresponding confidence intervals are the
@@ -957,7 +957,7 @@ from.
 Two different semi-supervised conditions were run which differed in how labeled
 and unlabeled trials were distributed across VOTs (@Fig:exp2-label-dists).  No
 differences were found between behavior in these conditions so they are analyzed
-analyzed together.[^supconds]
+together.[^supconds]
 
 [^supconds]: For the curious---or skeptical---reader, the two conditions are
     listed separately in the
@@ -1178,7 +1178,7 @@ included data from _both_ Experiments 1 and 2 in order to directly assess
 effects of supervised learning on the strength and time course of learning.
 This model included fixed effects for supervision condition, all fixed effects
 from the Experiment 1 model, and all interactions thereof.  The random effects
-structure was identical to Experment 1.[^expt2-formula]  Because listeners' responses were so
+structure was identical to Experiment 1.[^expt2-formula]  Because listeners' responses were so
 systematically determined by the label on labeled trials, _only_ unlabeled
 trials were included in the model (all trials from Experiment 1, and half of the
 trials from Experiment 2).
@@ -1195,7 +1195,7 @@ trials from Experiment 2).
 
 Figure -@fig:expt2-bounds shows the by-subject and overall category boundaries
 for semi-supervised (shaded violins/points) and unsupervised (outlined
-violins/points, replotted from Figure -@fig:expt1-boundaries) distributional
+violins/points, re-plotted from Figure -@fig:expt1-boundaries) distributional
 learning.  As in @Fig:expt1-boundaries, the
 boundaries estimated from the model for a trial 5/6 of the way to the end of the
 experiment, and the points and lines show the group-level (fixed effects)
@@ -1365,7 +1365,7 @@ is also a Normal-Inverse Chi squared, with updated values of the four parameters
 These parameter updates have an intuitive interpretation [@Kleinschmidt2015b]:
 the confidence parameters are increased by the number of observations $n$ (which
 is why they are called "pseudocounts"), while the new expected mean and variance
-are weigthed averages of the prior expectations and the observed values, with
+are weighted averages of the prior expectations and the observed values, with
 the weights determined by the pseudocounts and actual count,
 respectively.[^var-mean]
 
@@ -1394,7 +1394,7 @@ model _unsupervised_ learning, a Bayesian model needs to average predicted
 behavior over distributional learning given each possible way that all the
 tokens could be jointly classified, weighted by the probability of that
 classification.  In an experiment with 200 trials, each of which could be either
-/b/ or /p/, this ammounts to more than $10^{60}$ possibilities, an impossibly
+/b/ or /p/, this amounts to more than $10^{60}$ possibilities, an impossibly
 large number to consider.  There are approximations for unsupervised or
 semi-supervised belief updating, but they substantially increase the
 computational complexity and exploring them is left for future work.
@@ -1461,7 +1461,7 @@ log-posterior density in the form of LOOIC, which is on the deviance scale ($-2$
 times the log-likelihood) like AIC.  On this scale, lower is better,
 corresponding to higher predictive log likelihood (better-fitting or more
 parsimonious models).  Finally, because these are estimated from a finite
-datset, there is uncertainty associated with them (and the differences between
+dataset, there is uncertainty associated with them (and the differences between
 models), which is indicated by the standard error of the estimate (or
 difference).
 
@@ -1593,7 +1593,7 @@ loo_glm_intercept_only <- loo(ll_glm_intercept_only_mat)
 ## Results
 
 The belief updating model can be evaluated in a number of ways.  At the highest
-level, it quantiatively fits the data well, as shown by Table -@tbl:loo-tab.
+level, it quantitatively fits the data well, as shown by Table -@tbl:loo-tab.
 The LOOIC for the model is better (lower) than the LOOIC of two baseline models:
 conclusively so for the null, intercept-only model, and numerically better
 for the logistic regression baseline, although the SE of that difference is
@@ -1761,7 +1761,7 @@ data_exp1 %>%
 First, does the belief updating model successfully capture the overall pattern
 of incomplete distributional learning by the end of the experiment?  This serves
 as a check whether the overall pattern of distributional learning is compatible
-with an "ideal adpater" belief updating process, where every listener starts
+with an "ideal adapter" belief updating process, where every listener starts
 with the same, shared prior expectations about an unfamiliar talker's VOT
 distributions for /b/ and /p/.
 
@@ -1898,7 +1898,7 @@ ggplot(modeled_boundaries, aes(x=trial, y=mean)) +
 Next, how well does the belief-updating model capture the learning curve, or
 change in category boundaries with further experience?  Figure
 -@fig:plot-modeled-category-boundaries shows the belief-updating predicted
-learning curves, compared with the empircal boundaries (points/lines) estimated
+learning curves, compared with the empirical boundaries (points/lines) estimated
 for each condition in each sixth of the experiment (blocks of 37 trials).  The
 belief updating model qualitatively captures the change in category boundaries,
 both within each condition and across conditions.  Boundaries start off quite
@@ -1918,7 +1918,7 @@ changes in the offset (but not the slope).
 
 All of these methods agree qualitatively on where the boundaries are _later_ in
 the experiment, when listeners make very few errors or random responses.  Where
-they disagree (with each other, and with the belief udpating model) is in the
+they disagree (with each other, and with the belief updating model) is in the
 estimated boundaries for the early trials, where listeners make many random or
 guessing responses, even on unambiguous VOTs.  In the belief updating model,
 this is captured by the "lapse rate" or the proportion of trials on which the
@@ -1927,7 +1927,7 @@ simulated subjects simply guess randomly, which is allowed to vary over trials
 the first sixth of trials (1-37), while for the remainder of the experiment it
 is closer to 5%.  Models that don't take into such guessing into account are
 subject to mis-estimate the boundary [location and slope @Clayards2008;
-@Wichmann2001], and so for this reason I chose the more interpetable---if
+@Wichmann2001], and so for this reason I chose the more interpretable---if
 somewhat noisier---direct estimate of the boundary over the estimates from
 either of the regression models for comparison with the belief updating model.
 
@@ -2154,7 +2154,7 @@ stimuli used here---could lead to more reliance on labeling information
 stimuli leads to equally rapid belief updating suggests this is unlikely;
 @Kleinschmidt2015b].
 
-Another posibility, proposed by @Kleinschmidt2015b, is that the strength of
+Another possibility, proposed by @Kleinschmidt2015b, is that the strength of
 listeners' prior beliefs about a particular cue distribution is related to how
 much that particular distribution varies _across talkers_: when talker
 variability is low, an _ideal adapter_ will use strong prior beliefs and thus be
@@ -2709,7 +2709,7 @@ Finally, can the simple belief updating model from Experiment 3---using the
 prior beliefs inferred from Experiment 1---explain the distributional learning
 or lack thereof observed in this experiment?  Figure
 -@fig:plot-exp4-predictions-first-third shows the posterior predictive intervals
-for the model comparedwith the average probability of /p/ responses in the first
+for the model compared with the average probability of /p/ responses in the first
 third of the test phase of Experiment 4.  The model's predictions are quite
 accurate for the 10ms /b/, 50ms /p/ condition which is a near replication of the
 same exposure condition from Experiment 1.  But for the other conditions, the
@@ -2741,7 +2741,7 @@ assessed.
 
 ### Differences in exposure distributions
 
-In this experiment, listeners were exposed to VOT distributiosn that differed in
+In this experiment, listeners were exposed to VOT distributions that differed in
 important ways from Experiments 1 and 2.  First, they deviated even more
 dramatically from the distributions produced by a typical talker of American
 English.  In particular, some conditions included large negative VOTs, for which
@@ -2801,7 +2801,6 @@ learned from the earlier bimodal distributions (and indeed there is some
 evidence that the small differences between conditions present at the beginning
 of the test phase gradually disappear, see Supplementary Materials).
 
-<!-- TODO: is this really necesary or helpful? -->
 More generally, the bimodal exposure distributions in Experiment 4 provide no
 direct evidence about how the range of VOTs during test (-10ms to 50ms VOT)
 should be categorized.  The one exception to this is the 10ms /b/, 50ms /p/
@@ -2821,13 +2820,13 @@ sensitive to particular underlying assumptions of the speech perception system
 
 This paper has explored the nature and possible explanations of constraints on
 distributional learning in adults.  Experiment 1 shows that distributional
-learning of voice onset time (VOT) as a cue to word-intial stop voicing is
+learning of voice onset time (VOT) as a cue to word-initial stop voicing is
 constrained: listeners learn some distributions ("accents") better than others,
 as measured by the agreement between their actual /b/-/p/ category boundary and
 the boundary that is implied by the distributions they are exposed to.
 Moreover, listeners show more complete learning for distributions that are
 closer to what a typical talker of American English produces, which suggests
-that listenres are drawing on their previous experience with other talkers to
+that listeners are drawing on their previous experience with other talkers to
 guide their learning.  Experiment 2 tests an alternative hypothesis: that these
 constraints are really due to the fact that the typical distributional learning
 task is _unsupervised_, and that the apparent constraints found in Experiment 1
@@ -2858,7 +2857,7 @@ the VOT distributions produced by a typical talker of American English.
 
 However, this same model, given prior beliefs that explain distributional
 learning in Experiment 1, fails to accurately predict distributional learning to
-different VOT distriubtions in Experiment 4.  Does this mean that the
+different VOT distributions in Experiment 4.  Does this mean that the
 belief-updating hypothesis is falsified?  In evaluating any computational model,
 it is important to keep in mind that successful prediction or generalization
 depends not only on suitability of the _theory_ that the model instantiates, but
@@ -2888,7 +2887,7 @@ When presented with un-labeled VOTs, a fully ideal adapter model would
 simultaneously classify VOTs and update beliefs about the underlying
 distributions, weighted by how likely each distribution is to explain that
 observation [see e.g. @Kleinschmidt2015b eq. 7, p. 155].  Starting from prior
-beliefs absed on a typical talker of American English, such a model
+beliefs based on a typical talker of American English, such a model
 would likely assign large negative VOTs to the pre-voiced cluster, leading to
 minimal change in beliefs about the un-aspirated cluster and hence minimal
 changes in categorization.
@@ -2903,7 +2902,7 @@ massively simplifies the inference in the model, and is reasonable given not
 only that the bimodal structure of the exposure distributions is extremely
 clear, but also that Experiment 2 found that providing cluster labels to many
 tokens led to no change in distributional learning.  But it's unclear what the
-cluster labels should be when there are three clusters (two for for phonemically
+cluster labels should be when there are three clusters (two for phonemically
 voiced stops), so I leave exploring this possibility for future work.  One
 promising direction would be to use sequential Monte Carlo algorithms to
 approximate the online inference required to simultaneously classify and adapt
@@ -2932,7 +2931,7 @@ beliefs, they can eventually be overcome by observed data.  This is a
 consequence of treating every observation as equally informative about the
 current distributions.  The empirical evidence on this question is mixed, with
 some studies finding that listeners continue to integrate evidence even over
-rather drammatic changes in context [e.g. @Theodore2019; @Kraljic2006;
+rather dramatic changes in context [e.g. @Theodore2019; @Kraljic2006;
 @Kraljic2007], while others find that listeners seem to weight more recent
 evidence more strongly, even within the context of a single talker
 [@Saltzman2017; @Olasagasti2018].
@@ -2944,7 +2943,7 @@ generative process.  If the generative process is such that the distribution
 parameters (mean, variance, etc.) vary _across_ contexts (e.g., talkers) but are
 stable _within_ talkers, then each token that a talker produces should be
 treated as equally informative.  However, if the generative process is instead
-one where there is some amount of drift, variabiltiy, or change over time even _within_ a
+one where there is some amount of drift, variability, or change over time even _within_ a
 context (talker), then a Bayesian belief updating model would weight more recent
 observations more heavily, since according to the assumed generative process
 they come from distributions with parameters that are more similar to the
@@ -2955,7 +2954,7 @@ curves over time to be able to resolve this question unambiguously.  However,
 visually inspecting the learning curves predicted by the belief updating model
 compared with the (admittedly crude) measurements of the actual learning curves
 (Figure -@fig:plot-modeled-category-boundaries) suggests that learning may be
-initially more rapid and assymptote more quickly than this particular belief
+initially more rapid and asymptote more quickly than this particular belief
 updating model captures.  If this is in fact the case, then in a belief-updating
 framework it would suggest that listeners assume there can be some local
 variation within a talker, in addition to global variation across talkers.  More
@@ -2974,7 +2973,7 @@ expect adaptation to have different characteristics as well.
 
 The first, most general implication of these results is that they suggest a view
 where distributional learning operates continuously throughout language
-acquisition and adult language use and adptation.  The idea that statistical
+acquisition and adult language use and adaptation.  The idea that statistical
 learning continues throughout the lifespan is not a new idea [e.g.,
 @Botvinick2004; @Chang2006; @Elman1990a; @Johnson1997; @Goldinger1998;
 @Nielsen2008], although it has received more attention of late in the study of
@@ -3006,7 +3005,7 @@ that diverge more from a typical talker's distributions are harder to learn.
 The other existing
 evidence for this claim was reviewed in @Kleinschmidt2015b, and I will not
 revisit it here in depth.  However, one additional piece of evidence for this possibility
-is that learning at the second level (of talker variability) appears to opperate
+is that learning at the second level (of talker variability) appears to operate
 continuously during language acquisition, and in parallel with acquisition of
 the linguistic structure [for a recent review, see @Johnson2020].
 
@@ -3071,10 +3070,10 @@ of the principles of Bayesian cognitive modeling: there is some unobservable
 cognitive variables (subjective prior beliefs), and Bayesian inference allows us
 to infer them based on behavior.  This procedure did yield some meaningful
 information (beyond the simple "existence proof" of the suitability of
-belief updating as a model for distribtuaion learning in this experiment).  First, the model tells
+belief updating as a model for distributional learning in this experiment).  First, the model tells
 us something about how *confident* listeners are in their prior beliefs.
 Second, the model tells us something about the *content* of those beliefs, the
-specfic expectations about the mean and variance of the VOT distributions for
+specific expectations about the mean and variance of the VOT distributions for
 /b/ and /p/ that are most consistent with the overall pattern of distributional
 learning.
 
@@ -3147,7 +3146,7 @@ do not appear to arise from the unsupervised nature of distributional learning,
 but rather are consistent with belief updating guided by a listener's prior
 experience with talker variability.
 
-# Acknowledgements
+# Acknowledgments
 
 This work was begun during my PhD studies at the University of Rochester and an
 early version formed one chapter of my dissertation.  In addition, some of the
