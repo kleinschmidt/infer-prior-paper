@@ -14,15 +14,15 @@ abstract: |
   wide range of talker variation.  Both language acquisition in infants and
   adaptation in adults have been hypothesized to be forms of distributional
   learning, where flexibility is driven by sensitivity to statistical properties
-  of sensory stimuli and the corresponding underlying linguistic strucutres.
+  of sensory stimuli and the corresponding underlying linguistic structures.
   Despite the similarities between these forms of linguistic flexibility, there
   are obvious differences as well, chief among them being that adults have a
   much harder time acquiring the same unfamiliar languages that they would have
   picked up naturally during infancy.  This suggests that there are strong
-  constraints on distributonal learnign during adulthood.  This paper provides
+  constraints on distributional learning during adulthood.  This paper provides
   further, direct evidence for these constraints, by showing that American
   English listeners struggle to learn voice-onset time (VOT) distributions that
-  are atypical of American English.  Morever, computational modeling shows that
+  are atypical of American English.  Moreover, computational modeling shows that
   the pattern of distributional learning (or lack thereof) across different VOT
   distributions is consistent with Bayesian belief-updating, starting from prior
   beliefs that are very similar to the VOT distributions produced by a typical
