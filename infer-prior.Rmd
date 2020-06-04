@@ -315,7 +315,7 @@ distributions that a typical talker of American English will produce.
  -->
 
 In order to probe the possible constraints on distributional learning,
-Experiment 1 measures listener's distributional learning of a range of bimodal
+Experiment 1[^source-online] measures listener's distributional learning of a range of bimodal
 distributions of voice-onset time (VOT).  These distributions vary in how
 similar they are to a typical American English talker (Figure
 -@fig:vot-dists-exp1).  Each distribution has the same variance and separation
@@ -328,6 +328,12 @@ variation across other languages [see e.g. @Lisker1964; @Cho2019].  Thus, if
 distributional learning by these adult listeners is unconstrained, their
 category boundaries should be close to the optimal category boundaries for the
 VOT distributions they were exposed to.
+
+[^source-online]: The data from the experiments reported in this paper is
+    available downloaded via the [`supunsup` R
+    package](https://github.com/kleinschmidt/phonetic-sup-unsup/), and the R
+    code to reproduce these analyses (in the form of an RMarkdown file) can be
+    found at [osf.io/tv8wm/](https://osf.io/tv8wm/).
 
 ```{r data-exp1}
 
