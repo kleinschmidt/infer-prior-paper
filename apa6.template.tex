@@ -91,7 +91,18 @@ $endif$
 
 \title{$title$}
 
-\author{Dave F. Kleinschmidt}
+\author{%
+  $for(author)$%
+  $author.name$%
+  $if(author.corresponding)$%
+  \thanks{Corresponding author: $author.corresponding$}%
+  $endif$%
+  $if(author.affiliation)$%
+  \thanks{$author.affiliation$}
+  $endif$
+  $sep$\and %
+  $endfor$%
+}
 
 \begin{document}
 

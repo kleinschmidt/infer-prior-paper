@@ -1,6 +1,9 @@
 ---
 title: What constrains distributional learning in adults?
-author: Dave F. Kleinschmidt
+author:
+  - name: Dave F. Kleinschmidt
+    affiliation: Rutgers Unversity (New Brunswick, NJ, USA) and University of Rochester (Rochester, NY, USA)
+    corresponding: "dave.kleinschmidt@rutgers.edu; 152 Frelinghuysen Ave, Piscataway NJ, 08854"
 bibliography:
   - /home/dave/Documents/papers/zotero.bib
   - packages.bib

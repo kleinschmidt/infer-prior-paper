@@ -23,6 +23,7 @@ output:
     - --filter
     - pandoc-crossref
 mainfont: "CMU Serif"
+reference-section-title: "References"
 ---
 
 ```{r knitr-setup, warning=FALSE, message=FALSE, error=FALSE, echo=FALSE, results='hide'}
