@@ -333,7 +333,7 @@ VOT distributions they were exposed to.
     available downloaded via the [`supunsup` R
     package](https://github.com/kleinschmidt/phonetic-sup-unsup/), and the R
     code to reproduce these analyses (in the form of an RMarkdown file) can be
-    found at [osf.io/tv8wm/](https://osf.io/tv8wm/).
+    found at [osf.io/3wdp2/](https://osf.io/3wdp2/).
 
 ```{r data-exp1}
 

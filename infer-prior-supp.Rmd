@@ -31,7 +31,7 @@ This is supplementary information for the paper "What constrains distributional
 learning in adults?", submitted for publication.  A preprint version of the
 paper and the RMarkdown source for both the manuscript and this supplementary
 information can be found at this OSF repository: 
-[osf.io/tv8wm/](https://osf.io/tv8wm/).
+[osf.io/3wdp2/](https://osf.io/3wdp2/).
 
 
 ```{r knitr-setup, warning=FALSE, message=FALSE, error=FALSE, echo=FALSE, results='hide'}

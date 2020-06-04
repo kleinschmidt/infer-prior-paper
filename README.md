@@ -1,6 +1,6 @@
 # What constrains distributional learning in adults?
 
-[https://osf.io/tv8wm/](https://osf.io/tv8wm/)
+[https://osf.io/3wdp2/](https://osf.io/3wdp2/)
 
 ## Reproducing
 
@@ -18,5 +18,5 @@ there are quite a few dependencies.
 Because of their long compile and run-times, the Bayesian regressions and
 belief-updating model are not run in the RMarkdown document.  The code to run
 them is there but commented out, and standalone scripts are also included in the
-`models/` subdirectory.  The [OSF repository](https://osf.io/tv8wm/) has the RDS
+`models/` subdirectory.  The [OSF repository](https://osf.io/3wdp2/) has the RDS
 files generated if you don't want to run them yourself.
