@@ -17,6 +17,7 @@ output:
     fig_crop: false
     keep_tex: true
     latex_engine: xelatex
+    template: apa6.template.tex
     citation_package: biblatex
     dev: cairo_pdf
     pandoc_args:
