@@ -1,10 +1,10 @@
-
+#+STARTUP: indent
 
 * todos
 ** TODO prepare for submission
 *** DONE title and abstract
 *** DONE author note
-    acknoledge diss committee, funding (Florian R1, GRFP/NRSA)
+acknoledge diss committee, funding (Florian R1, GRFP/NRSA)
 *** DONE formatting for Cognition
 *** TODO final copy-editing
 *** TODO cover letter
@@ -13,86 +13,86 @@
 
 **** DONE re-analyse results with incremental model
 
-     I've run this model but I haven't looked at the results, buried in
-     ~beliefupdatr~ somewhere?  IN particular, want to know what the inferred prior
-     looks like.
+I've run this model but I haven't looked at the results, buried in
+~beliefupdatr~ somewhere?  IN particular, want to know what the inferred prior
+looks like.
 
 **** joint fits to expts 1 and 3 (two mean)
 
-     This might be hard because of the different structures ot these
-     datasets...1 is just exposure, but 3 has a separate post-test.
+This might be hard because of the different structures ot these
+datasets...1 is just exposure, but 3 has a separate post-test.
 
 **** how much does assuming labels known hurt us?
 
-     run forward simulations based on inferred prior with unsupervised algorithm
-     (particles).  In lieu of actually doing the full unsupervised prior inferring,
-     see how far off we are.
+run forward simulations based on inferred prior with unsupervised algorithm
+(particles).  In lieu of actually doing the full unsupervised prior inferring,
+see how far off we are.
 
 **** additional models
 
-     control model: just change lapse rate (maybe)
+control model: just change lapse rate (maybe)
 
-     use production means/variances and just fit confidence.  how well does it
-     explain adaptation?
+use production means/variances and just fit confidence.  how well does it
+explain adaptation?
 
 **** DONE consider only analyzing positive VOT shifts
-     only have positive shfits for supervised ones...and maybe it simplifies
-     things somewhat.
+only have positive shfits for supervised ones...and maybe it simplifies
+things somewhat.
 
 ***** considerations
-      the issue is that the data from the other experiment starts to look weird
-      then since there's no negative VOT shifts...but negative VOTs are weird
-      anyway so maybe it's best to just stay away from those altogether.
+the issue is that the data from the other experiment starts to look weird
+then since there's no negative VOT shifts...but negative VOTs are weird
+anyway so maybe it's best to just stay away from those altogether.
 
-      but then it feels a little icky to withold data just because it's
-      conceptually tricky/makes for a less clean story.  I mean it's probably
-      fine to just say "okay negative VOTs are weird but leaving that aside let's
-      see what happens".  THen again it also doesn't go AGAINST any story I'm
-      trying to tell, it's just not super clear what relevance it has to
-      anything.
+but then it feels a little icky to withold data just because it's
+conceptually tricky/makes for a less clean story.  I mean it's probably
+fine to just say "okay negative VOTs are weird but leaving that aside let's
+see what happens".  THen again it also doesn't go AGAINST any story I'm
+trying to tell, it's just not super clear what relevance it has to
+anything.
 
 ***** Update
-      [[file:models/inc_model.R::#'%20Okay%20what%20am%20I%20seeing%20here?%20the%20fit%20looks%20_more_%20like%20a%20"scale"%20solution][summary and plots]]
+[[file:models/inc_model.R::#'%20Okay%20what%20am%20I%20seeing%20here?%20the%20fit%20looks%20_more_%20like%20a%20"scale"%20solution][summary and plots]]
 
-      Okay, so I did this.  And the inferred prior changes from a "shift" to a
-      "scale" (less confidence in variance than mean).  The fit to all five
-      conditions actually has like 80/20 split in the samples, so it's not
-      *super* surprising but it's a little troubling that the "headline" changes
-      so much.
+Okay, so I did this.  And the inferred prior changes from a "shift" to a
+"scale" (less confidence in variance than mean).  The fit to all five
+conditions actually has like 80/20 split in the samples, so it's not
+*super* surprising but it's a little troubling that the "headline" changes
+so much.
 
-      I kind of wish I didn't know this; now I have to decide which to report.
-      It seems pretty clear that no matter _what_ I'll have to add the caveat
-      that the fits are different.  But I'm not so sure what to make of the
-      difference.  Is it actually important?  Just a basic instability in the
-      model?
+I kind of wish I didn't know this; now I have to decide which to report.
+It seems pretty clear that no matter _what_ I'll have to add the caveat
+that the fits are different.  But I'm not so sure what to make of the
+difference.  Is it actually important?  Just a basic instability in the
+model?
     
 **** TODO (FUTURE) fit belief updating model to supervised
-     To be able to make the contrast with aba-ada recal.
+To be able to make the contrast with aba-ada recal.
 *** DONE analyze results with Bayesian logistic regression
 
-    that way I can get good estimates of the boundary uncertainty both at the
-    subject level and across conditions/experiments.  Especially important to
-    compare between the supervised and unsupervised conditions.
+that way I can get good estimates of the boundary uncertainty both at the
+subject level and across conditions/experiments.  Especially important to
+compare between the supervised and unsupervised conditions.
 
 **** DONE fit brms logistic regression to experiments 1 and 2
 
-     include: intercept, vot, supervised/unsupervised, exposure condition (and
-     trial?) 
+include: intercept, vot, supervised/unsupervised, exposure condition (and
+trial?) 
 
 **** DONE extract subject boundaries from logistic regression fits
-     [[file:models/brms_regressions.R::expt1_bounds_bysub%20<-][subject boundaries]]
+[[file:models/brms_regressions.R::expt1_bounds_bysub%20<-][subject boundaries]]
 
 **** DONE plot subject curves and overall curves
-     [[file:models/brms_regressions.R::expt1_bounds%20%25>%25][plot at block 3]]
+[[file:models/brms_regressions.R::expt1_bounds%20%25>%25][plot at block 3]]
 *** (maybe) fix lapsing logistic regression to expts 1, 2, and 3
-    Use mixture distribution in brm.
+Use mixture distribution in brm.
 *** DONE compute savage-dickey bayes factor for sup vs. unsup
-    can do this using BRMS, as long as you use ~sample_prior=TRUE~.  Then use
-    ~hypothesis(varname = 0)~ etc.  (from this [[https://vuorre.netlify.com/post/2017/03/21/bayes-factors-with-brms/][blog post]])
+can do this using BRMS, as long as you use ~sample_prior=TRUE~.  Then use
+~hypothesis(varname = 0)~ etc.  (from this [[https://vuorre.netlify.com/post/2017/03/21/bayes-factors-with-brms/][blog post]])
 **** DONE WIP in [[file:models/brms_regressions.R::b_logit_sup_v_unsup_w_prior <- brm(f2_int,][brms_regression.R]]
 **** DONE write up in text
 ** TODO edit intro
-   mostly done here...need to incorporate a bit more literature I think though.
+mostly done here...need to incorporate a bit more literature I think though.
 ** DONE modeling ("experiment" 3)
 *** DONE Results: write up inferred beliefs.
 *** DONE discussion of this experiment
@@ -105,261 +105,261 @@
 ** DONE write discussion
 *** DONE outline structure
 *** DONE revise lead in
-    This maybe could be a lot more concise...dont' necessarily need to
-    recapitulate the whole series of studies.
+This maybe could be a lot more concise...dont' necessarily need to
+recapitulate the whole series of studies.
 *** DONE read over existing discussion materials and make a plan
-    <2020-01-16 Thu>
-    I've made a good if messy start on the general discussion, and moved a lot
-    of materials to the discussion for expt 4.  So I need to go read that and
-    see what it all needs.
+<2020-01-16 Thu>
+I've made a good if messy start on the general discussion, and moved a lot
+of materials to the discussion for expt 4.  So I need to go read that and
+see what it all needs.
 ** DONE regression tables for an appendix/supplementary material
 ** DONE speed of learning in expt 2
-   just look at whether there's an interaction between trial and supervision.
+just look at whether there's an interaction between trial and supervision.
 ** TODO editing misc
 *** DONE I vs. we
 *** DONE what about things babies are bad at/don't lose?
-    "babies are bad at some things and some things never get constrained, cf clicks
-    Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
-    acquisition is unconstrained or give some caveats"
+"babies are bad at some things and some things never get constrained, cf clicks
+Xhosa, ng (narayan), danish phonemes, so i might back off the claim that
+acquisition is unconstrained or give some caveats"
 *** DONE when does the "three cluster" stuff come in?
-    Elika thought that in model, exp 4, and gen disc was too much.
-    "cut/smooth/etc"
+Elika thought that in model, exp 4, and gen disc was too much.
+"cut/smooth/etc"
 
-    It seems out of place in discussion of modeling results...
+It seems out of place in discussion of modeling results...
 
-    I put it in the GD. and pointer in the expt 4 discussion
+I put it in the GD. and pointer in the expt 4 discussion
 ** DONE quantify model goodness-of-fit
-   Even if this is something as simple as log-likelihood.  talk about
-   "quantitative fit" to the data but there's nothing quantitative about it!!
+Even if this is something as simple as log-likelihood.  talk about
+"quantitative fit" to the data but there's nothing quantitative about it!!
    
-   Can do LOO for this I think, I think I'm getting something reasonable by just
-   using ~loo~ on the talker-level log-likelihood.  but need to be careful that
-   we're comparing apples to apples (I think we are, since I'm not collapsing
-   across VOTs but not sure...).
+Can do LOO for this I think, I think I'm getting something reasonable by just
+using ~loo~ on the talker-level log-likelihood.  but need to be careful that
+we're comparing apples to apples (I think we are, since I'm not collapsing
+across VOTs but not sure...).
 
-   Okay I've double checked that and it looks reasonable...trouble is that the
-   LOO values are maybe too variable to compare across models (and all the
-   baseline GLM models I've fit have pareto k params that are high so not
-   great).  but it's just a matter of what baseline model we're using for the
-   comparison.  the model clearly does a good job in absolute terms, it's just a
-   question of whether it does a good job relative to particular baselines.
-   Here are some baselines that seem reasonable:
+Okay I've double checked that and it looks reasonable...trouble is that the
+LOO values are maybe too variable to compare across models (and all the
+baseline GLM models I've fit have pareto k params that are high so not
+great).  but it's just a matter of what baseline model we're using for the
+comparison.  the model clearly does a good job in absolute terms, it's just a
+question of whether it does a good job relative to particular baselines.
+Here are some baselines that seem reasonable:
 *** DONE Fit baseline models
-    - null model (intercept only)
-    - logistic regression (linear trial effects, like the data analysis)
-    - lapsing logistic regression (linear trial effects; variable lapse rate)
+- null model (intercept only)
+- logistic regression (linear trial effects, like the data analysis)
+- lapsing logistic regression (linear trial effects; variable lapse rate)
 *** MAYBE fit additional baseline models
-    Like a static logistic regression sort of model...
+Like a static logistic regression sort of model...
 *** DONE incorporate into text
-    overall LL, LOOIC/elpd.
+overall LL, LOOIC/elpd.
 
    
 ** TODO (FUTURE) what does belief updating recover from asymetic dists?
-   generate belief updating data given asymmetric priors (e.g., realistic
-   priors) and see whether the model can recover it.  maybe leave this for a
-   separate paper (with unsupervised learning etc.)
+generate belief updating data given asymmetric priors (e.g., realistic
+priors) and see whether the model can recover it.  maybe leave this for a
+separate paper (with unsupervised learning etc.)
 * TODO more literature to consider
 ** DONE "what is optimal" (benefit/cost/accuracy tradeoff)
-   @Tavoni2019, related to changes in boundaries contrasted with error rates in
-   discussion of Experiment 4.
+@Tavoni2019, related to changes in boundaries contrasted with error rates in
+discussion of Experiment 4.
 ** DONE Cheyenne's dissertation
 ** DONE Mechanisms of learning
-   @Harmon2019: follow up of the Idemaru and Holt studies trying to tease apart
-   error-driven and reinforcement learnig in these supervised cue-reweighting
-   designs.  They MENTION distributional learning in their overview of
-   frameworks but don't seem to talk much more about it...
+@Harmon2019: follow up of the Idemaru and Holt studies trying to tease apart
+error-driven and reinforcement learnig in these supervised cue-reweighting
+designs.  They MENTION distributional learning in their overview of
+frameworks but don't seem to talk much more about it...
    
-   they basically rule out dist learning as a mechanism because there's no
-   modality sensitivity without worrying about whether you'd expect to find
-   any.  really need to do that supervised vs. unsupervised DL paper...
+they basically rule out dist learning as a mechanism because there's no
+modality sensitivity without worrying about whether you'd expect to find
+any.  really need to do that supervised vs. unsupervised DL paper...
 ** Bozena's paper with Roger
-   Esp. 2014
+Esp. 2014
 ** Jessamyn Schertz papers
-   Korean VOT learning etc. @Schertz2016a
+Korean VOT learning etc. @Schertz2016a
 ** DONE L2 learning
 
-   Baese Berk stuff?  (I think some of that is on dist learning of prevoiced VOT
-   categories)
+Baese Berk stuff?  (I think some of that is on dist learning of prevoiced VOT
+categories)
 
-   Japanese r-l
+Japanese r-l
 ** TODO Diehl papers
 ** TODO Holt follow-ups to Idemaru and Holt 2011
 ** DONE Chladkova et al. 2017: unsupervised "recalibration"
 
-   Do lexically driven re-tuning with non-words.  Shifted i/e and good e/i.
+Do lexically driven re-tuning with non-words.  Shifted i/e and good e/i.
 ** DONE Schweinhart, Shafto, and Essock 2017
-   Adapt to orientation distributions, basically the same finding as Idemaru and
-   Holt (2011).
+Adapt to orientation distributions, basically the same finding as Idemaru and
+Holt (2011).
 ** Language learning review anon
-   Focused I think on learning _non-native_ contrasts via DL...
-   """
-   The literature suggests that adults, too, can track the probability
-   distributions of sounds in the ambient language (Maye & Gerken, 2001;
-   Hayes-Harb, 2007; Clayards, Tanenhaus, Aslin, & Jacobs, 2008; Goudbeek,
-   Cutler, & Smits, 2008; Escudero, Benders, & Wanrooij, 2011). For instance,
-   Maye and Gerken (2001) showed that listeners exposed to a bimodal
-   distribution along the voice-onset time continuum between [d] and [d̥ ]
-   (i.e. prevoiced and voiceless unaspirated alveolar plosives) subsequently
-   discriminated this non-native contrast better than listeners exposed to a
-   unimodal distribution on the same continuum. However, a number of recent
-   studies failed to find the expected distributional training effects (Wanrooij
-   et al., 2014a; Wanrooij, de Vos, & Boersma, 2015; partly Ong, Burnham, &
-   Escudero, 2015). In principle, adults are sensitive to distributional
-   statistics across modalities (Love, 2003; Garrido, Tang, Taylor, Rowe, &
-   Mattingley, 2016)
-   """
+Focused I think on learning _non-native_ contrasts via DL...
+"""
+The literature suggests that adults, too, can track the probability
+distributions of sounds in the ambient language (Maye & Gerken, 2001;
+Hayes-Harb, 2007; Clayards, Tanenhaus, Aslin, & Jacobs, 2008; Goudbeek,
+Cutler, & Smits, 2008; Escudero, Benders, & Wanrooij, 2011). For instance,
+Maye and Gerken (2001) showed that listeners exposed to a bimodal
+distribution along the voice-onset time continuum between [d] and [d̥ ]
+(i.e. prevoiced and voiceless unaspirated alveolar plosives) subsequently
+discriminated this non-native contrast better than listeners exposed to a
+unimodal distribution on the same continuum. However, a number of recent
+studies failed to find the expected distributional training effects (Wanrooij
+et al., 2014a; Wanrooij, de Vos, & Boersma, 2015; partly Ong, Burnham, &
+Escudero, 2015). In principle, adults are sensitive to distributional
+statistics across modalities (Love, 2003; Garrido, Tang, Taylor, Rowe, &
+Mattingley, 2016)
+"""
 
-   I've incorporated some of these refs...
+I've incorporated some of these refs...
 ** DONE Cristia meta-analysis of dist learning acquisition papers
-   this is @Cristia2018a
+this is @Cristia2018a
 
-   put this in the intro?  where I talk about the fact that infants and adults
-   both show evidence of distributional learning
+put this in the intro?  where I talk about the fact that infants and adults
+both show evidence of distributional learning
 * DONE decide which data goes in this paper
-  One of the issues I keep coming back to is the question of *which data to
-  discuss in this paper*.  A priori, my strong preferences is *all of it*.
+One of the issues I keep coming back to is the question of *which data to
+discuss in this paper*.  A priori, my strong preferences is *all of it*.
 
-  There are two main sticking points for me:
-  1. The -10 /b/ VOT condition was added after the fact, and there's only
-     unsupervised data on that one.  So if the supervised data is included,
-     there's a discrepancy.
-  2. If the -10 condition is excluded from the belief updating model, the
-     inferred prior changes, in a rather dramatic way: switches from a "shift"
-     (lower mean confidence) to a "scale" (lower var confidence) solution.
+There are two main sticking points for me:
+1. The -10 /b/ VOT condition was added after the fact, and there's only
+   unsupervised data on that one.  So if the supervised data is included,
+   there's a discrepancy.
+2. If the -10 condition is excluded from the belief updating model, the
+   inferred prior changes, in a rather dramatic way: switches from a "shift"
+   (lower mean confidence) to a "scale" (lower var confidence) solution.
 
-  I actually don't think *1.* is that big of a deal: learning in the large
-  positive shifts is also incomplete, so the supervised conditions still provide
-  a reasonable test of the hypothesis that what's blocking learning is the lack
-  of labels.
+   I actually don't think *1.* is that big of a deal: learning in the large
+   positive shifts is also incomplete, so the supervised conditions still provide
+   a reasonable test of the hypothesis that what's blocking learning is the lack
+   of labels.
 
-  And *2.* is only a problem inasmuch as the goal is to draw strong conclusions
-  based on the content of the inferred prior.  I think it's really better as a
-  sanity check here: _can_ the constraints we see be explained by belief
-  updating based on a common starting point??  Either way the answer is gonna be
-  yes (there's no reason that the fits to a restricted subset of the data would
-  fit _worse_ on those data than a fit to a superset).
+   And *2.* is only a problem inasmuch as the goal is to draw strong conclusions
+   based on the content of the inferred prior.  I think it's really better as a
+   sanity check here: _can_ the constraints we see be explained by belief
+   updating based on a common starting point??  Either way the answer is gonna be
+   yes (there's no reason that the fits to a restricted subset of the data would
+   fit _worse_ on those data than a fit to a superset).
 
-  So there's no reason to give up my prior preferences to include all the data.
-  Just need to be honest about how the data was collected and the caveats about
-  the interpretation of the inferred prior.  But there are already _lots_ of
-  caveates needed there anyway (assuming direct access to the statistical
-  properties of the clusters/labels are known, constraints on the confidence
-  parameters being equal across categories, etc.).  So.
+   So there's no reason to give up my prior preferences to include all the data.
+   Just need to be honest about how the data was collected and the caveats about
+   the interpretation of the inferred prior.  But there are already _lots_ of
+   caveates needed there anyway (assuming direct access to the statistical
+   properties of the clusters/labels are known, constraints on the confidence
+   parameters being equal across categories, etc.).  So.
 
-  *decision*: experiment 1 is all conditions.  experiment 2 is all supervised
-  (which doesn't include -10 shift).  modeling is all conditions from
-  experiment 1.  experiment 3 is all experiment 3 conditions
+   *decision*: experiment 1 is all conditions.  experiment 2 is all supervised
+   (which doesn't include -10 shift).  modeling is all conditions from
+   experiment 1.  experiment 3 is all experiment 3 conditions
 * DONE incorporate "Experiment 4"
-  It's not 100% clear to me whether this study adds anything to the paper, but I
-  think it does affect my conclusions about the /modeling/ part so it's
-  important to include.  Specifically, it makes me less confident in the
-  specific prior parameters that are inferred and suggests that there are
-  *other* constraints that are not captured by that model...maybe the choice of
-  prior is not quite right, maybe the form of the input data leads to that bias,
-  maybe the ... who knows. 
+It's not 100% clear to me whether this study adds anything to the paper, but I
+think it does affect my conclusions about the /modeling/ part so it's
+important to include.  Specifically, it makes me less confident in the
+specific prior parameters that are inferred and suggests that there are
+*other* constraints that are not captured by that model...maybe the choice of
+prior is not quite right, maybe the form of the input data leads to that bias,
+maybe the ... who knows. 
 
-  What was the goal of this experiment?  There are two:
-  1. test what kind of distributional learning happens for even more extreme
-     shifts, and shifts that involve only one of the clusters
-  2. see whether the prior beliefs that are most consistent with the
-     distributional learning in experiment 1 can effectively predict the kind of
-     learning that happens with very different distributions.  (a strong
-     out-of-sample test).
+What was the goal of this experiment?  There are two:
+1. test what kind of distributional learning happens for even more extreme
+   shifts, and shifts that involve only one of the clusters
+2. see whether the prior beliefs that are most consistent with the
+   distributional learning in experiment 1 can effectively predict the kind of
+   learning that happens with very different distributions.  (a strong
+   out-of-sample test).
 
-  What have we learned from the experiments thus far?  Constraints on
-  distributional learning can't be attributed to lack of knowledge about the
-  intended categories...are consistent with belief udpating from prior
-  beliefs...what questions remain then?  well one question is: we've looked at a
-  rather narrow range of variation in distributions in some respects (equal
-  variance, just shifting the means around)...we know people are sensitive to
-  other sorts of differences in distributions (like cue reliability)...and
-  people might also have prior expectations that don't match the structure we've
-  assumed (two clusters, vary independently), because 1. prevoicing
-  [@Lisker1964; @Goldrick2013] and 2. correlation between means across category
-  [@Chodroff2017; but didn't find any correlation for /b/ and /p/ so...].  So if
-  this is the case, then we might expect to find that these prior beliefs DON'T
-  capture the real constraints...so let's try a stronger test.
+   What have we learned from the experiments thus far?  Constraints on
+   distributional learning can't be attributed to lack of knowledge about the
+   intended categories...are consistent with belief udpating from prior
+   beliefs...what questions remain then?  well one question is: we've looked at a
+   rather narrow range of variation in distributions in some respects (equal
+   variance, just shifting the means around)...we know people are sensitive to
+   other sorts of differences in distributions (like cue reliability)...and
+   people might also have prior expectations that don't match the structure we've
+   assumed (two clusters, vary independently), because 1. prevoicing
+   [@Lisker1964; @Goldrick2013] and 2. correlation between means across category
+   [@Chodroff2017; but didn't find any correlation for /b/ and /p/ so...].  So if
+   this is the case, then we might expect to find that these prior beliefs DON'T
+   capture the real constraints...so let's try a stronger test.
 * Outline
 
 ** Intro
   
 *** Lots of flexibility in adult language
 
-    recal, dist learning, etc.
+recal, dist learning, etc.
 
 *** what _are_ the constraints?
 
 *** goal
 
-    systematically explore a range of distributions that vary in their similarity
-    to a typical talker's distributions; see what (English-speaking) adults
-    manage to learn and what they do not.
+systematically explore a range of distributions that vary in their similarity
+to a typical talker's distributions; see what (English-speaking) adults
+manage to learn and what they do not.
 
-    In this paper I explore a simple hypothesis: people a harder time learning
-    distributions that are less similar to the distributions that they've
-    previously encountered.  
+In this paper I explore a simple hypothesis: people a harder time learning
+distributions that are less similar to the distributions that they've
+previously encountered.  
     
 *** preview
 
-    people have a harder time adapting to distributions that deviate a lot from
-    what's typical of American English.  This happens even in the presence of
-    labeling information that tells them which VOTs are /b/ and which are /p/.
+people have a harder time adapting to distributions that deviate a lot from
+what's typical of American English.  This happens even in the presence of
+labeling information that tells them which VOTs are /b/ and which are /p/.
 
-    The pattern of adaptation across conditions is consistent with statistically
-    optimal distributional learning starting from a shared set of prior beliefs,
-    and the shared prior beliefs are reasonably similar to what a typical talker
-    of American English produces.
+The pattern of adaptation across conditions is consistent with statistically
+optimal distributional learning starting from a shared set of prior beliefs,
+and the shared prior beliefs are reasonably similar to what a typical talker
+of American English produces.
     
 ** Experiment 1
    
-   A bunch of VOT distributions which vary in terms of similarity to standard
-   American English VOT distributions.  Only going to vary the means of these
-   distributions (keep things tractable).
+A bunch of VOT distributions which vary in terms of similarity to standard
+American English VOT distributions.  Only going to vary the means of these
+distributions (keep things tractable).
 
 *** Results
 
 *** Discussion    
 
-    Distributional learning is incomplete: in more extreme conditions, produced
-    boundaries don't get all the way to the ideal boundary for the exposure
-    distributions.  
+Distributional learning is incomplete: in more extreme conditions, produced
+boundaries don't get all the way to the ideal boundary for the exposure
+distributions.  
 
-    Why?
+Why?
 
-    One possible explanation: "shrinkage" towards a typical talker's boundary.
+One possible explanation: "shrinkage" towards a typical talker's boundary.
 
-    Another possible explanation: this is an unsupervised task, so maybe
-    listeners aren't picking up on the underlying distributions.  Test that in
-    Experiment 2
+Another possible explanation: this is an unsupervised task, so maybe
+listeners aren't picking up on the underlying distributions.  Test that in
+Experiment 2
 
 ** Experiment 2
 
-   Same distributions, but half the trials are labeled.  Always one voiced and
-   one voiceless, but on labeled trials the options are not minimal pairs, so
-   only one is a plausible option.
+Same distributions, but half the trials are labeled.  Always one voiced and
+one voiceless, but on labeled trials the options are not minimal pairs, so
+only one is a plausible option.
 
 *** Results
 
-    Are boundaries different with supervision?
+Are boundaries different with supervision?
 
-    Still don't get all the way there, even with supervised teaching signal.
+Still don't get all the way there, even with supervised teaching signal.
 
 *** Discussion
 
-    Suggests that the constraint comes from something about the distributions
-    themselves.  As above, one possible source is prior experience with a
-    typical talker.  Explore this possibility with modeling.
+Suggests that the constraint comes from something about the distributions
+themselves.  As above, one possible source is prior experience with a
+typical talker.  Explore this possibility with modeling.
 
 ** Modeling
 
-   two questions: is the pattern of adaptation consistent with distributional
-   Learning starting from a single (shared) set of prior beliefs?  And if so,
-   are those shared prior beliefs similar to what a typical talker of American
-   English produces?
+two questions: is the pattern of adaptation consistent with distributional
+Learning starting from a single (shared) set of prior beliefs?  And if so,
+are those shared prior beliefs similar to what a typical talker of American
+English produces?
 
-   Model belief updating process.  Because we didn't find large differences
-   between the supervised and unsupervised conditions, we're going to treat this
-   as a supervised learning process because it's /much/ simpler to model.
+Model belief updating process.  Because we didn't find large differences
+between the supervised and unsupervised conditions, we're going to treat this
+as a supervised learning process because it's /much/ simpler to model.
 
 
 ** Experiment 3
@@ -367,231 +367,231 @@
 ** Discussion   
 
 *** Ideal adapter: learn where to be flexible
-    Under this interpretation, people don't become less flexible _per se_ as
-    they enter adulthood.  Rather, they become _smarter_ about where to be
-    flexible, because this allows them to learn more efficiently.
+Under this interpretation, people don't become less flexible _per se_ as
+they enter adulthood.  Rather, they become _smarter_ about where to be
+flexible, because this allows them to learn more efficiently.
 
 * notes/snippets
 
 ** Another intro
-   One of the basic facts about human language is that a neurotypical human
-   infant can learn any of the many and varied languages spoken on Earth.  That
-   is, the language system is incredibly flexible during development.  However,
-   at a certain point people lose the ability to learn other languages to
-   native-like proficiency.  Nevertheless, recent research has shown that adults
-   still remain the ability to learn new variants of their _native_ language.
-   That is, the language system seems to remain plastic at least into adulthood,
-   even if the form of this plasticity changes.
+One of the basic facts about human language is that a neurotypical human
+infant can learn any of the many and varied languages spoken on Earth.  That
+is, the language system is incredibly flexible during development.  However,
+at a certain point people lose the ability to learn other languages to
+native-like proficiency.  Nevertheless, recent research has shown that adults
+still remain the ability to learn new variants of their _native_ language.
+That is, the language system seems to remain plastic at least into adulthood,
+even if the form of this plasticity changes.
   
-   One of the most remarkable forms of plasticity in adult speech perception is
-   /distributional learning/.  Listeners adjust their representations of phonetic
-   categories with mere exposure to distributions of acoustic stimuli.  This
-   occurs without explicit instruction or labels.
+One of the most remarkable forms of plasticity in adult speech perception is
+/distributional learning/.  Listeners adjust their representations of phonetic
+categories with mere exposure to distributions of acoustic stimuli.  This
+occurs without explicit instruction or labels.
 
-   Suggests that listeners are closely attuned to the statistical patterns in
-   their language environment, and pick up on changes in these contingencies to
-   more effectively recover a talker's intended message from noisy, variable, and
-   ambiguous acoustic signals.
+Suggests that listeners are closely attuned to the statistical patterns in
+their language environment, and pick up on changes in these contingencies to
+more effectively recover a talker's intended message from noisy, variable, and
+ambiguous acoustic signals.
 
-   A comprehensive understanding of distributional learning requires that we
-   understand not only how and when it does happen but also how and when it does
-   _not_ happen, or is only incomplete.  That goal of this paper is to
-   systematically probe the limits of distributional learning for speech in one
-   phonetic system: word-initial stop voicing in American English.
+A comprehensive understanding of distributional learning requires that we
+understand not only how and when it does happen but also how and when it does
+_not_ happen, or is only incomplete.  That goal of this paper is to
+systematically probe the limits of distributional learning for speech in one
+phonetic system: word-initial stop voicing in American English.
 
 
-   This paper addresses the /limits/ of distributional learning in adults.  What
-   sort of speech statistics can adult speakers of American English /not/ learn?
+This paper addresses the /limits/ of distributional learning in adults.  What
+sort of speech statistics can adult speakers of American English /not/ learn?
 
 ** DONE Intro AGAIN
-   What are all the things in play here?
+What are all the things in play here?
 
 *** DONE flesh out text here and paste into intro
 
 *** acquisition: lots of flexibility there!
-    A basic fact of human language is that any typically developing human infant
-    can learn any human language.  Human languages vary dramatically at every
-    level, including the basic sound systems they use, and the human language
-    faculty must be flexible enough to deal with this substantial
-    cross-linguistic variability.  The first stages of language acquistion are
-    characterized by initial flexibility, which declines over development as the
-    particulars of the native language are acquired.  For instance, as infants
-    become better at discriminating linguistically important sounds in their
-    native language, they simultaneously /lose/ the ability to discriminate
-    sounds that are important for other languages but not their native language
-    [@Best1995; @Kuhl1992; @Werker1984].  Ultimately, people become sufficiently
-    inflexible over development that they generally struggle to learn another
-    language in adulthood [@Hartshorne2018].
+A basic fact of human language is that any typically developing human infant
+can learn any human language.  Human languages vary dramatically at every
+level, including the basic sound systems they use, and the human language
+faculty must be flexible enough to deal with this substantial
+cross-linguistic variability.  The first stages of language acquistion are
+characterized by initial flexibility, which declines over development as the
+particulars of the native language are acquired.  For instance, as infants
+become better at discriminating linguistically important sounds in their
+native language, they simultaneously /lose/ the ability to discriminate
+sounds that are important for other languages but not their native language
+[@Best1995; @Kuhl1992; @Werker1984].  Ultimately, people become sufficiently
+inflexible over development that they generally struggle to learn another
+language in adulthood [@Hartshorne2018].
 
 *** remarkable flexibility in adult language
-    However, adult listeners still need to deal with substantial variability
-    /within/ their native language, as talkers differ in how they realize the
-    phonetic categories of the language using acoustic cues [e.g. @Allen2003;
-    @Newman2001; @Clopper2005].  Accordingly, adult listeners flexibly adapt to
-    unfamiliar talkers in a wide variety of contexts.  At one extreme,
-    perception of heavily accented non-native talkers becomes faster and more
-    accurate with just a few minutes of exposure [@Clarke-Davidson2004;
-    @Bradlow2008; @Baese-berk2013].  At the other extreme, listeners recalibrate
-    representations of individual phonetic categories based on subtle changes in
-    single segments in otherwise unaccented talkers [@Kraljic2006; @Norris2003;
-    @Bertelson2003].
+However, adult listeners still need to deal with substantial variability
+/within/ their native language, as talkers differ in how they realize the
+phonetic categories of the language using acoustic cues [e.g. @Allen2003;
+@Newman2001; @Clopper2005].  Accordingly, adult listeners flexibly adapt to
+unfamiliar talkers in a wide variety of contexts.  At one extreme,
+perception of heavily accented non-native talkers becomes faster and more
+accurate with just a few minutes of exposure [@Clarke-Davidson2004;
+@Bradlow2008; @Baese-berk2013].  At the other extreme, listeners recalibrate
+representations of individual phonetic categories based on subtle changes in
+single segments in otherwise unaccented talkers [@Kraljic2006; @Norris2003;
+@Bertelson2003].
     
 *** distributional learning
-    Both acquisition and adaptation have been theorized to be forms of
-    distributional learning.  First, computational modeling shows that
-    both acquisition [@McMurray2010; @Vallabha2007; @Feldman2013; but see
-    @Hitczenko2018] and rapid adaptation [@Kleinschmidt2015b] can be treated as
-    forms of distributional learning.  At some level, acquisition simply /is/ a
-    problem of distributional learning, in the sense that ((( computational
-    level analysis??  it IS a problem of distributional learning )))
+Both acquisition and adaptation have been theorized to be forms of
+distributional learning.  First, computational modeling shows that
+both acquisition [@McMurray2010; @Vallabha2007; @Feldman2013; but see
+@Hitczenko2018] and rapid adaptation [@Kleinschmidt2015b] can be treated as
+forms of distributional learning.  At some level, acquisition simply /is/ a
+problem of distributional learning, in the sense that ((( computational
+level analysis??  it IS a problem of distributional learning )))
 
-    Second, both adults and infants are sensitive to distributional properties
-    of speech.  One set of findings shows that listeners (both infants and
-    adults) become more sensitive after exposure to a bimodal distribution of an
-    acoustic cue (like length, voice-onset time, vowel formant frequencies,
-    etc.) compared with exposure to a unimodal distribution [e.g. @Escudero2011;
-    Goudbeek2008; @Maye2000; @Maye2002; @Feldman2013b].  Another set of findings
-    shows that adult listeners can adapt to changes in the means and/or
-    variances of the cue distributions for known phonetic categories [e.g.,
-    @Clayards2008; @Theodore2015; @Theodore2019; @Colby2018; @Chladkova2017].
-    What both of these sets of findings have in common is that listeners pick up
-    on the distributions of cues without any explicit instruction about the
-    itended category label associated with each token.  For example,
-    @Clayards2008 had listeners listen to /b/-/p/ minimal pair words (e.g.,
-    "beach/peach") with different voice-onset times (VOT), and click on a
-    matching picture to indicate which member of the minimal pair they heard.
-    On every trial, the VOT was drawn from one of two bimodal distributions,
-    which had clusters with the same means but different variances across
-    subjects.  Listeners in the high-variance condition produced shallower
-    categorization functions, reflecting greater uncertainty associated with the
-    wider range of VOTs they heard for each cluster.
+Second, both adults and infants are sensitive to distributional properties
+of speech.  One set of findings shows that listeners (both infants and
+adults) become more sensitive after exposure to a bimodal distribution of an
+acoustic cue (like length, voice-onset time, vowel formant frequencies,
+etc.) compared with exposure to a unimodal distribution [e.g. @Escudero2011;
+Goudbeek2008; @Maye2000; @Maye2002; @Feldman2013b].  Another set of findings
+shows that adult listeners can adapt to changes in the means and/or
+variances of the cue distributions for known phonetic categories [e.g.,
+@Clayards2008; @Theodore2015; @Theodore2019; @Colby2018; @Chladkova2017].
+What both of these sets of findings have in common is that listeners pick up
+on the distributions of cues without any explicit instruction about the
+itended category label associated with each token.  For example,
+@Clayards2008 had listeners listen to /b/-/p/ minimal pair words (e.g.,
+"beach/peach") with different voice-onset times (VOT), and click on a
+matching picture to indicate which member of the minimal pair they heard.
+On every trial, the VOT was drawn from one of two bimodal distributions,
+which had clusters with the same means but different variances across
+subjects.  Listeners in the high-variance condition produced shallower
+categorization functions, reflecting greater uncertainty associated with the
+wider range of VOTs they heard for each cluster.
     
 *** clear constraints on what adults can learn
-    If both acquisition and adaptation can be treated as forms of distributional
-    learning, and both infants and adults are sensitive to distributional
-    information, what distinguishes acquisition from adaptation?  For one, it
-    seems that distributional learning in adults is /constrained/.  Adult
-    listeners struggle to learn new categories that are not present in their
-    native language.  For instance, Japanese listeners struggle to discriminate
-    the English /r/-/l/ contrast, which corresponds a single category in their
-    native language [@Goto1971; @Miyawaki1975].  Long-term naturalistic exposure
-    is not sufficient to achieve good discrimination of this contrast, even
-    after convserational competence has been achieved [@Takagi1995].  While
-    perception of this contrast can be improved somewhat by training, it
-    requries extensive training and these listeners seldom achieve native-like
-    levels of performance [@Bradlow1997].
+If both acquisition and adaptation can be treated as forms of distributional
+learning, and both infants and adults are sensitive to distributional
+information, what distinguishes acquisition from adaptation?  For one, it
+seems that distributional learning in adults is /constrained/.  Adult
+listeners struggle to learn new categories that are not present in their
+native language.  For instance, Japanese listeners struggle to discriminate
+the English /r/-/l/ contrast, which corresponds a single category in their
+native language [@Goto1971; @Miyawaki1975].  Long-term naturalistic exposure
+is not sufficient to achieve good discrimination of this contrast, even
+after convserational competence has been achieved [@Takagi1995].  While
+perception of this contrast can be improved somewhat by training, it
+requries extensive training and these listeners seldom achieve native-like
+levels of performance [@Bradlow1997].
 
-    There are also apparent constraints on the ability of adult listeners to
-    adapt to variations in the distributions associated with native language
-    categories.  For instance, @Idemaru2011 tested how well listeners adapt to
-    distributions of two cues that distinguish voicing (e.g., /b/ vs. /p/),
-    voice onset time (VOT, the primary cue to voicing) and the pitch of the
-    following vowel (f0, a secondary cue).  These two cues are typically
-    positively correlated in English, with /p/ corresponding to high VOT and
-    high f0, and /b/ to low values of both cues [@Kohler1982]. In one condition,
-    listeners were exposed to a talker who produced a positively correlated
-    distribution of these cues. During a post-test, these listeners used f0 to
-    categorize stops with ambiguous VOTs. In another condition, listeners heard
-    a talker who produced an *un*correlated distribution, where f0 is
-    uninformative. In contrast to the listeners in the first condition, during
-    the post test these listeners _ignored_ f0 even for ambiguous VOTs. This
-    effect is consistent with the idea that listeners are rationally integrating
-    multiple cues to voicing, weighing them based on how informative they are
-    [@Ernst2004; @Clayards2008; @Bejjanki2011]. However, listeners in a third
-    condition who were exposed to a talker who produced an *anti*correlated
-    distribution did _not_ follow the predictions of rational cue integration.
-    Despite the fact that f0 was just as informative for this accent as for the
-    positively correlated accent, listeners _ignored_ f0 as a cue to
-    voicing. This suggests that these listeners have ruled out the possibility
-    of a reversed mapping between f0 and voicing (/b/ vs. /p/), possibly perhaps
-    American English talkers typically do not typically produce it [e.g.,
-    @House1953].  Likewise, @Sumner2011 found that listeners had trouble
-    adapting to a talker who produced VOT distributions for /b/ and /p/ that had
-    _substantially_ lower means (approximately -60ms and 0ms, respectively) than
-    a typical talker [approximately 0--10ms and 60ms VOT; @Lisker1964].
+There are also apparent constraints on the ability of adult listeners to
+adapt to variations in the distributions associated with native language
+categories.  For instance, @Idemaru2011 tested how well listeners adapt to
+distributions of two cues that distinguish voicing (e.g., /b/ vs. /p/),
+voice onset time (VOT, the primary cue to voicing) and the pitch of the
+following vowel (f0, a secondary cue).  These two cues are typically
+positively correlated in English, with /p/ corresponding to high VOT and
+high f0, and /b/ to low values of both cues [@Kohler1982]. In one condition,
+listeners were exposed to a talker who produced a positively correlated
+distribution of these cues. During a post-test, these listeners used f0 to
+categorize stops with ambiguous VOTs. In another condition, listeners heard
+a talker who produced an *un*correlated distribution, where f0 is
+uninformative. In contrast to the listeners in the first condition, during
+the post test these listeners _ignored_ f0 even for ambiguous VOTs. This
+effect is consistent with the idea that listeners are rationally integrating
+multiple cues to voicing, weighing them based on how informative they are
+[@Ernst2004; @Clayards2008; @Bejjanki2011]. However, listeners in a third
+condition who were exposed to a talker who produced an *anti*correlated
+distribution did _not_ follow the predictions of rational cue integration.
+Despite the fact that f0 was just as informative for this accent as for the
+positively correlated accent, listeners _ignored_ f0 as a cue to
+voicing. This suggests that these listeners have ruled out the possibility
+of a reversed mapping between f0 and voicing (/b/ vs. /p/), possibly perhaps
+American English talkers typically do not typically produce it [e.g.,
+@House1953].  Likewise, @Sumner2011 found that listeners had trouble
+adapting to a talker who produced VOT distributions for /b/ and /p/ that had
+_substantially_ lower means (approximately -60ms and 0ms, respectively) than
+a typical talker [approximately 0--10ms and 60ms VOT; @Lisker1964].
 
 *** goals: systematically probe constraints on distributional learning 
-    So on the one hand, distributional learning provides a unifying theoretical
-    perspective on flexibility in language acquisition and adaptation.  On the
-    other hand, it highlights an important difference between these two basic
-    kinds of plasticity in the language system.  From the lens of distributional
-    learning, one major difference between acquisition and adaptation is that
-    distributional learning in adulthood appears to be /constrained/, while it
-    is relatively /unconstrained/ during acquisition.
+So on the one hand, distributional learning provides a unifying theoretical
+perspective on flexibility in language acquisition and adaptation.  On the
+other hand, it highlights an important difference between these two basic
+kinds of plasticity in the language system.  From the lens of distributional
+learning, one major difference between acquisition and adaptation is that
+distributional learning in adulthood appears to be /constrained/, while it
+is relatively /unconstrained/ during acquisition.
 
-    However, we lack a clear understanding of the nature and source of those
-    constraints.  There are a number of other differences between the learning
-    problems posed by acquisition and adaptation, even if both are forms of
-    distributional learning.  First, distributional learning in infancy is, at
-    least initially, almost entirely unsupervised, meaning that there is very
-    little information about whether any two observed acoustic cue values come
-    from the same cluster (category) or different ones.  Adults have a great
-    deal of circumstantial evidence from the lexicon, pragmatic context,
-    phonotactics, etc. which provides /some/ information about the intended
-    category for a particular cue value.  This makes the distributional 
-    problem of adaptation at least semi-supervised.  
-    # where does the constraint come from here?
-    Second, when adapting to an
-    unfamiliar talker, adults have a great deal of prior experience with /other/
-    talkers which they could use to narrow down the possible distributions they
-    ought to expect [@Kleinschmidt2015].  Both of these factors might contribute
-    to constraints on adult distributional learning.  For the first, if adult
-    adaptation typically operates in a /supervised/ setting, the fully
-    unsupervised setting of a typical distributional learning experiment might
-    not provide enough information, leading to reduced learning.  For the
-    second, if the distributions encountered in an experiment fall far enough
-    outside the range of what a listener expects based on their prior
-    experience, they may struggle to adapt [@Kleinschmidt2015].
+However, we lack a clear understanding of the nature and source of those
+constraints.  There are a number of other differences between the learning
+problems posed by acquisition and adaptation, even if both are forms of
+distributional learning.  First, distributional learning in infancy is, at
+least initially, almost entirely unsupervised, meaning that there is very
+little information about whether any two observed acoustic cue values come
+from the same cluster (category) or different ones.  Adults have a great
+deal of circumstantial evidence from the lexicon, pragmatic context,
+phonotactics, etc. which provides /some/ information about the intended
+category for a particular cue value.  This makes the distributional 
+problem of adaptation at least semi-supervised.  
+# where does the constraint come from here?
+Second, when adapting to an
+unfamiliar talker, adults have a great deal of prior experience with /other/
+talkers which they could use to narrow down the possible distributions they
+ought to expect [@Kleinschmidt2015].  Both of these factors might contribute
+to constraints on adult distributional learning.  For the first, if adult
+adaptation typically operates in a /supervised/ setting, the fully
+unsupervised setting of a typical distributional learning experiment might
+not provide enough information, leading to reduced learning.  For the
+second, if the distributions encountered in an experiment fall far enough
+outside the range of what a listener expects based on their prior
+experience, they may struggle to adapt [@Kleinschmidt2015].
 
-    The goal of this paper is to systematically probe the constraints on
-    distributional learning in American English-speaking adults.  Experiment 1
-    tests the ability of American English listeners to change their
-    classification of word initial stop voicing based on experience with a range
-    of distributions of voice-onset time (VOT).  I find that distributional
-    learning is more complete when the experimental distributions are more
-    similar to those of a typical American English talker, suggesting that prior
-    experience with other talkers may constrain distributional learning.
-    Experiment 2 tests another possible constraint on distributional learning,
-    which is the absence of /labels/, which could lead to uncertainty about
-    whether the bimodal distribution really corresponds to the standard English
-    categories of voiced and voiceless stops of /b/ and /p/.  Surprisingly,
-    telling listeners whether a particular VOT was intended to be a voiced /b/
-    or a voiceless /p/ on half of the trials has no effect on the speed or
-    completeness of distributional learning.  Experiment 3 uses a Bayesian
-    belief-updating model to test whether the constraints observed in Experiment
-    1 can be explained as belief updating starting from a common set of prior
-    beliefs that is shared by all of the subjects.
+The goal of this paper is to systematically probe the constraints on
+distributional learning in American English-speaking adults.  Experiment 1
+tests the ability of American English listeners to change their
+classification of word initial stop voicing based on experience with a range
+of distributions of voice-onset time (VOT).  I find that distributional
+learning is more complete when the experimental distributions are more
+similar to those of a typical American English talker, suggesting that prior
+experience with other talkers may constrain distributional learning.
+Experiment 2 tests another possible constraint on distributional learning,
+which is the absence of /labels/, which could lead to uncertainty about
+whether the bimodal distribution really corresponds to the standard English
+categories of voiced and voiceless stops of /b/ and /p/.  Surprisingly,
+telling listeners whether a particular VOT was intended to be a voiced /b/
+or a voiceless /p/ on half of the trials has no effect on the speed or
+completeness of distributional learning.  Experiment 3 uses a Bayesian
+belief-updating model to test whether the constraints observed in Experiment
+1 can be explained as belief updating starting from a common set of prior
+beliefs that is shared by all of the subjects.
 
-    Together, these results show that distributional learning in adults /is/
-    constrained, and these constraints are at least consistent with belief
-    updating starting from a set of prior beliefs about the VOT distributions
-    that a typical talker of American English will produce.
+Together, these results show that distributional learning in adults /is/
+constrained, and these constraints are at least consistent with belief
+updating starting from a set of prior beliefs about the VOT distributions
+that a typical talker of American English will produce.
     
 **** preview
-     Developmental trajectory may better be thought of as a *change* in the kind
-     of flexibility that listeners have, rather than a *loss* of plasticity.
+Developmental trajectory may better be thought of as a *change* in the kind
+of flexibility that listeners have, rather than a *loss* of plasticity.
 
 ** for discussion
-   are these results anti-bayesian?  no...learning is inference, guided by prior
-   experience.
+are these results anti-bayesian?  no...learning is inference, guided by prior
+experience.
 
 *** need to balance stability and flexibility
-    if you are too stable, can't deal with changes (e.g., unfamiliar talkers and
-    accents).  but if you're too flexible, then you end up overly sensitive to
-    meaningless variation that doesn't predict what's going to happen in the
-    future.
+if you are too stable, can't deal with changes (e.g., unfamiliar talkers and
+accents).  but if you're too flexible, then you end up overly sensitive to
+meaningless variation that doesn't predict what's going to happen in the
+future.
 
-    I think this is better for the *discussion*: why are these constraints
-    there?  For the introduction we want at most to gesture towards this
-    story...
+I think this is better for the *discussion*: why are these constraints
+there?  For the introduction we want at most to gesture towards this
+story...
 
 *** cline between language learning and adaptation
-    cite @Pajak2016: hierarchical inference under uncertainty.
+cite @Pajak2016: hierarchical inference under uncertainty.
 
 * Feedback 
 ** from Meghan
 
-   #+begin_src text
+#+begin_src text
      I read through the paper and I enjoyed reading it. I have some minor comments
      attached. Two other minor points is that you might want to cite Cheyene Munson's
      thesis (attached) for evidence of shifts in distributions leading to shifts in
@@ -606,10 +606,10 @@
      maybe you can at least point to that literature? I assume you know about this
      paper: Harmon, Z., Idemaru, K., & Kapatsinski, V. (2019). Learning
      mechanisms in cue reweighting. Cognition, 189, 76-88.
-   #+end_src
+#+end_src
 ** from Elika
 
- #+begin_src text 
+#+begin_src text 
 
    ,* seems like you want to allude to the ‘unsupervised’ nature of dl early in
      intro but don’t say that directly until a bit later
@@ -723,9 +723,11 @@
 
    ,* don’t end on a caveat pre-conclusion, end on a strength of what you’ve done
      that we didn’t know before!
- #+end_src
+#+end_src
 
 
- #+begin_example
+#+begin_example
 
- #+end_example
+#+end_example
+** Reviews
+*** Initial submission
