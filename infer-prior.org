@@ -731,3 +731,387 @@ cite @Pajak2016: hierarchical inference under uncertainty.
 #+end_example
 ** Reviews
 *** Initial submission
+
+Letter:
+
+#+begin_quote
+Dear Dr. Kleinschmidt,
+
+I have received reviews from two expert reviewers and I have read your paper
+myself with interest. The topic addressed here is an interesting one, and the
+results are intriguing. However, the reviewers identified multiple points of
+weakness in the paper that need to be addressed in a revision.
+
+Both reviewers clearly spent a lot of time with your paper to generate these
+thoughtful reviews. They both offer constructive criticism for how to tighten
+and clarify the theoretical framing of the paper to illustrate the novelty and
+impact. Better engagement with the existing literature, including how the
+present findings contrast with different theoretical perspectives, will go a
+long way here. The reviewers also ask for clarifications regarding
+methodological choices. There are a number of other details the reviewers raise
+that I will not repeat here but that need to be addressed. I encourage you to
+take their advice into account as you revise as demonstrating clear and strong
+theoretical impact will be critical to a successful revision.
+
+If and when you submit the revised manuscript, please include a letter with a
+detailed response to reviews in which you respond point-by-point to each of the
+reviewers’ comments, explaining how (or why not) you addressed each comment in
+the revised manuscript.
+
+Please bear in mind the following standard caveat if and when you revise the
+paper: Inviting resubmission does not entail that the next version, or any
+subsequent version, will be accepted for publication. It is a policy at
+Cognition to avoid a protracted editorial process that may in any case end,
+eventually, in rejection. Moreover — and this is a standard caveat — the
+clarifications that result from the revision may reveal new issues that would
+subsequently preclude publication.
+
+Sincerely, Sarah Brown-Schmidt Associate Editor Cognition
+
+
+To submit a revision, please go to https://www.editorialmanager.com/cognit/ and
+login as an Author.
+
+Your username is: dave.f.kleinschmidt@gmail.com
+
+If you need to retrieve password details, please go to:
+https://www.editorialmanager.com/cognit/l.asp?i=343655&l=81FGB13N
+
+NOTE: Upon submitting your revised manuscript, please upload the source files
+for your article. We cannot accommodate PDF manuscript files for production
+purposes. We also ask that when submitting your revision, you follow the journal
+formatting guidelines. For additional details regarding acceptable file formats,
+please refer to the Guide for Authors at:
+http://www.elsevier.com/journals/Cognition/0010-0277/guide-for-authors
+
+When submitting your revised paper, we ask that you include the following items:
+
+Response to Reviewers (mandatory)
+
+This should be a separate file labeled "Response to Reviewers" that carefully
+addresses, point-by-point, the issues raised in the comments appended below. You
+should also include a suitable rebuttal to any specific request for change that
+you have not made. Mention the page, paragraph, and line number of any revisions
+that are made.
+
+Manuscript and Figure Source Files (mandatory)
+
+We cannot accommodate PDF manuscript files for production purposes. We also ask
+that when submitting your revision you follow the journal formatting
+guidelines. Figures and tables may be embedded within the source file for the
+submission as long as they are of sufficient resolution for Production.For any
+figure that cannot be embedded within the source file (such as *.PSD Photoshop
+files), the original figure needs to be uploaded separately. Refer to the Guide
+for Authors for additional information.
+http://www.elsevier.com/journals/Cognition/0010-0277/guide-for-authors
+
+Data References (mandatory)
+
+This journal requires you to cite underlying or relevant datasets in your
+manuscript by citing them in your text and including a data reference in your
+Reference List. Data references should include the following elements: author
+name(s), dataset title, data repository, version (where available), year, and
+global persistent identifier. Add [dataset] immediately before the reference so
+we can properly identify it as a data reference. The [dataset] identifier will
+not appear in your published article. See the Data Archiving Policy here
+https://www.elsevier.com/journals/cognition/0010-0277/guide-for-authors
+
+On your Main Menu page is a folder entitled "Submissions Needing Revision". You
+will find your submission record there.
+
+For further assistance, please visit our customer support site at
+http://help.elsevier.com/app/answers/list/p/7923. Here you can search for
+solutions on a range of topics, find answers to frequently asked questions and
+learn more about EM via interactive tutorials. You will also find our 24/7
+support contact details should you need any further assistance from one of our
+customer support representatives.
+
+Include interactive data visualizations in your publication and let your readers
+interact and engage more closely with your research. Follow the instructions
+here: https://www.elsevier.com/authors/author-services/data-visualization to
+find out about available data visualization options and how to include them with
+your article.
+
+Yours sincerely,
+
+Sarah Brown-Schmidt, PhD Associate Editor Cognition
+
+Reviewers' comments:
+
+Reviewer #1: This paper examines adult adaptation to VOT distributions of /b/
+and /p/ and the role of prior linguistic experience in constraining that
+adaptation. The paper includes three behavioral experiments of VOT adaptation
+and a computational model of these results. The results are largely discussed in
+terms of distributional learning — a process that is shared between adults and
+children, but still differs with respect to the degree of constraints or
+supervision in the process. That is, child language acquisition involves
+unsupervised distributional learning, whereas adult adaptation involves
+supervised distributional learning. Overall, I thought the paper was
+well-written and the statistical analyses quite sophisticated. The computational
+Bayesian modeling section also provides a nice proof of concept as to the
+importance of prior experience. I was less convinced by the impact and novelty
+of the paper, and did not fully understand the motivations for some of the
+experiments. With further revision, I may be otherwise convinced about the
+overall contribution of the study and model.
+
+It would be very helpful to clearly situate this paper's contribution in the
+distributional learning literature. This may help establish the contribution and
+novelty. At the moment, the paper comes across as almost too high level: "prior
+experience constrains distributional learning" and "distributional learning is
+necessary for acquisition and adaptation". I think there are three branches of
+issues to address here: 1) more engagement with what is meant by prior
+experience, 2) clear differentiation from previous distributional learning
+experiments, and 3) is it really saying much to equate acquisition with
+adaptation when the difference between supervised vs unsupervised learning is so
+massive?
+
+With respect to #1 and #3 (more engagement with what is meant by prior
+experience, and relating adult distributional learning to child acquisition),
+the paper currently dances around what the constraints are. I think it would be
+beneficial to discuss how phonological structure and the phonetic instantiation
+of that likely constrains adult learning. That is, there seem to be a finite set
+of categories and limited variation within and between those categories.
+
+Having clearly defined constraints on the distributions is a key aspect of what
+differentiates child acquisition from adult adaptation. It seemed to me that
+understanding the constraints and therefore the constitution of the prior was a
+main goal of the paper. The discussion of how this relates to child acquisition
+seemed slightly distracting and a little lofty (though perhaps with other
+details this point could stay in).
+
+With respect to #2, the paper does begin to situate itself, but the paper's
+contribution and difference from previous VOT adaptation, recalibration and
+distributional learning papers could be made more explicit, in both the
+behavioral and computational domains. Relatedly, how does this model differ from
+that of Kleinschmidt & Jaeger (2015)?
+
+Another aspect of the paper which should be addressed is the current order of
+experiments and transitions between them. The paper currently presents three
+behavioral experiments and one cognitive model in which the cognitive model
+occurs third in order, but then was discussed briefly again in the final
+experiment. I would recommend introducing the model either first or last.
+
+Relatedly, while I followed the motivation for the first experiment of
+adaptation, I did not fully follow the motivations for Experiment 2 (labeled)
+and Experiment 4 (lead VOT vs long lag VOT). For Experiment 2, if participants
+were simply labeling according to the typical talker's distribution, wouldn't
+you get a flat response curve? Why isn't that ruled out by the data already? For
+Experiment 4, I can at least understand at a high level why one might want to
+understand adaptation to lead vs long lag VOT, but I did not fully grasp how
+this related to a specific research question.
+
+In addition, while there is a section on this all the way at the end, I still
+had some questions on the methodological differences between Experiment 1
+and 4. I wonder if it might help to raise these differences earlier; I think
+these differences may have also contributed to my confusion about why these
+experiments were grouped together. My main questions involved how the VOT
+boundaries were estimated in each of the experiments? Specifically, is it the
+case that in Experiment 1 they were never tested on ambiguous VOTs? How then do
+you know the boundary has shifted? If this is just an estimated boundary, which
+I believe it is, then will it look like the boundary is higher for people in the
+long condition just because those people are getting more long VOT values than
+people in the short VOT conditions?
+
+Other comments and questions Experiment 1
+- p. 11: clarify what is meant by 'each condition'
+- I also find it very interesting that listeners don't fully adapt but rather
+  undershoot, but this might also make sense because if a speaker were to make a
+  phonologically voiced stop greater than 20 ms or perhaps 35 ms, it would be
+  articulatorily different, and namely, aspirated. This could be a hard
+  articulatory constraint on the phonologically voiced stops that they cannot be
+  aspirated. Alternatively, we would have to consider the possibility that
+  languages could theoretically distinguish mildly aspirated with strongly
+  aspirated stops. I don't think such a language exists, so it might be more
+  likely to consider the case phonologically voiced stops simply can't be
+  aspirated and perhaps a listener is aware of this.
+- The undershoot with respect to the low VOT boundary is reminiscent of Nielsen
+  (2007: Implicit phonetic imitation is constrained by phonemic contrast, ICPhS)
+  in which phonetic imitation of voiceless stops might also have a hard lower
+  boundary.
+- Figure 1: Typical talker / Exposure talker labels confusing. I might suggest
+  removing the labels from the panel and instead writing out what the lines and
+  histograms are in the caption.
+- p. 13 Why use the 5/6 point of the 222 total trials?
+- Relatedly, how many ambiguous VOTs (e.g., btw. 20 and 40 ms) are they actually
+  responding to?
+
+Experiment 2
+- as clarification, how were the labeled and unlabeled trials mixed together, if
+  at all?
+- no beta coefficients?
+
+Experiment 3 - model
+- clarification: where does 10^60 come from?
+- p. 26: what is meant by a constant probability of responding /p/ for the null
+  model: what is that probability? how is it chosen?
+- Doesn't Experiment 2 suggest that the guessing rate is pretty low? The
+  ambiguous VOTs might involve some guessing (which gets back to the question of
+  how many truly ambiguous VOTs are people actually hearing?).
+- Can you elaborate on the baseline model? What was the training data, and is
+  the difference the lack of a specified prior?
+- It would be helpful for understanding to create a figure of the models and
+  include a description of their predicted behaviors.
+- p. 27: description of parameter differences in parentheses could be
+  highlighted earlier on in the section
+- Figure 8: I'm not seeing the ribbons here. Are the points the observed data?
+- p. 32 - 33: how is the expected prior pseudo count calculated?
+- p. 33: where are the MCMC samples coming from? More background/explanation
+  needs to be provided here
+- Can you elaborate on Kronrod et al. (2016), and provide what the estimated
+  parameters were
+- For clarification, note that the ada/aba contrast is made in formant
+  transitions (end of p. 36)
+
+Experiment 4
+- See comment about distinguishing methodology above
+
+General Discussion
+- why not implement the fully ideal adapter model that classifies and adapts
+  tokens?
+- This question might relate to the one on methodology of boundary estimation,
+  but how much stock should we be putting in to the meaning of this boundary for
+  understanding internal category structure? Some previous studies have also
+  used goodness ratings (e.g., Miller, 1994: On the internal structure of
+  phonetic categories: A progress report, Cognition) to demonstrate that even if
+  a boundary does not change, a listener's representation of the category
+  nevertheless changes for a given talker. This could also be the case for some
+  of your listeners when no boundary shift was detected.
+
+Typos
+- p. 13: some typo with fig. 3 and fig. 4
+- section 3.3. typo: unlabeled
+- p. 25: directly/approximately seems contradictory
+- p. 33: typo: "along with ."
+- p. 45: missing period at end
+- p. 47: "a final Experiment 4"
+
+
+
+
+
+Reviewer #2: I'm happy to review "What constrains distributional learning for
+adults?" for Cognition. This manuscript presents the results of four experiments
+that aim to identify factors that influence the degree to which listeners modify
+the mapping to speech sounds given exposure to statistical (i.e.,
+distributional) regularities in speech input. Specifically, this work tests the
+hypothesis that distributional learning in adults is fundamentally constrained
+by prior experience with the cue-sound mappings produced by other talkers.
+
+In experiment 1, listeners were exposed to one of five "accents." Each accent
+consisted of bimodal VOT input (VOTs specifying the /b/ and /p/ categories);
+across accents, the VOT input was shifted in VOT space to have relatively
+shorter, relatively longer, or relatively consistent values with a "typical"
+talker. Listeners heard tokens from their respective accent in the context of a
+category identification task in which they picked which of two minimal-pair
+pictures (i.e., picture of beach or peach) matched the auditory stimulus on each
+trial. The results (1) showed evidence of distributional learning in that the
+category boundary between listener groups differed in line with the exposure
+accent and (2) evidence of incomplete adaptation in that listeners' category
+boundaries fell intermediate to those expected for a typical talker and the
+boundary that would optimally separate the /b/ and /p/ categories for each
+accent.
+
+Experiment 2 was similar to experiment 1 except that only four accents were
+tested and the picture mapping protocol was modified to provide supervision on
+learning for half of the trials. Supervision was provided in the form of label
+information, implemented by modifying the two picture response options on each
+trial to only have one picture consistent with the continuum stimulus heard on
+that trial (e.g., pictures of beach/peas instead of beach/peach or
+bees/peas). The results of experiment 2 patterned as experiment 1, and there was
+no evidence to suggest that learning was differentially influenced by the
+inclusion of disambiguating label information on half of the trials.
+
+Experiment 3 showed used a computational model to show that both the learning
+outcome and learning curves (i.e., learning over time) observed in experiments 1
+and 2 could be captured by a belief-updating framework in which listeners
+adapt/learning from a shared set of prior beliefs (i.e., expectations of a
+typical talker) - at least for the specific parameters used to instantiate the
+model tested here.
+
+Experiment 4 followed a design to experiment 1, with three key
+differences. First, some of the accents showed more substantial deviation from a
+typical talker (by presenting negative VOTs for the voiced category, i.e.,
+prevoicing). Second, the means of the /b/ and /p/ categories varied
+independently from that of a typical talker (e.g., an accent could have VOTs for
+/b/ that were substantially shorter without concomitant substantially shorter
+VOTs for /p/). Third, learning was assessed independent of exposure trials by
+the inclusion of 70 trials after exposure consisting of a flat frequency
+distribution of VOTs that were novel for most of the accent conditions. The
+behavioral results showed diminished distributional learning for the accents
+that most deviated from the typical talker (as compared to predicted learning
+from the model tested in experiment 3).
+
+My evaluation is that this work is extremely well-executed from a methodological
+standpoint, clearly grounded in theory, and presents stable results that
+subsequently advance theory by pinpointing constraints on distributional
+learning in adults (namely, their a priori expectations of cue-sound
+relationships formed by extensive experience with other talkers' speech). The
+manuscript is extremely well-written. I learned a lot from the carefully crafted
+introduction and discussion, and was pleased to see such care taken to highlight
+potential limitations of the belief-updating model tested here and exciting
+avenues for future research. As is reads now, this work will make an important
+contribution to the literature and I'm excited to see it in print. A few minor
+comments that came to mind in reading this:
+
+1. A table that shows the exact number of included participants in each accent
+   condition for each experiment would be very useful to the reader. Also, some
+   context on the sample sizes would be useful. Were these based on a priori
+   power analyses? Were these samples of convention/convenience?
+
+2. Regarding the implementation of semi-supervised learning: The use of labels
+   here was really interesting in that the labels provided information only for
+   the non-critical portion of the stimulus. That is, the disambiguating
+   information concerned the vowel+coda portion (e.g., /iz/ for stimuli drawn
+   from the /biz/-/piz/ continuum). Supervision could of course take many forms
+   (e.g., feedback after response) and I wonder why this type of supervision was
+   implemented given that it could be implicitly down-weighting
+   attention/sensitivity to word-initial VOT. Put to the extreme, I wouldn't be
+   surprised if accuracy on labeled trials was at ceiling in this paradigm even
+   if the VOT + (say) 10 ms of the vowel were masked or, perhaps, even if the
+   VOT + entire vowel portion were masked. I suppose the current data provide
+   some evidence that intial VOTs weren't completely ignored (otherwise the
+   learning in experiment 2 would be less than, not equal to, learning in
+   experiment 1). More context on the hypothesized mechanism at work for this
+   type of supervision (i.e., labels that disambiguate based on aspects of the
+   signal tertiary to the manipulated input) and a discussion of the potential
+   role for other types of supervisory signals (e.g., feedback) would be useful.
+
+3. I can see the utility in analyzing experiment 2 data only for non-labeled
+   trials, but I also think that the reader would benefit from learning about
+   the results when all trials are included. If this analysis were presented
+   first in experiment 2, then the report of labels driving responses 98% of the
+   time (which is what I imagine you expected them to do) logically suggests
+   seeing whether the same patterns are observed only for trials in which labels
+   were not provided.
+
+4. Regarding experiment 4 (which is a super exciting and very clever
+   manipulation, by the way, great to know that learning in this paradigm can be
+   tested independently of exposure!): Can you confirm that the 10 repetitions
+   of the 7 VOTs were presented in cycles (e.g., 1 repetition of all 7, then a
+   second repetition of all 7, and so on)? I'm guessing this is the case, but I
+   didn't see it stated explicitly. My understanding is that the model used for
+   analyzing the behavioral data include time as a fixed effect in order to
+   evaluate whether learning from exposure was attenuated during the 70 test
+   trials (given exposure to the flat frequency distribution at test). But I
+   didn't see any formal report of whether that was in fact the case in the main
+   text (it was alluded to as supplementary material, but I was not able to
+   download that for some reason). The decision to make conclusions in
+   experiment 4 based on derived boundaries 1/6 of the way through the test
+   trials would be strengthened by empirical support that additional learning
+   (or unlearning) is occurring during the 70 test trials.
+
+5. Regarding the null effects of supervision in experiment 2, I'd be keen to
+   hear speculation regarding potential interactions between supervision and
+   specific input distributions to be learned. For example, no supervision was
+   provided in experiment 4, which presented the most extreme accents (for a few
+   reasons). Might the role of supervision have been different for these input
+   distributions? It may be the case that supervisory signals have a different
+   role depending on the exact nature of the to-be-learned signal that reflects
+   graded contributions of previous experience/expectations and online evidence.
+
+Thank you for the opportunity to read this important paper. I believe that the
+few minor points raised above could be addressed very straightforwardly and
+doing so would make me even more excited to see this work in print.
+
+Signed: Rachel M. Theodore
+#+end_quote
