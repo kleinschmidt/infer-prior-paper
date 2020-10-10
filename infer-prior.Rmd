@@ -2197,6 +2197,8 @@ prior beliefs.  However, despite the fact that some of the VOT distributions
 tested thus far deviate substantially from a typical talker of American English,
 in reality they cover only a rather narrow range of possible VOT distributions.
 
+ <!-- TODO: cite paper on japanese prevoicing vs. positive VOT? -->
+
 In this final experiment, I test listeners' distributional learning from
 distributions that vary more dramatically, in two ways.  First, I include
 distributions with large negative VOTs.  On the one hand, negative VOTs
