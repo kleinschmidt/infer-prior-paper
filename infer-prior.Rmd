@@ -231,7 +231,7 @@ rational cue integration. Despite the fact that f0 was just as
 informative for this accent as for the positively correlated accent,
 listeners _ignored_ f0 as a cue to voicing. This suggests that these
 listeners have ruled out the possibility of a reversed mapping between
-f0 and voicing (/b/ vs. /p/), possibly perhaps American English talkers
+f0 and voicing (/b/ vs. /p/), possibly because American English talkers
 typically do not typically produce it [e.g., @House1953]. Likewise,
 @Sumner2011 found that American English listeners had trouble adapting
 to a talker who produced VOT distributions for /b/ and /p/ that had
@@ -247,6 +247,11 @@ the lens of distributional learning, one major difference between
 acquisition and adaptation is that distributional learning in adulthood
 appears to be *constrained*, while it is relatively *unconstrained*
 during acquisition.
+
+ <!-- TODO: give a more thorough review of existing work on this here, and
+ theoretical perspectives?  which are...?  I guess accounts of how adult
+ language relates to infant.  and a more careful inventory of the possible
+ sources of constraint, what they can and cannot explain -->
 
 However, we lack a clear understanding of the nature and source of those
 constraints. There are a number of other differences between the
@@ -278,6 +283,10 @@ might not provide enough information, leading to reduced learning. For
 the second, if the distributions encountered in an experiment fall far
 enough outside the range of what a listener expects based on their prior
 experience, they may struggle to adapt [@Kleinschmidt2015b].
+
+ <!-- TODO: talk about contrast with other DL work here? and maybe other
+ theoretical perspective? basic contrast is that other work has not used at most
+ one or two distributions, haven't systematically probed a range.  -->
 
 The goal of this paper is to systematically probe the constraints on
 distributional learning in American English-speaking adults. Experiment

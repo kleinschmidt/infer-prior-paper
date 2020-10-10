@@ -1115,3 +1115,88 @@ doing so would make me even more excited to see this work in print.
 
 Signed: Rachel M. Theodore
 #+end_quote
+
+**** R1
+Primary concern is with /impact and novelty/, motivations for experiments.
+
+"clearly situate contribution in the dl literature".  comes across as too high
+level.
+
+three issues:
+1. more engagement with what is meant by prior experience 
+2. clear differentiation from previous distributional learning experiments
+3. is it really saying much to equate acquisition with adaptation when the
+   difference between supervised vs unsupervised learning is so massive?
+
+"I think it would be beneficial to discuss how *phonological structure* and the
+*phonetic instantiation* of that likely constrains adult learning"
+
+order and motivation of experiments, "recommend either introducing the model
+first or last"
+
+methodological issues with how bounaries are estimated (are there actual
+ambiguous stimuli tested, and how many; 
+
+***** TODO survey sources of constraint
+what's the role of phonetic/phonological structure (number of categories, types
+of cues, etc.)
+
+look up the Cho paper on VOT and see if there are langauges that violate that
+"partially aspirated" constraint (like Seoul Korean)?  And the chodroff and
+wilson to get a sense of the variation across talkers
+
+****** Schertz and Kang (2016)
+production study with a couple dozen speakers from Seoul and Chinese Korean.
+Find that fortis stop is intermediate between lenis and aspirated in terms of
+VOT. and that these /production/ differences are reflected in their /perception/
+as well (see also Schertz et al. 2016, APP)
+
+***** TODO differeniate from previous distributional learning experiments
+"in both the behavioral and computational domains".
+
+#+begin_quote
+It would be very helpful to clearly situate this paper's contribution in the
+distributional learning literature. This may help establish the contribution and
+novelty. At the moment, the paper comes across as almost too high level: "prior
+experience constrains distributional learning" and "distributional learning is
+necessary for acquisition and adaptation". I think there are three branches of
+issues to address here: 1) more engagement with what is meant by prior
+experience, 2) clear differentiation from previous distributional learning
+experiments, and 3) is it really saying much to equate acquisition with
+adaptation when the difference between supervised vs unsupervised learning is so
+massive?
+#+end_quote
+
+***** TODO clarify motivation for later experiments
+
+***** TODO clarify methodology:
+boundary estimation, experiment 4 vs. earlier experiments, number of ambiguous
+trials.
+
+***** TODO ordering of sections
+'recommend model either first or last' but I'm trying to minimize dependency
+length.
+
+***** TODO misc stuff
+**** R2 
+overall positive...
+
+***** TODO Include table for subject counts in each experiment
+
+***** TODO discuss type/source of feedback
+explicit vs. implicit.  does it lead to down-weighting of the VOT?  (no,
+empirically, but also you don't know trial-to-trial what is going to be
+important).
+
+***** TODO analyze labeled data too in expt 2?
+no because you'd end up with boundaries that exactly match the input
+distributions (or have to throw in an interaction term) so it's just going to
+confuse things I think...
+
+***** TODO experiment 4 methods/unlearning
+how are trials distributed during posttest?
+
+***** TODO interaction between supervision and distributions
+yes I'd have thought so too but the distributions from Expt 1 are pretty extreme
+too.  Also see that sumner paper: even with supervision you still don't get
+shifts!  need a specific order of trials.
