@@ -513,6 +513,10 @@ aspiration after for positive VOTs). Within a /b/-/p/ continuum, the other
 parameters were held constant, and modeled on natural tokens of the endpoints
 (beach/peach, bees/peas, and beak/peak).
 
+### Estimating category boundaries
+
+
+
 ## Results
 
 In order to assess distributional learning, each subject's classification

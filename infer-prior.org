@@ -1151,6 +1151,23 @@ Find that fortis stop is intermediate between lenis and aspirated in terms of
 VOT. and that these /production/ differences are reflected in their /perception/
 as well (see also Schertz et al. 2016, APP)
 
+****** snippet - phonetic/phonological constraints
+(to address "I think it would be beneficial to discuss how phonological
+structure and the phonetic instantiation of that likely constrains adult
+learning. That is, there seem to be a finite set of categories and limited
+variation within and between those categories.")
+
+One possible source of these constraints would be a limited set of phonetic
+realizations or phonological features, where the limits come from the nature of
+the articulatory or auditory systems (e.g. acoustic landmarks/quantization,
+distinct articulatory gestures)
+
+But this would fails to account for the /differential/ constraints on
+distributional learning in acquisition vs. adaptation.  It moreover fails to
+account for the fact that there is gradient variation in cues to voicing
+cross-linguistically (CITE, esp Seoul Korean).
+
+
 ***** TODO differeniate from previous distributional learning experiments
 "in both the behavioral and computational domains".
 
@@ -1165,13 +1182,32 @@ experience, 2) clear differentiation from previous distributional learning
 experiments, and 3) is it really saying much to equate acquisition with
 adaptation when the difference between supervised vs unsupervised learning is so
 massive?
+
+[...]
+
+With respect to #2, the paper does begin to situate itself, but the paper's
+contribution and difference from previous VOT adaptation, recalibration and
+distributional learning papers could be made more explicit, in both the
+behavioral and computational domains. Relatedly, how does this model differ from
+that of Kleinschmidt & Jaeger (2015)?
 #+end_quote
 
-***** TODO clarify motivation for later experiments
 
-***** TODO clarify methodology:
+
+***** TODO clarify motivation for experiment 2
+#+begin_quote
+For Experiment 2, if participants were simply labeling according to the typical
+talker's distribution, wouldn't you get a flat response curve? Why isn't that
+ruled out by the data already?
+#+end_quote
+
+
+
+***** TODO clarify how boundaries were estimated
 boundary estimation, experiment 4 vs. earlier experiments, number of ambiguous
 trials.
+
+
 
 ***** TODO ordering of sections
 'recommend model either first or last' but I'm trying to minimize dependency
