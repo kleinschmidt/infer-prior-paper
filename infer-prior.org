@@ -1167,6 +1167,9 @@ distributional learning in acquisition vs. adaptation.  It moreover fails to
 account for the fact that there is gradient variation in cues to voicing
 cross-linguistically (CITE, esp Seoul Korean).
 
+***** TODO clarify comparison with acquisition - why are they comparable??
+One idea: emphasize in intro that acquisition is at least semi supervised
+(contrary to original idea of role of distributional learning)
 
 ***** TODO differeniate from previous distributional learning experiments
 "in both the behavioral and computational domains".
