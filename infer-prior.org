@@ -1141,9 +1141,16 @@ ambiguous stimuli tested, and how many;
 what's the role of phonetic/phonological structure (number of categories, types
 of cues, etc.)
 
+in intro, could have a "sources of constraints" section where I introduce
+self-supervision (at the category/token level) and the distributions, including
+the model (maybe in simplified form)
+
+****** phonetically intermediate between aspirated and not..
 look up the Cho paper on VOT and see if there are langauges that violate that
-"partially aspirated" constraint (like Seoul Korean)?  And the chodroff and
-wilson to get a sense of the variation across talkers
+"partially aspirated" constraint (like Seoul Korean)?
+
+****** variation in VOT across talkers
+And the chodroff and wilson to get a sense of the variation across talkers
 
 ****** Schertz and Kang (2016)
 production study with a couple dozen speakers from Seoul and Chinese Korean.
@@ -1171,6 +1178,36 @@ cross-linguistically (CITE, esp Seoul Korean).
 One idea: emphasize in intro that acquisition is at least semi supervised
 (contrary to original idea of role of distributional learning)
 
+Actually, now that I've read this again, I think the discussion here could be
+much better...unsupervised/supervised isn't quite the right opposition (either
+to present or to explain...), rather, in the lack of explicit supervision, a
+variety of sources of /self-supervision/ come into play, and we KNOW these are
+relevant for acquisition of phonetic categories...but we don't necessarily know
+quite what role they play in adaptation.  in a way, there's (at least) two kinds
+of self-supervision that might operate: prior experience with other talkers
+(supervision at the level of the distributions themselves), and the token
+level.  in a way, what these results are showing is that the token level is not
+what really matters here...it's the distributions themselves.
+
+I think this framing plugs into the adaptation/acquisition comparison better
+too, from the perspective of "pure" distributional learning experiments
+
+the theme I'm starting to circle around now is "DL as bottom-up vs. top-down".
+
+need to 'tell the story' of DL a bit more...as a theory of acquisition (I mean,
+maye et al. 2000 is "learning phonemes without minimal pairs" for gotts sake)
+and how it's been revised - minimal pairs might not be important but considering
+higher-level context ("self-supervision" might be) - and in particular important
+because they can separate two similar categories based on the context they
+appear in - provides token/category level supervision signal (need an example
+from Feldman?  or "happy/pet"
+
+Is it also important for adults?  On the one hand, maybe it is: it's a very
+useful piece of context.  On the other hand, other kinds of self-supervision
+might be more informative...like experience with other talkers.  So we're
+putting these head-to-head.  need a way to assess role of distributions, hasn't
+really been done before systematically.
+
 ***** TODO differeniate from previous distributional learning experiments
 "in both the behavioral and computational domains".
 
@@ -1195,6 +1232,11 @@ behavioral and computational domains. Relatedly, how does this model differ from
 that of Kleinschmidt & Jaeger (2015)?
 #+end_quote
 
+One approach here might be to put the theory up front more explicitly, show that
+it can /capture/ qualitatively the pattern of results from ... what exactly I
+don't know (the sumner paper?) ... and that it predicts constrained adaptation
+based on the production parameters.
+
 
 
 ***** TODO clarify motivation for experiment 2
@@ -1204,13 +1246,14 @@ talker's distribution, wouldn't you get a flat response curve? Why isn't that
 ruled out by the data already?
 #+end_quote
 
-
+putting the model first allows running simulations too - just put the sufficient
+statistics (weighted by the posterior under the "standard" model) through to
+show that you'd expect more learning.  actually, show it without a prior, just
+the SS.
 
 ***** TODO clarify how boundaries were estimated
 boundary estimation, experiment 4 vs. earlier experiments, number of ambiguous
 trials.
-
-
 
 ***** TODO ordering of sections
 'recommend model either first or last' but I'm trying to minimize dependency
