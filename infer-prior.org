@@ -588,6 +588,40 @@ story...
 *** cline between language learning and adaptation
 cite @Pajak2016: hierarchical inference under uncertainty.
 
+** for revision
+*** contrast between previous studies with adults
+/Entered on/ [2020-10-30 Fri 11:18]
+
+Previous distributional learning studies typically test for the existence of
+/any/ distributional learning, using a binary contrast.  In order to understand
+the extent and the nature of the constraints on distributional learning, we need
+a more continuous, quanitative assessment of the /amount/ and /speed/ of
+distributional learning.  Thus, instead of looking for any difference between
+the categorization behavior of listeners exposed to two different sets of
+acoustic cue distributions, in these studies I compare the categorization
+functions across multiple different sets of distributions that vary in a
+gradient way.
+*** contrast between qualitative/quantitative explanations of acquisition
+/Entered on/ [2020-11-02 Mon 14:18]
+
+Can strengthen motivation by drawing a more explicit contrast between dist
+learning as a meta-theory that links infant and adult language systems, contrast
+that with theories that posit that there's some kind of qualitative difference.
+The argument here is basically that the kinds of constraints we observe are
+consistent with the continuous operation of dist learning at multiple levels,
+but in order for this idea to have any teeth it needs to be testable, which is
+what we're doing here.
+
+another possible framing is to orient it in the separation of competence and
+performance: adult language USE is of a different KIND than language
+ACQUISITION.  contra that, we have these statistical/connectionist style
+theories which argue that there's a continuous learning/updating that happens
+(Chang et al.; Elman structure in time; etc.).  recent updates have suggested
+that there's /higher order distributional learning/ as a possible explanation of
+differences in flexibility...  but that connection is kind of just a promisory
+note, an uncashed check...we need a way to test those explanations...
+
+
 * Feedback 
 ** from Meghan
 
